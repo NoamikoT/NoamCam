@@ -9,8 +9,6 @@ face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 # Capturing video from the webcam
 cap = cv2.VideoCapture(0)
 
-# Using a video file instead:
-# cap = cv2.VideoCapture('filename.mp4')
 
 # Creating the video file to which the stream is being recorded
 fourcc = cv2.VideoWriter_fourcc('X','V','I','D')
