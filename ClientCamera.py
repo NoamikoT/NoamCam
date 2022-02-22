@@ -1,6 +1,5 @@
 import os
 import time
-
 import cv2
 import threading
 import queue
@@ -8,12 +7,13 @@ import queue
 
 class ClientCamera:
 
-    def __init__(self, frame_q):
+    def __init__(self, frame_q, face_q):
         """
         Constructor
         """
 
         self.frame_q = frame_q
+        self.face_q = face_q
         self.cap = None
         self.face_cascade = None
         self.path = None
@@ -46,6 +46,10 @@ class ClientCamera:
         self.camera_active = True
 
     def stop_camera(self):
+        """
+
+        :return:
+        """
 
         self.camera_active = False
 
@@ -53,20 +57,29 @@ class ClientCamera:
         self.cap.release()
 
     def _operate_camera(self):
+        """
+        The function handles the camera, takes frames and pushes them into the queue, calls face detection if needed
+        :return:
+        """
 
         while True:
             while self.camera_active:
                 # Read the frame
                 _, img = self.cap.read()
 
-                self.frame_q.put(img)
 
                 if self.detection_active:
-                    self._face_detection(img)
+                    img = self._face_detection(img)
 
-                print(self.camera_active)
+                self.frame_q.put(img)
+
 
     def _face_detection(self, img):
+        """
+        The function gets an image (a frame) and detects human faces in it
+        :param img:
+        :return:
+        """
 
         # Converting to gray scale (The face detection only works with pictures in gray scale
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -77,21 +90,34 @@ class ClientCamera:
         # Drawing a rectangle around detected faces, and capturing a picture of the face
         for (x, y, w, h) in faces:
             cv2.rectangle(img, (x, y), (x + w, y + h), (50, 50, 250), 2)
-            face = gray[y:y + h, x:x + w]
-            face_resize = cv2.resize(face, (500, 500))
-            cv2.imwrite('% s/% s.png' % (self.path, self.count), face_resize)
+            # face = gray[y:y + h, x:x + w]
+            # face_resize = cv2.resize(face, (500, 500))
+            cv2.imwrite('% s/% s.png' % (self.path, self.count), img)
+            self.face_q.put('% s/% s.png' % (self.path, self.count))
+
             self.count += 1
 
+            return img
+
+
     def start_detection(self):
+        """
+        Calling this function starts face detection
+        :return:
+        """
 
         self.detection_active = True
 
     def stop_detection(self):
+        """
+        Calling this function stops face detection
+        :return:
+        """
 
         self.detection_active = False
 
 
-
+# Testing the ClientCamera Class
 if __name__ == '__main__':
 
     frame_q = queue.Queue()
@@ -115,3 +141,10 @@ if __name__ == '__main__':
             break
 
         # Make face detection
+        # Ascii 8 = Backspace
+        elif k == 8:
+            new_camera.start_detection()
+
+        elif k == 10:
+            new_camera.stop_detection()
+
