@@ -26,6 +26,9 @@ class ClientCamera:
         threading.Thread(target=self._operate_camera, ).start()
 
     def _init_camera(self):
+        """
+        Starting the camera
+        """
 
         # Capturing video from the webcam
         self.cap = cv2.VideoCapture(0)
@@ -42,13 +45,15 @@ class ClientCamera:
             os.mkdir(self.path)
 
     def start_camera(self):
+        """
+        Starting the camera
+        """
 
         self.camera_active = True
 
     def stop_camera(self):
         """
-
-        :return:
+        Stoping the camera
         """
 
         self.camera_active = False
@@ -59,7 +64,6 @@ class ClientCamera:
     def _operate_camera(self):
         """
         The function handles the camera, takes frames and pushes them into the queue, calls face detection if needed
-        :return:
         """
 
         while True:
@@ -67,18 +71,18 @@ class ClientCamera:
                 # Read the frame
                 _, img = self.cap.read()
 
-
                 if self.detection_active:
                     img = self._face_detection(img)
 
                 self.frame_q.put(img)
 
-
     def _face_detection(self, img):
         """
         The function gets an image (a frame) and detects human faces in it
-        :param img:
-        :return:
+        :param img: The frame to check for faces
+        :type img: Numpy object
+        :return: The image with a square around the face
+        :rtype: Numpy object
         """
 
         # Converting to gray scale (The face detection only works with pictures in gray scale
@@ -96,9 +100,8 @@ class ClientCamera:
             self.face_q.put('% s/% s.png' % (self.path, self.count))
 
             self.count += 1
-
+            print(str(type(img)))
             return img
-
 
     def start_detection(self):
         """
@@ -122,7 +125,9 @@ if __name__ == '__main__':
 
     frame_q = queue.Queue()
 
-    new_camera = ClientCamera(frame_q)
+    face_q = queue.Queue()
+
+    new_camera = ClientCamera(frame_q, face_q)
 
     new_camera.start_camera()
 
@@ -147,4 +152,3 @@ if __name__ == '__main__':
 
         elif k == 10:
             new_camera.stop_detection()
-
