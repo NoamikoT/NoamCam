@@ -145,10 +145,12 @@ if __name__ == '__main__':
             new_camera.stop_camera()
             break
 
-        # Make face detection
+        # Keys to start and stop face detection
+
         # Ascii 8 = Backspace
         elif k == 8:
             new_camera.start_detection()
 
+        # Ascii 10 = Enter
         elif k == 10:
             new_camera.stop_detection()
