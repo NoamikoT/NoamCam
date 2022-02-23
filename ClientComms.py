@@ -2,7 +2,8 @@ import socket
 import queue
 import threading
 
-class ClientComms():
+
+class ClientComms:
 
     def __init__(self, server_IP, port, recv_q):
 

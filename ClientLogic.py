@@ -2,7 +2,8 @@ import socket
 import queue
 import threading
 
-class ClientLogic():
+
+class ClientLogic:
 
     def __init__(self, recv_q):
 

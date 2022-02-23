@@ -5,7 +5,7 @@ import threading
 import queue
 
 
-class ServerCamera():
+class ServerCamera:
     def __init__(self, path, id):
 
         self.fourcc = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')

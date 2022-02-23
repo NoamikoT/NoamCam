@@ -4,7 +4,8 @@ import threading
 import select
 import pip
 
-class ServerComms():
+
+class ServerComms:
 
     def __init__(self, port, recv_q):
 
