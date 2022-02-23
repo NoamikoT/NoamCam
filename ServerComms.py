@@ -1,6 +1,8 @@
 import socket
 import queue
 import threading
+import select
+import pip
 
 class ServerComms():
 
@@ -11,6 +13,8 @@ class ServerComms():
         self.recv_q = recv_q
         self.open_clients = None
         self.running = False
+
+        threading.Thread(target=self._main_loop, ).start()
 
     def _main_loop(self):
         """
@@ -30,7 +34,7 @@ class ServerComms():
         """
         return
 
-    def _find_socket_by_IP(self, ip):
+    def _find_socket_by_ip(self, ip):
         """
         The function gets an ip, and returns the corresponding socket of that ip
         :param ip: The ip to find the socket for
