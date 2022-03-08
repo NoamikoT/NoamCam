@@ -16,7 +16,7 @@ class ServerCamera:
 
         self.VideoWriter = cv2.VideoWriter(f'{path}/video{id}.avi', self.fourcc, 10.0, (640, 480))
 
-    def _check_path(self):
+    def __check_path(self):
         if not os.path.isdir(self.path):
             os.mkdir(self.path)
 

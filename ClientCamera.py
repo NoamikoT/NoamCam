@@ -21,11 +21,11 @@ class ClientCamera:
         self.camera_active = False
         self.detection_active = False
 
-        self._init_camera()
+        self.__init_camera()
 
         threading.Thread(target=self._operate_camera, ).start()
 
-    def _init_camera(self):
+    def __init_camera(self):
         """
         Starting the camera
         """
@@ -61,7 +61,7 @@ class ClientCamera:
         # Release the VideoCapture object
         self.cap.release()
 
-    def _operate_camera(self):
+    def __operate_camera(self):
         """
         The function handles the camera, takes frames and pushes them into the queue, calls face detection if needed
         """
@@ -72,11 +72,11 @@ class ClientCamera:
                 _, img = self.cap.read()
 
                 if self.detection_active:
-                    img = self._face_detection(img)
+                    img = self.__face_detection(img)
 
                 self.frame_q.put(img)
 
-    def _face_detection(self, img):
+    def __face_detection(self, img):
         """
         The function gets an image (a frame) and detects human faces in it
         :param img: The frame to check for faces

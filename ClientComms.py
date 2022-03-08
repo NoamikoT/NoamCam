@@ -13,7 +13,7 @@ class ClientComms:
         self.recv_q = recv_q
         self.running = False
 
-    def _main_loop(self):
+    def __main_loop(self):
         """
         The function creates the client, connects to the server and listens, every new message gets put into recv_q
         :return:
