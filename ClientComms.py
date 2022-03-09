@@ -5,18 +5,24 @@ import threading
 
 class ClientComms:
 
-    def __init__(self, server_IP, port, recv_q):
+    def __init__(self, server_ip, port, recv_q):
 
-        self.my_socket = None
-        self.server_IP = server_IP
-        self.port = port
-        self.recv_q = recv_q
-        self.running = False
+        self.my_socket = socket.socket()  # Initializing the client's socket
+
+        self.server_ip = server_ip  # The server's IP
+        self.port = port  # The server's port
+        self.recv_q = recv_q  # The queue where messages get stored to and read
+        self.running = False  # A boolean dictating whether the client is running or not
+
+        # Connecting the client's socket to the server socket
+        self.my_socket.connect((self.server_ip, self.port))
+
+        # Starting the thread that runs the main loop constantly
+        threading.Thread(target=self.__main_loop, ).start()
 
     def __main_loop(self):
         """
         The function connects to the server and listens, every new message gets put into recv_q
-        :return:
         """
 
         while self.running:
@@ -73,7 +79,6 @@ class ClientComms:
         """
         Sends a message
         :param message: The message to be sent
-        :return:
         """
 
         # Getting the length of the message
@@ -89,14 +94,14 @@ class ClientComms:
             print(str(e))
             self.my_socket.close()
 
-    def open_client(self):
+    def start_client(self):
         """
         Starts the client
         """
 
         self.running = True
 
-    def close_client(self):
+    def stop_client(self):
         """
         The function closes the client
         """

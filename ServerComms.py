@@ -8,16 +8,20 @@ class ServerComms:
 
     def __init__(self, port, recv_q):
 
-        self.server_socket = socket.socket()
-        self.server_socket.bind(("0.0.0.0", port))
-        self.server_socket.listen(5)
+        self.server_socket = socket.socket()  # Initializing the server's socket
+
         self.open_clients = {}
         self.user_dict = {}  # Socket : (ip, port)
 
-        self.port = port
-        self.recv_q = recv_q
-        self.running = True
+        self.port = port  # The server's port
+        self.recv_q = recv_q  # The queue where messages get stored to and read
+        self.running = False  # A boolean dictating whether the client is running or not
 
+        # Binding the server's socket
+        self.server_socket.bind(("0.0.0.0", port))
+        self.server_socket.listen(5)
+
+        # Starting the thread that runs the main loop constantly
         threading.Thread(target=self.__main_loop, ).start()
 
     def __main_loop(self):
@@ -158,3 +162,17 @@ class ServerComms:
 
             else:
                 self.recv_q.put((ip, f"dc"))
+
+    def start_server(self):
+        """
+        The function starts the server
+        """
+
+        self.running = True
+
+    def stop_server(self):
+        """
+        The function stops the server
+        """
+
+        self.running = False
