@@ -31,7 +31,7 @@ class ServerComms:
 
         while self.running:
             try:
-                rlist, wlist, xlist = select.select(list(self.user_dict.keys()) + [self.server_socket], [], [], 0.3)
+                rlist, wlist, xlist = select.select(list(self.user_dict.keys()) + [self.server_socket], [], [], 0.5)
 
             except Exception as e:
                 print(str(e))
@@ -159,9 +159,6 @@ class ServerComms:
 
             except Exception as e:
                 print(str(e))
-
-            else:
-                self.recv_q.put((ip, f"dc"))
 
     def start_server(self):
         """

@@ -52,7 +52,7 @@ class ClientComms:
                             data = self.my_socket.recv(1024)
 
                         except Exception as e:
-                            print(e)
+                            print(str(e))
                             self.my_socket.close()
                             break
 
@@ -65,7 +65,7 @@ class ClientComms:
                             data = self.my_socket.recv((int(length) - counter))
 
                         except Exception as e:
-                            print(e, 55)
+                            print(str(e))
                             self.my_socket.close()
                             break
 
