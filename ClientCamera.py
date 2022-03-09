@@ -23,7 +23,7 @@ class ClientCamera:
 
         self.__init_camera()
 
-        threading.Thread(target=self._operate_camera, ).start()
+        threading.Thread(target=self.__operate_camera, ).start()
 
     def __init_camera(self):
         """

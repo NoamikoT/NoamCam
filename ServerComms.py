@@ -24,18 +24,17 @@ class ServerComms:
     def __main_loop(self):
         """
         The function creates the server, connects new clients, every new message gets put into recv_q
-        :return:
         """
 
         while self.__running:
             try:
                 rlist, wlist, xlist = select.select(list(self.__user_dict.keys()) + [self.__server_socket], [], [], 0.3)
             except:
-                pass
+                print(str(e))
             else:
                 for current_socket in rlist:
                     if current_socket is self.__server_socket:
-                        # new client
+                        # When a new client connects
                         client, address = self.__server_socket.accept()
                         print(address, "- CONNECTED")
 
@@ -43,32 +42,32 @@ class ServerComms:
                         self.__user_dict[client] = address
                         self.__open_clients[address[0]] = client
                     else:
-                        # receive info
+                        # Getting messages from a client
                         try:
-                            # receive length of msg
+                            # Receiving the length of the message
                             length = current_socket.recv(8).decode()
                         except Exception as e:
-                            print(e)
+                            print(str(e))
                             if current_socket in self.__user_dict.keys():
                                 self.disconnect(self.__user_dict[current_socket][0])
                                 return
                             break
 
                         else:
-                            # disconnected
+                            # If the client disconnected
                             if length == '':
                                 self.disconnect(self.__user_dict[current_socket][0])
                             else:
                                 # initiate msg
                                 msg = bytearray()
                                 count = 0
-                                # receive the msg
+                                # Receiving the message
                                 while count < int(length):
                                     if (int(length) - count) > 1024:
                                         try:
                                             data = current_socket.recv(1024)
                                         except Exception as e:
-                                            print(e)
+                                            print(str(e))
                                             self.disconnect(self.__user_dict[current_socket][0])
                                         else:
                                             if data == b'':
@@ -83,7 +82,7 @@ class ServerComms:
                                         try:
                                             data = current_socket.recv((int(length) - count))
                                         except Exception as e:
-                                            print(e)
+                                            print(str(e))
                                             self.disconnect(self.__user_dict[current_socket][0])
                                         else:
                                             if data == b'':
@@ -104,7 +103,6 @@ class ServerComms:
         :type ip: String
         :param message: The message to be sent
         :type message: String
-        :return:
         """
 
         if ip in self.__open_clients.keys():
@@ -115,7 +113,7 @@ class ServerComms:
             try:
                 sock.send(length+message)
             except Exception as e:
-                print(e,1)
+                print(str(e))
                 self.disconnect(ip)
 
     def __find_socket_by_ip(self, ip):
@@ -135,13 +133,13 @@ class ServerComms:
         :type ip: String
         """
         if ip in self.__open_clients.keys():
-            print(f"{self.__user_dict[self.__open_clients[ip]]} disconnected")
+            print(f"Disconnected {self.__user_dict[self.__open_clients[ip]]}")
             self.__open_clients[ip].close()
             try:
                 del self.__user_dict[self.__open_clients[ip]]
                 del self.__open_clients[ip]
-            except:
-                pass
+            except Exception as e:
+                print(str(e))
             else:
                 print("DC, IP-", ip)
                 self.__recv_q.put((ip, f"dc"))
