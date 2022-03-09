@@ -10,8 +10,8 @@ class ServerComms:
 
         self.server_socket = socket.socket()  # Initializing the server's socket
 
-        self.open_clients = {}
-        self.user_dict = {}  # Socket : (ip, port)
+        self.open_clients = {}  # A dictionary
+        self.user_dict = {}  # A dictionary that saves all of the the connected users (clients) - Socket : (ip, port)
 
         self.port = port  # The server's port
         self.recv_q = recv_q  # The queue where messages get stored to and read
