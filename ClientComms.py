@@ -22,42 +22,47 @@ class ClientComms:
         while self.running:
             # Receiving the length
             try:
-                length = self.__sock.recv(8).decode()
+                length = self.my_socket.recv(8).decode()
+
             except Exception as e:
                 print(str(e))
                 self.my_socket.close()
                 break
+
             else:
                 # If the connection is gone, closing the client
                 if length == "":
                     self.my_socket.close()
                     break
 
-                # initialize the msg
+                # Initializing the message as a byte array
                 msg = bytearray()
                 counter = 0
 
-                # receive the data
+                # Receiving the message
                 while counter < int(length):
                     if (int(length) - counter) > 1024:
-
                         try:
                             data = self.my_socket.recv(1024)
+
                         except Exception as e:
                             print(e)
                             self.my_socket.close()
                             break
+
                         else:
                             msg.extend(data)
                             counter += len(data)
-                            # got full msg
+
                     else:
                         try:
                             data = self.my_socket.recv((int(length) - counter))
+
                         except Exception as e:
                             print(e, 55)
                             self.my_socket.close()
                             break
+
                         else:
                             msg.extend(data)
                             counter += len(data)
@@ -74,10 +79,12 @@ class ClientComms:
         # Getting the length of the message
         if type(message) == str:
             message = message.encode()
+
         message_length = str(len(message)).zfill(8).encode()
 
         try:
             self.my_socket.send(message_length + message)
+
         except Exception as e:
             print(str(e))
             self.my_socket.close()

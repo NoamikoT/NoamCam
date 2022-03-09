@@ -2,78 +2,86 @@ import socket
 import queue
 import threading
 import select
-import pip
 
 
 class ServerComms:
 
     def __init__(self, port, recv_q):
 
-        self.__server_socket = socket.socket()
-        self.__server_socket.bind(("0.0.0.0", port))
-        self.__server_socket.listen(5)
-        self.__open_clients = {}
-        self.__user_dict = {} # Socket : (ip, port)
+        self.server_socket = socket.socket()
+        self.server_socket.bind(("0.0.0.0", port))
+        self.server_socket.listen(5)
+        self.open_clients = {}
+        self.user_dict = {}  # Socket : (ip, port)
 
-        self.__port = port
-        self.__recv_q = recv_q
-        self.__running = True
+        self.port = port
+        self.recv_q = recv_q
+        self.running = True
 
-        threading.Thread(target=self._main_loop, ).start()
+        threading.Thread(target=self.__main_loop, ).start()
 
     def __main_loop(self):
         """
         The function creates the server, connects new clients, every new message gets put into recv_q
         """
 
-        while self.__running:
+        while self.running:
             try:
-                rlist, wlist, xlist = select.select(list(self.__user_dict.keys()) + [self.__server_socket], [], [], 0.3)
-            except:
+                rlist, wlist, xlist = select.select(list(self.user_dict.keys()) + [self.server_socket], [], [], 0.3)
+
+            except Exception as e:
                 print(str(e))
+
             else:
                 for current_socket in rlist:
-                    if current_socket is self.__server_socket:
+                    if current_socket is self.server_socket:
                         # When a new client connects
-                        client, address = self.__server_socket.accept()
+                        client, address = self.server_socket.accept()
                         print(address, "- CONNECTED")
 
-                        # add to dictionary
-                        self.__user_dict[client] = address
-                        self.__open_clients[address[0]] = client
+                        # Adding the new client to the dictionaries
+                        self.user_dict[client] = address
+                        self.open_clients[address[0]] = client
+
                     else:
                         # Getting messages from a client
                         try:
                             # Receiving the length of the message
                             length = current_socket.recv(8).decode()
+
                         except Exception as e:
                             print(str(e))
-                            if current_socket in self.__user_dict.keys():
-                                self.disconnect(self.__user_dict[current_socket][0])
+                            if current_socket in self.user_dict.keys():
+                                self.disconnect(self.user_dict[current_socket][0])
                                 return
                             break
 
                         else:
-                            # If the client disconnected
+                            # If the connection is gone, closing the client
                             if length == '':
-                                self.disconnect(self.__user_dict[current_socket][0])
+                                self.disconnect(self.user_dict[current_socket][0])
+
                             else:
-                                # initiate msg
+                                # Initiating the message as a byte array
                                 msg = bytearray()
                                 count = 0
+
                                 # Receiving the message
                                 while count < int(length):
                                     if (int(length) - count) > 1024:
                                         try:
                                             data = current_socket.recv(1024)
+
                                         except Exception as e:
                                             print(str(e))
-                                            self.disconnect(self.__user_dict[current_socket][0])
+                                            self.disconnect(self.user_dict[current_socket][0])
+
                                         else:
                                             if data == b'':
-                                                self.disconnect(self.__user_dict[current_socket][0])
+                                                self.disconnect(self.user_dict[current_socket][0])
                                                 msg = b''
                                                 break
+
                                             else:
                                                 msg.extend(data)
                                                 count += len(data)
@@ -81,20 +89,23 @@ class ServerComms:
                                     else:
                                         try:
                                             data = current_socket.recv((int(length) - count))
+
                                         except Exception as e:
                                             print(str(e))
-                                            self.disconnect(self.__user_dict[current_socket][0])
+                                            self.disconnect(self.user_dict[current_socket][0])
+
                                         else:
                                             if data == b'':
-                                                self.disconnect(self.__user_dict[current_socket][0])
+                                                self.disconnect(self.user_dict[current_socket][0])
                                                 msg = b''
                                                 break
+
                                             else:
                                                 msg.extend(data)
                                                 count += len(data)
-                                if msg != b'':
-                                    self.__recv_q.put((self.__user_dict[current_socket][0], msg))
 
+                                if msg != b'':
+                                    self.recv_q.put((self.user_dict[current_socket][0], msg))
 
     def send(self, ip, message):
         """
@@ -105,8 +116,8 @@ class ServerComms:
         :type message: String
         """
 
-        if ip in self.__open_clients.keys():
-            sock = self.__open_clients[ip]
+        if ip in self.open_clients.keys():
+            sock = self.open_clients[ip]
             if type(message) == str:
                 message = message.encode()
             length = str(len(message)).zfill(8).encode()
@@ -124,7 +135,8 @@ class ServerComms:
         :return: The socket of the ip
         :rtype: Socket
         """
-        return self.__open_clients.get(ip, default=None)
+
+        return self.open_clients.get(ip, default=None)
 
     def disconnect(self, ip):
         """
@@ -132,14 +144,17 @@ class ServerComms:
         :param ip: ip address
         :type ip: String
         """
-        if ip in self.__open_clients.keys():
-            print(f"Disconnected {self.__user_dict[self.__open_clients[ip]]}")
-            self.__open_clients[ip].close()
+
+        if ip in self.open_clients.keys():
+            print(f"Disconnected {self.user_dict[self.open_clients[ip]]}")
+            self.open_clients[ip].close()
+
             try:
-                del self.__user_dict[self.__open_clients[ip]]
-                del self.__open_clients[ip]
+                del self.user_dict[self.open_clients[ip]]
+                del self.open_clients[ip]
+
             except Exception as e:
                 print(str(e))
+
             else:
-                print("DC, IP-", ip)
-                self.__recv_q.put((ip, f"dc"))
+                self.recv_q.put((ip, f"dc"))
