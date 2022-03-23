@@ -20,41 +20,11 @@ def unpack(message):
     return unpacked_message
 
 
-def build_face_recognition(status):
+def build_cam_status(status):
 
     """
-    Gets the wanted status for the face recognition, creates the message with the face recognition code and returns it
-    :param status: The wanted status for the face recognition (0 = turn off, 1 = turn on)
-    :type status: String
-    :return: The packed message ready to send
-    :rtype: String
-    """
-
-    code = "01"
-
-    packed_message = code + status
-
-    return packed_message
-
-
-def build_siren():
-
-    """
-    Building a message saying to activate the siren
-    :return: The packed message ready to send
-    :rtype: String
-    """
-
-    code = "020"
-
-    return code
-
-
-def build_stream_status(status):
-
-    """
-    Gets the wanted status for the stream, creates the message with the stream status code and returns it
-    :param status: The wanted status for the stream (0 = stop stream, 1 = start stream)
+    Builds a message with the status of the camera connected to the PC
+    :param status: The status of the camera connected to the PC (0 - not connected, 1 - connected)
     :type status: String
     :return: The packed message ready to send
     :rtype: String
@@ -67,19 +37,6 @@ def build_stream_status(status):
     return packed_message
 
 
-def build_turn_off():
-
-    """
-    Building a message telling the computer to turn off
-    :return: The packed message ready to send
-    :rtype: String
-    """
-
-    code = "040"
-
-    return code
-
-
 def build_frame_send(frame_path):
 
     """
@@ -90,7 +47,7 @@ def build_frame_send(frame_path):
     :rtype: String
     """
 
-    with open(frame_path, 'rb') as f:
+    with open(frame_path, 'r') as f:
         frame = f.read()
         f.close()
 
@@ -114,7 +71,7 @@ def build_photo_send(photo_path):
     :rtype: String
     """
 
-    with open(photo_path, 'rb') as f:
+    with open(photo_path, 'r') as f:
         photo = f.read()
         f.close()
 
@@ -122,7 +79,7 @@ def build_photo_send(photo_path):
 
     photo_length= photo_length.zfill(10)
 
-    code = "001"
+    code = "002"
 
     packed_message = code + photo_length + photo
 

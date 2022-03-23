@@ -12,9 +12,30 @@ def unpack(message):
 
     code = message[:2]
 
+    data = message[2:]
+
     unpacked_message = ""
 
-    data = message[2:]
+    # 03 - Cam status
+    if code == "03":
+        if data == "0":
+            unpacked_message = "Camera is not connected"
+
+        else:
+            unpacked_message = "Camera is connected"
+
+    elif code == "00":
+        code = message[:3]
+
+        data = message[3:]
+
+        if code == "001":
+            frame_length = data[:10]
+            frame = data[10:]
+
+            unpacked_message
+
+
 
     return unpacked_message
 
