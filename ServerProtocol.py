@@ -33,7 +33,11 @@ def unpack(message):
             frame_length = data[:10]
             frame = data[10:]
 
-            unpacked_message
+            unpacked_message = "Frame received: " + frame_path
+
+        elif code == "002":
+            photo_length = data[:10]
+            photo = data[10:]
 
 
 
