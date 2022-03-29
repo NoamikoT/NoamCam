@@ -51,13 +51,9 @@ def build_frame_send(frame_path):
         frame = f.read()
         f.close()
 
-    frame_length = os.path.getsize(frame_path)
+    code = "01"
 
-    frame_length = frame_length.zfill(10)
-
-    code = "001"
-
-    packed_message = code + frame_length + frame
+    packed_message = code + frame
 
     return packed_message
 
@@ -75,12 +71,8 @@ def build_photo_send(photo_path):
         photo = f.read()
         f.close()
 
-    photo_length = os.path.getsize(photo_path)
+    code = "02"
 
-    photo_length= photo_length.zfill(10)
-
-    code = "002"
-
-    packed_message = code + photo_length + photo
+    packed_message = code + photo
 
     return packed_message
