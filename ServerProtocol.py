@@ -17,11 +17,12 @@ class ServerProtocol:
         data = message[2:]
 
         unpacked_message = data
+
         # 03 - Cam status
         if code == "03":
             if data == "0":
                 unpacked_message = "Camera is not connected"
-            else:
+            elif data == "1":
                 unpacked_message = "Camera is connected"
 
         return [code, unpacked_message]

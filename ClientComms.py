@@ -12,20 +12,19 @@ class ClientComms:
         self.server_ip = server_ip  # The server's IP
         self.port = port  # The server's port
         self.recv_q = recv_q  # The queue where messages get stored to and read
-        self.running = False  # A boolean dictating whether the client is running or not
 
         # Connecting the client's socket to the server socket
         self.my_socket.connect((self.server_ip, self.port))
 
         # Starting the thread that runs the main loop constantly
-        threading.Thread(target=self.__main_loop, ).start()
+        threading.Thread(target=self._main_loop, ).start()
 
-    def __main_loop(self):
+    def _main_loop(self):
         """
         The function connects to the server and listens, every new message gets put into recv_q
         """
 
-        while self.running:
+        while True:
             # Receiving the length
             try:
                 length = self.my_socket.recv(8).decode()
@@ -114,16 +113,3 @@ class ClientComms:
             print(str(e))
             self.my_socket.close()
 
-    def start_client(self):
-        """
-        Starts the client
-        """
-
-        self.running = True
-
-    def stop_client(self):
-        """
-        The function closes the client
-        """
-
-        self.running = False

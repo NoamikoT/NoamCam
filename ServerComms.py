@@ -18,9 +18,9 @@ class ServerComms:
 
 
         # Starting the thread that runs the main loop constantly
-        threading.Thread(target=self.__main_loop, ).start()
+        threading.Thread(target=self._main_loop, ).start()
 
-    def __main_loop(self):
+    def _main_loop(self):
         """
         The function creates the server, connects new clients, every new message gets put into recv_q
         """

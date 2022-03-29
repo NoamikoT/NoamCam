@@ -13,11 +13,29 @@ def unpack(message):
 
     code = message[:2]
 
-    unpacked_message = ""
-
     data = message[2:]
 
-    return unpacked_message
+    unpacked_message = data
+
+    if code == "01":
+        if data == "0":
+            unpacked_message = "Stop face recognition"
+        elif data == "1":
+            unpacked_message = "Continue face recognition"
+
+    elif code == "02":
+        unpacked_message = "Sound siren"
+
+    elif code == "03":
+        if data == "0":
+            unpacked_message = "Stop stream"
+        elif data == "1":
+            unpacked_message = "Continue stream"
+
+    elif code == "04":
+        unpacked_message = "Shut off computer"
+
+    return [code, unpacked_message]
 
 
 def build_cam_status(status):
