@@ -32,7 +32,7 @@ def build_cam_status(status):
 
     code = "03"
 
-    packed_message = code + status
+    packed_message = f"{code}{status}"
 
     return packed_message
 
@@ -47,13 +47,13 @@ def build_frame_send(frame_path):
     :rtype: String
     """
 
-    with open(frame_path, 'r') as f:
-        frame = f.read()
-        f.close()
+    # with open(frame_path, 'r') as f:
+    #     frame = f.read()
+    #     f.close()
 
     code = "01"
 
-    packed_message = code + frame
+    packed_message = f"{code}{frame_path}"
 
     return packed_message
 
@@ -67,12 +67,12 @@ def build_photo_send(photo_path):
     :rtype: String
     """
 
-    with open(photo_path, 'r') as f:
-        photo = f.read()
-        f.close()
+    # with open(photo_path, 'r') as f:
+    #     photo = f.read()
+    #     f.close()
 
     code = "02"
 
-    packed_message = code + photo
+    packed_message = f"{code}{photo_path}"
 
     return packed_message

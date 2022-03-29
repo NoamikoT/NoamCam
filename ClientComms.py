@@ -94,6 +94,26 @@ class ClientComms:
             print(str(e))
             self.my_socket.close()
 
+
+    def send_file(self, code, file_path):
+
+        # read the file data
+        with open(file_path, 'rb') as f:
+            file = f.read()
+            f.close()
+
+        message = f"{code}{str(len(file))}"
+        message_length = str(len(message)).zfill(8).encode()
+
+
+        try:
+            self.my_socket.send(message_length + message.encode())
+            self.my_socket.send(file)
+
+        except Exception as e:
+            print(str(e))
+            self.my_socket.close()
+
     def start_client(self):
         """
         Starts the client
