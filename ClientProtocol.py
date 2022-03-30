@@ -2,10 +2,9 @@ class ClientProtocol:
 
     @staticmethod
     def unpack(message):
-
         """
-        Gets a packed messages and returns it unpacked (According to its code)
-        :param message: The message
+        The function gets a packed message and returns it unpacked (According to its code)
+        :param message: The message to be unpacked
         :type message: String
         :return: Returns the unpacked message
         :rtype: String
@@ -17,21 +16,25 @@ class ClientProtocol:
 
         unpacked_message = data
 
+        # 01 - Face detection on\off
         if code == "01":
             if data == "0":
                 unpacked_message = "Stop face recognition"
             elif data == "1":
                 unpacked_message = "Continue face recognition"
 
+        # 02 - Sound the siren
         elif code == "02":
             unpacked_message = "Sound siren"
 
+        # 03 - Stream status on\off
         elif code == "03":
             if data == "0":
                 unpacked_message = "Stop stream"
             elif data == "1":
                 unpacked_message = "Continue stream"
 
+        # 04 - Shut down the computer
         elif code == "04":
             unpacked_message = "Shut off computer"
 
@@ -39,9 +42,8 @@ class ClientProtocol:
 
     @staticmethod
     def build_cam_status(status):
-
         """
-        Builds a message with the status of the camera connected to the PC
+        The function builds a message with the status of the camera connected to the PC
         :param status: The status of the camera connected to the PC (0 - not connected, 1 - connected)
         :type status: String
         :return: The packed message ready to send
@@ -56,7 +58,6 @@ class ClientProtocol:
 
     @staticmethod
     def build_frame_send(frame_path):
-
         """
         Building a message containing a frame of the video
         :param frame_path: The path to the frame
@@ -64,10 +65,6 @@ class ClientProtocol:
         :return: The packed message ready to send
         :rtype: String
         """
-
-        # with open(frame_path, 'r') as f:
-        #     frame = f.read()
-        #     f.close()
 
         code = "01"
 
@@ -84,10 +81,6 @@ class ClientProtocol:
         :return: The packed message ready to send
         :rtype: String
         """
-
-        # with open(photo_path, 'r') as f:
-        #     photo = f.read()
-        #     f.close()
 
         code = "02"
 

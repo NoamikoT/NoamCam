@@ -47,8 +47,9 @@ class ClientComms:
 
     def send(self, message):
         """
-        Sends a message
-        :param message: The message to be sent
+        The function sends a message to the server
+        :param message: The message to be sent to the server
+        :type message: String
         """
 
         # Getting the length of the message
@@ -65,6 +66,13 @@ class ClientComms:
             self.my_socket.close()
 
     def send_file(self, code, file_path):
+        """
+        The function sends a file to the server
+        :param code: The type of file (01 - Frame, 02 - Photo)
+        :type code; String
+        :param file_path: The path to the file that needs to be sent
+        :type file_path: String
+        """
 
         # read the file data
         with open(file_path, 'rb') as f:
@@ -74,7 +82,6 @@ class ClientComms:
         message = f"{code}{str(len(file))}"
         message_length = str(len(message)).zfill(8).encode()
 
-
         try:
             self.my_socket.send(message_length + message.encode())
             self.my_socket.send(file)
@@ -82,4 +89,3 @@ class ClientComms:
         except Exception as e:
             print(str(e))
             self.my_socket.close()
-

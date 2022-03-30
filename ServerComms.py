@@ -63,13 +63,16 @@ class ServerComms:
                                 self.recv_q.put((self.open_clients[current_socket], code, data[2:]))
 
     def _recv_file(self, soc, code, file_len):
-        '''
+        """
         The function gets a socket to receive the file from, the code (01 - frame, 02 - photo), and the length of the file, and receives the file
-        :param soc:
-        :param code:
-        :param file_len:
-        :return:
-        '''
+        :param soc: The socket to receive from
+        :type soc: Socket
+        :param code: The kind of media (01 - Frame, 02 - Photo)
+        :type code: String
+        :param file_len: The length of the file needed to receive
+        :type file_len: Integer
+        :return: Doesn't return anything, but opens and writes the file received
+        """
 
         # Initiating the message as a byte array
         msg = bytearray()
@@ -81,7 +84,7 @@ class ServerComms:
             else:
                 msg.extend(soc.recv(size))
                 break
-        file_name = f"pic{str(self.file_num)}.png"
+        file_name = f"Pic{str(self.file_num)}.png"
         self.file_num += 1
         with open(file_name, "wb") as f:
             f.write(msg)
@@ -117,6 +120,7 @@ class ServerComms:
         :return: The socket of the ip
         :rtype: Socket
         """
+
         ret_soc = None
         for soc in self.open_clients.keys():
             if self.open_clients[soc] == ip:
@@ -127,8 +131,8 @@ class ServerComms:
     def disconnect(self, soc):
         """
         The function disconnects a socket of the corresponding ip from the server
-        :param ip: ip address
-        :type ip: String
+        :param soc: The socket that needs to eb disconnected
+        :type soc: Socket
         """
 
         if soc in self.open_clients.keys():
