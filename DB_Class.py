@@ -1,7 +1,6 @@
 import sqlite3
 import time
 
-# !!! DB = Database !!!
 
 class DB:
 
@@ -236,7 +235,6 @@ class DB:
         return self.cursor.fetchall()
 
 
-
 if __name__ == "__main__":
 
     # Creating a new DB object with the name playersDB
@@ -248,9 +246,6 @@ if __name__ == "__main__":
     print(newDB.add_user("Noamiko", "Noam Tirosh", "Male", "8/7/2004", "noamiko.tirosh@gmail.com", "RandomPass"))
     print(newDB.add_user("Noamiko", "Noam Tirosh", "Male", "8/7/2004", "noamiko.tirosh@gmail.com", "RandomPass"))
 
-
-
-
     # Testing the remove_user function
 
     print(newDB.add_user("TempUser", "Delete This", "Male", "1/1/2000", "Temp.User@gmail.com", "TestDelete"))
@@ -259,7 +254,6 @@ if __name__ == "__main__":
     time.sleep(7)
 
     print(newDB.remove_user("TempUser"))
-
 
     # Testing the update functions
 
@@ -273,7 +267,6 @@ if __name__ == "__main__":
 
     print(newDB.update_password("Noamiko", "NewPassword"))
 
-
     # Testing the getting gender and age from all function
 
     print(newDB.add_user("UserTest1", "User One", "Male", "8/7/1987", "User.One@gmail.com", "RandomPass"))
@@ -282,17 +275,8 @@ if __name__ == "__main__":
 
     print(newDB.add_user("UserTest3", "User Three", "Male", "1/9/2010", "User.Three@gmail.com", "RandomPass"))
 
-
     # Testing the get_by_gender and get_by_age functions
 
     print(newDB.get_by_gender("Male"))
 
     print(newDB.get_by_age(11))
-
-
-
-
-
-
-
-
