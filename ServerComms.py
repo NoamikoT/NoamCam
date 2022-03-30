@@ -1,5 +1,4 @@
 import socket
-import queue
 import threading
 import select
 
@@ -11,11 +10,10 @@ class ServerComms:
         self.server_socket = socket.socket()  # Initializing the server's socket
 
         self.open_clients = {}  # A dictionary socket -> ip
-        self.filenNum = 0
+        self.file_num = 0
 
         self.port = port  # The server's port
         self.recv_q = recv_q  # The queue where messages get stored to and read
-
 
         # Starting the thread that runs the main loop constantly
         threading.Thread(target=self._main_loop, ).start()
@@ -48,27 +46,25 @@ class ServerComms:
                         # Receiving the length of the message
                         length = int(current_socket.recv(8).decode())
                         data = current_socket.recv(length).decode()
+
                     except Exception as e:
                         print(str(e))
                         self.disconnect(current_socket)
 
-
                     else:
-                        # If the connection is gone, closing the client
+                        # Checking the data isn't empty
                         if len(data) > 0:
                             code = data[0:2]
+                            # 01/02 means media file
                             if code in ["01", "02"]:
                                 file_len = int(data[2:])
-                                self._recv_file(current_socket,code, file_len)
-                            else:
+                                self._recv_file(current_socket, code, file_len)
+                            elif code in ["03"]:
                                 self.recv_q.put((self.open_clients[current_socket], code, data[2:]))
-
-
-
 
     def _recv_file(self, soc, code, file_len):
         '''
-
+        The function gets a socket to receive the file from, the code (01 - frame, 02 - photo), and the length of the file, and receives the file
         :param soc:
         :param code:
         :param file_len:
@@ -85,14 +81,12 @@ class ServerComms:
             else:
                 msg.extend(soc.recv(size))
                 break
-        file_name = f"pic{str(self.filenNum)}.png"
-        self.filenNum += 1
+        file_name = f"pic{str(self.file_num)}.png"
+        self.file_num += 1
         with open(file_name, "wb") as f:
             f.write(msg)
 
-        self.recv_q.put((self.open_clients[soc], code, file_name ))
-
-
+        self.recv_q.put((self.open_clients[soc], code, file_name))
 
     def send(self, ip, message):
         """

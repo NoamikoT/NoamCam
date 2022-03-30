@@ -1,4 +1,3 @@
-
 class ServerProtocol:
 
     @staticmethod

@@ -1,5 +1,4 @@
 import socket
-import queue
 import threading
 
 
@@ -13,9 +12,6 @@ class ClientComms:
         self.port = port  # The server's port
         self.recv_q = recv_q  # The queue where messages get stored to and read
 
-        # Connecting the client's socket to the server socket
-        self.my_socket.connect((self.server_ip, self.port))
-
         # Starting the thread that runs the main loop constantly
         threading.Thread(target=self._main_loop, ).start()
 
@@ -24,55 +20,30 @@ class ClientComms:
         The function connects to the server and listens, every new message gets put into recv_q
         """
 
+        try:
+            # Connecting the client's socket to the server socket
+            self.my_socket.connect((self.server_ip, self.port))
+            print("CONNECTED")
+        except Exception as e:
+            print(str(e))
+            self.my_socket.close()
+
         while True:
-            # Receiving the length
+            # Receiving the length and data
             try:
                 length = self.my_socket.recv(8).decode()
+                data = self.my_socket.recv(length).decode()
 
             except Exception as e:
                 print(str(e))
                 self.my_socket.close()
-                break
 
             else:
-                # If the connection is gone, closing the client
-                if length == "":
-                    self.my_socket.close()
-                    break
-
-                # Initializing the message as a byte array
-                msg = bytearray()
-                counter = 0
-
-                # Receiving the message
-                while counter < int(length):
-                    if (int(length) - counter) > 1024:
-                        try:
-                            data = self.my_socket.recv(1024)
-
-                        except Exception as e:
-                            print(str(e))
-                            self.my_socket.close()
-                            break
-
-                        else:
-                            msg.extend(data)
-                            counter += len(data)
-
-                    else:
-                        try:
-                            data = self.my_socket.recv((int(length) - counter))
-
-                        except Exception as e:
-                            print(str(e))
-                            self.my_socket.close()
-                            break
-
-                        else:
-                            msg.extend(data)
-                            counter += len(data)
-
-                self.recv_q.put(msg)
+                # Checking the data isn't empty
+                if len(data) > 0:
+                    code = data[0:2]
+                    if code in ["01", "02", "03", "04"]:
+                        self.recv_q.put((code, data[2:]))
 
     def send(self, message):
         """
@@ -92,7 +63,6 @@ class ClientComms:
         except Exception as e:
             print(str(e))
             self.my_socket.close()
-
 
     def send_file(self, code, file_path):
 
