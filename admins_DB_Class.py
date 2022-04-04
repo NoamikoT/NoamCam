@@ -4,14 +4,14 @@ import time
 
 class DB:
 
-    def __init__(self, DB_name):
+    def __init__(self, db_name):
         """
         The builder for DB class
-        :param DB_name: The database's name
-        :type DB_name: String
+        :param db_name: The database's name
+        :type db_name: String
         """
 
-        self.DB_name = DB_name
+        self.DB_name = db_name
 
         # The table's name
         self.tbl_name = "admins"
@@ -23,9 +23,9 @@ class DB:
         self.cursor = None
 
         # Creating the DB
-        self.createDB()
+        self.create_db()
 
-    def createDB(self):
+    def create_db(self):
         """
         The function creates a new table in the given DB
         """
@@ -49,6 +49,20 @@ class DB:
         """
 
         sql = f"SELECT username FROM {self.tbl_name} WHERE username='{username}'"
+        self.cursor.execute(sql)
+
+        return not len(self.cursor.fetchall()) == 0
+
+    def _email_exist(self, email):
+        """
+        The function gets an email and returns whether the email exists already
+        :param email: An email
+        :type email: String
+        :return: Whether the given username exists already
+        :rtype: Boolean
+        """
+
+        sql = f"SELECT email FROM {self.tbl_name} WHERE username='{email}'"
         self.cursor.execute(sql)
 
         return not len(self.cursor.fetchall()) == 0
@@ -237,7 +251,7 @@ class DB:
 
         return ret_value
 
-    # TODO: Maybe add a function that checks if an email already exists (Because usernames and emails(?) should be unique
+    # TODO: Maybe add a function that checks if an email already exists (Because usernames and emails(?) should be unique)
 
 
 if __name__ == "__main__":
