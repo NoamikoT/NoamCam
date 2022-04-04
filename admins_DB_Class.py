@@ -78,6 +78,9 @@ class DB:
             # So the DB will update instantly
             self.conn.commit()
 
+        else:
+            print("The given username is already registered")
+
         return ret_value
 
     def remove_user(self, username):
@@ -168,37 +171,115 @@ class DB:
 
         return ret_value
 
+    def get_name_by_username(self, username):
+        """
+        Returns the full name of the username
+        :param username: The username of the person
+        :type username: String
+        :return: Returns the full name corresponding to the username
+        :rtype: String inside of a tuple inside of a list
+        """
+
+        ret_value = None
+
+        if self._username_exist(username):
+            self.cursor.execute(f"SELECT fullName FROM {self.tbl_name} WHERE username='{username}'")
+
+            ret_value = self.cursor.fetchall()
+
+        return ret_value
+
+    def get_email_by_username(self, username):
+        """
+        Returns the email of the username
+        :param username: The username of the person
+        :type username: String
+        :return: Returns the email corresponding to the username
+        :rtype: String inside of a tuple inside of a list
+        """
+
+        ret_value = None
+
+        if self._username_exist(username):
+            self.cursor.execute(f"SELECT email FROM {self.tbl_name} WHERE username='{username}'")
+
+            ret_value = self.cursor.fetchall()
+
+        return ret_value
+
+    def do_passwords_match(self, username, password):
+        """
+        The function gets a username and a password, and checks if the username matches the passord and returns like it
+        :param username: The username
+        :type username: String
+        :param password: The password
+        :type password: String
+        :return: Whether the username and the password match
+        :rtype: Boolean
+        """
+
+        ret_value = False
+
+        if self._username_exist(username):
+
+            sql = f"SELECT password FROM {self.tbl_name} WHERE username='{username}'"
+            self.cursor.execute(sql)
+            fetch = self.cursor.fetchall()
+
+            if fetch[0][0] == password:
+                ret_value = True
+
+            else:
+                print("The password is wrong")
+
+        else:
+            print("Username wasn't found")
+
+        return ret_value
+
+
 if __name__ == "__main__":
 
     # Creating a new DB object with the name adminsDB
     myDB = DB("adminsDB")
 
-    newDB = DB("try1")
-
     # Testing the add_user function
-    print(newDB.add_user("Noamiko", "Noam Tirosh", "noamiko.tirosh@gmail.com", "RandomPass"))
-    print(newDB.add_user("Noamiko", "Noam Tirosh", "noamiko.tirosh@gmail.com", "RandomPass"))
+    print(myDB.add_user("Noamiko", "Noam Tirosh", "noamiko.tirosh@gmail.com", "RandomPass"))
+    print(myDB.add_user("Noamiko", "Noam Tirosh", "noamiko.tirosh@gmail.com", "RandomPass"))
 
     # Testing the remove_user function
 
-    print(newDB.add_user("TempUser", "Delete This", "Temp.User@gmail.com", "TestDelete"))
+    print(myDB.add_user("TempUser", "Delete This", "Temp.User@gmail.com", "TestDelete"))
 
     # Delay checking the user was really added
-    time.sleep(7)
+    time.sleep(3)
 
-    print(newDB.remove_user("TempUser"))
+    print(myDB.remove_user("TempUser"))
 
     # Testing the update functions
 
-    print(newDB.update_full_name("Noamiko", "Dina Kol"))
+    print(myDB.update_full_name("Noamiko", "Dina Kol"))
 
-    print(newDB.update_email("Noamiko", "CheckBirth@gmail.com"))
+    print(myDB.update_email("Noamiko", "CheckBirth@gmail.com"))
 
-    print(newDB.update_password("Noamiko", "NewPassword"))
+    print(myDB.update_password("Noamiko", "NewPassword"))
 
+    print(myDB.add_user("UserTest1", "User One", "User.One@gmail.com", "RandomPass"))
 
-    print(newDB.add_user("UserTest1", "User One", "User.One@gmail.com", "RandomPass"))
+    print(myDB.add_user("UserTest2", "User Two", "User.Two@gmail.com", "RandomPass"))
 
-    print(newDB.add_user("UserTest2", "User Two", "User.Two@gmail.com", "RandomPass"))
+    print(myDB.add_user("UserTest3", "User Three", "User.Three@gmail.com", "RandomPass"))
 
-    print(newDB.add_user("UserTest3", "User Three", "User.Three@gmail.com", "RandomPass"))
+    get_name = myDB.get_name_by_username("Noamiko")
+
+    try:
+        print(get_name[0][0])
+    except Exception as e:
+        print("admins_DB_Class.py:243", str(e))
+
+    get_email = myDB.get_email_by_username("Noamireko")
+
+    try:
+        print(get_email[0][0])
+    except Exception as e:
+        print("admins_DB_Class.py:250", str(e))
