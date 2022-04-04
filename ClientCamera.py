@@ -1,5 +1,4 @@
 import os
-import time
 import cv2
 import threading
 import queue
@@ -134,7 +133,7 @@ if __name__ == '__main__':
     while True:
         img = frame_q.get()
 
-        if not img is None:
+        if img is not None:
             # Displaying the frame
             cv2.imshow('img', img)
 

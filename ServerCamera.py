@@ -1,8 +1,5 @@
 import os
-import time
 import cv2
-import threading
-import queue
 
 
 class ServerCamera:

@@ -32,7 +32,7 @@ class ClientComms:
             # Receiving the length and data
             try:
                 length = self.my_socket.recv(8).decode()
-                data = self.my_socket.recv(length).decode()
+                data = self.my_socket.recv(int(length)).decode()
 
             except Exception as e:
                 print(str(e))

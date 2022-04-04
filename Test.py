@@ -5,8 +5,8 @@ cap = cv2.VideoCapture(0)
 # cap.set(cv2.CAP_PROP_FRAME_WIDTH,1920)
 # cap.set(cv2.CAP_PROP_FRAME_HEIGHT,1080)
 
-fourcc = cv2.VideoWriter_fourcc('X','V','I','D')
-videoWriter = cv2.VideoWriter('C:/Users/User/PycharmProjects/NoamCamCodeFromGit/video.avi', fourcc, 20.0, (640,480))
+fourcc = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')
+videoWriter = cv2.VideoWriter('C:/Users/User/PycharmProjects/NoamCamCodeFromGit/video.avi', fourcc, 20.0, (640, 480))
 
 
 # Check if the webcam is opened correctly
@@ -27,5 +27,3 @@ while True:
 cap.release()
 videoWriter.release()
 cv2.destroyAllWindows()
-
-# Print all items in list that are divideable by 3

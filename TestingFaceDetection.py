@@ -10,7 +10,7 @@ cap = cv2.VideoCapture(0)
 
 
 # Creating the video file to which the stream is being recorded
-fourcc = cv2.VideoWriter_fourcc('X','V','I','D')
+fourcc = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')
 VideoWriter = cv2.VideoWriter('E:/NoamCam/video.avi', fourcc, 10.0, (640, 480))
 
 datasets = 'datasets'
