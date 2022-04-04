@@ -84,16 +84,21 @@ class DB:
 
         ret_value = False
 
-        if not self._username_exist(username):
+        if not self._email_exist(email):
 
-            ret_value = True
-            sql = f"INSERT INTO {self.tbl_name} VALUES ('{username}','{full_name}','{email}','{password}')"
-            self.cursor.execute(sql)
-            # So the DB will update instantly
-            self.conn.commit()
+            if not self._username_exist(username):
+
+                ret_value = True
+                sql = f"INSERT INTO {self.tbl_name} VALUES ('{username}','{full_name}','{email}','{password}')"
+                self.cursor.execute(sql)
+                # So the DB will update instantly
+                self.conn.commit()
+
+            else:
+                print("The given username is already registered in the system")
 
         else:
-            print("The given username is already registered")
+            print("The given email address is already registered in the system")
 
         return ret_value
 
