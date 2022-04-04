@@ -33,7 +33,7 @@ class DB:
         self.conn = sqlite3.connect(self.DB_name)
         self.cursor = self.conn.cursor()
 
-        sql = f"CREATE TABLE IF NOT EXISTS {self.tbl_name} (username TEXT, fullName TEXT, email TEXT, password TEXT)"
+        sql = f"CREATE TABLE IF NOT EXISTS {self.tbl_name} (username TEXT, full_name TEXT, email TEXT, password TEXT)"
         self.cursor.execute(sql)
 
         # So the DB will update
@@ -118,7 +118,7 @@ class DB:
         ret_value = False
 
         if self._username_exist(username):
-            sql = f"UPDATE {self.tbl_name} SET fullName='{new_full_name}' WHERE username='{username}'"
+            sql = f"UPDATE {self.tbl_name} SET full_name='{new_full_name}' WHERE username='{username}'"
             self.cursor.execute(sql)
             # So the DB will update instantly
             self.conn.commit()
@@ -183,7 +183,7 @@ class DB:
         ret_value = None
 
         if self._username_exist(username):
-            self.cursor.execute(f"SELECT fullName FROM {self.tbl_name} WHERE username='{username}'")
+            self.cursor.execute(f"SELECT full_name FROM {self.tbl_name} WHERE username='{username}'")
 
             ret_value = self.cursor.fetchall()
 
@@ -237,6 +237,8 @@ class DB:
 
         return ret_value
 
+    # TODO: Maybe add a function that checks if an email already exists (Because usernames and emails(?) should be unique
+
 
 if __name__ == "__main__":
 
@@ -260,7 +262,7 @@ if __name__ == "__main__":
 
     print(myDB.update_full_name("Noamiko", "Dina Kol"))
 
-    print(myDB.update_email("Noamiko", "CheckBirth@gmail.com"))
+    print(myDB.update_email("Noamiko", "Check@gmail.com"))
 
     print(myDB.update_password("Noamiko", "NewPassword"))
 
@@ -275,11 +277,11 @@ if __name__ == "__main__":
     try:
         print(get_name[0][0])
     except Exception as e:
-        print("admins_DB_Class.py:243", str(e))
+        print("admins_DB_Class.py:276", str(e))
 
-    get_email = myDB.get_email_by_username("Noamireko")
+    get_email = myDB.get_email_by_username("Noamiko")
 
     try:
         print(get_email[0][0])
     except Exception as e:
-        print("admins_DB_Class.py:250", str(e))
+        print("admins_DB_Class.py:283", str(e))
