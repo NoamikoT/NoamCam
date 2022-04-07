@@ -14,7 +14,7 @@ class DB:
         :type db_name: String
         """
 
-        self.DB_name = db_name
+        self.db_name = db_name
 
         # The pointer to the DB
         self.conn = None
@@ -30,7 +30,7 @@ class DB:
         The function creates 2 new tables in the given DB, the tables of the admins, and of the cameras
         """
 
-        self.conn = sqlite3.connect(self.DB_name)
+        self.conn = sqlite3.connect(self.db_name)
         self.cursor = self.conn.cursor()
 
         sql = f"CREATE TABLE IF NOT EXISTS {self.ADMINS_TAB} (username TEXT, full_name TEXT, email TEXT, password TEXT)"
@@ -56,7 +56,7 @@ class DB:
         sql = f"SELECT username FROM {self.ADMINS_TAB} WHERE username='{username}'"
         self.cursor.execute(sql)
 
-        return not len(self.cursor.fetchall()) == 0
+        return len(self.cursor.fetchall()) != 0
 
     def _email_exist(self, email):
         """
@@ -70,7 +70,7 @@ class DB:
         sql = f"SELECT email FROM {self.ADMINS_TAB} WHERE username='{email}'"
         self.cursor.execute(sql)
 
-        return not len(self.cursor.fetchall()) == 0
+        return len(self.cursor.fetchall()) != 0
 
     def add_user(self, username, full_name, email, password):
         """
@@ -207,7 +207,7 @@ class DB:
         :param username: The username of the person
         :type username: String
         :return: Returns the full name corresponding to the username
-        :rtype: String inside of a tuple inside of a list [("Amit Mor")]
+        :rtype: String inside a tuple inside a list [("Amit Mor")]
         """
 
         ret_value = None
@@ -225,7 +225,7 @@ class DB:
         :param username: The username of the person
         :type username: String
         :return: Returns the email corresponding to the username
-        :rtype: String inside of a tuple inside of a list [("amit.mor@gmail.com")]
+        :rtype: String inside a tuple inside a list [("amit.mor@gmail.com")]
         """
 
         ret_value = None
@@ -280,7 +280,7 @@ class DB:
         sql = f"SELECT MAC FROM {self.CAMERAS_TAB} WHERE MAC='{mac_address}'"
         self.cursor.execute(sql)
 
-        return not len(self.cursor.fetchall()) == 0
+        return len(self.cursor.fetchall()) != 0
 
     def _position_exists(self, position):
         """
@@ -294,7 +294,7 @@ class DB:
         sql = f"SELECT position FROM {self.CAMERAS_TAB} WHERE position='{position}'"
         self.cursor.execute(sql)
 
-        return not len(self.cursor.fetchall()) == 0
+        return len(self.cursor.fetchall()) != 0
 
     def add_camera(self, mac_address, position, place):
         """
@@ -330,7 +330,7 @@ class DB:
         :param mac_address: The MAC address of the camera
         :type mac_address: String
         :return: Returns the position corresponding to the MAC address
-        :rtype: Integer inside of a tuple inside of a list [(4)]
+        :rtype: Integer inside a tuple inside a list [(4)]
         """
 
         ret_value = None
@@ -348,7 +348,7 @@ class DB:
         :param mac_address: The MAC address of the camera
         :type mac_address: String
         :return: Returns the place corresponding to the MAC address
-        :rtype: String inside of a tuple inside of a list [("Living Room")]
+        :rtype: String inside a tuple inside a list [("Living Room")]
         """
 
         ret_value = None

@@ -1,0 +1,919 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="c2dcd42c-ff15-48d6-85bd-c1f1c5a77cea" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/e/c/ec918bb6e23e50f3190c8fe82e528da076c3fc76" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DB_Class.py" beforeDir="false" afterPath="$PROJECT_DIR$/DB_Class.py" afterDir="false" />
+    </list>
+    <list id="2dc151e2-ce3e-4500-bf9e-fdb0b6b7ebbb" name="A little bit of comments added" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>run_face</find>
+      <find>select.select</find>
+      <find>open_clients</find>
+      <find>disconnect</find>
+      <find>__</find>
+      <find>zz</find>
+      <find>.deco</find>
+      <find>filenNum</find>
+      <find>players</find>
+      <find>player</find>
+      <find>newDB</find>
+      <find>ret_value</find>
+      <find>fullName</find>
+      <find>The given username is already registered in the system</find>
+      <find>print(&quot;The given username is already registered in the system</find>
+      <find>self.tbl_name</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>myDB</replace>
+      <replace>full_name</replace>
+      <replace>self.ADMINS_TAB</replace>
+    </replaceStrings>
+  </component>
+  <component name="FlaskConsoleOptions" custom-start-script="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))">
+    <envs>
+      <env key="FLASK_APP" value="app" />
+    </envs>
+    <option name="myCustomStartScript" value="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))" />
+    <option name="myEnvs">
+      <map>
+        <entry key="FLASK_APP" value="app" />
+      </map>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Noam Tirosh &lt;noamiko.tirosh7@gmail.com&gt;" />
+        <option value="Noam &lt;noamiko.tirosh7@gmail.com&gt;" />
+      </list>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/TestingFaceDetection.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ClientLogic.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ServerLogic.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ClientComms.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ClientCamera.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ServerCamera.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ServerComms.py" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/TESTTT.py" />
+        <option value="$PROJECT_DIR$/TESTTTT.py" />
+        <option value="$PROJECT_DIR$/TestingFaceRecognition.py" />
+        <option value="$PROJECT_DIR$/TESTTTTTTTTTT.py" />
+        <option value="$PROJECT_DIR$/Camera.py" />
+        <option value="$PROJECT_DIR$/TestCamera.py" />
+        <option value="$PROJECT_DIR$/NoamCamera.py" />
+        <option value="$PROJECT_DIR$/ServerLogic.py" />
+        <option value="$PROJECT_DIR$/ClientLogic.py" />
+        <option value="$PROJECT_DIR$/ServerProtocol.py" />
+        <option value="$PROJECT_DIR$/RandomTest.py" />
+        <option value="$PROJECT_DIR$/ClientProtocol.py" />
+        <option value="$PROJECT_DIR$/ServerComms.py" />
+        <option value="$PROJECT_DIR$/ServerGraphics.py" />
+        <option value="$PROJECT_DIR$/ClientCamera.py" />
+        <option value="$PROJECT_DIR$/ClientComms.py" />
+        <option value="$PROJECT_DIR$/ServerCamera.py" />
+        <option value="$PROJECT_DIR$/Test.py" />
+        <option value="$PROJECT_DIR$/TestingFaceDetection.py" />
+        <option value="$PROJECT_DIR$/admins_DB_Class.py" />
+        <option value="$PROJECT_DIR$/DB_Class.py" />
+      </list>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="976" />
+    <option name="height" value="1056" />
+  </component>
+  <component name="ProjectId" id="25wGhVK0JnDvRVZBxmyqhh6w5qf" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="NoamCam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="NoamCam" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="true" />
+    <property name="TODO_SCOPE" value="All Places" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="codeWithMe.voiceChat.enabledByDefault" value="false" />
+    <property name="full.screen.before.presentation.mode" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/myDB" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\NoamCam\FaceCompare" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\NoamCam" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.DB_Class">
+    <configuration name="ClientComms" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="NoamCam" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ClientComms.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="DB_Class" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="NoamCam" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/DB_Class.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="RandomTest" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="NoamCam" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/RandomTest.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="ServerGraphics" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="NoamCam" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ServerGraphics.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="admins_DB_Class" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="NoamCam" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="E:\NoamCam\DB_Class.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.DB_Class" />
+        <item itemvalue="Python.admins_DB_Class" />
+        <item itemvalue="Python.ServerGraphics" />
+        <item itemvalue="Python.RandomTest" />
+        <item itemvalue="Python.ClientComms" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c2dcd42c-ff15-48d6-85bd-c1f1c5a77cea" name="Default Changelist" comment="" />
+      <changelist id="2dc151e2-ce3e-4500-bf9e-fdb0b6b7ebbb" name="A little bit of comments added" comment="" />
+      <created>1645086003543</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1645086003543</updated>
+      <workItem from="1646430858197" duration="104000" />
+      <workItem from="1646430995259" duration="913000" />
+      <workItem from="1646491028917" duration="2364000" />
+      <workItem from="1646738690607" duration="117000" />
+      <workItem from="1648057672844" duration="3580000" />
+      <workItem from="1648061694208" duration="456000" />
+      <workItem from="1648062445537" duration="1211000" />
+      <workItem from="1648490253548" duration="3784000" />
+      <workItem from="1648683094412" duration="218000" />
+      <workItem from="1648729160402" duration="2343000" />
+      <workItem from="1648739652579" duration="4424000" />
+      <workItem from="1648854246648" duration="6579000" />
+      <workItem from="1648933280365" duration="57000" />
+      <workItem from="1649099866285" duration="1190000" />
+      <workItem from="1649315506843" duration="1303000" />
+      <workItem from="1649317265085" duration="608000" />
+      <workItem from="1649318687298" duration="1191000" />
+      <workItem from="1649343612074" duration="5299000" />
+    </task>
+    <task id="LOCAL‎00001" summary="Added the feature that saves the pictures of the faces in a folder">
+      <created>1645088934226</created>
+      <option name="number" value="LOCAL‎00001" />
+      <option name="presentableId" value="LOCAL‎00001" />
+      <updated>1645088934226</updated>
+    </task>
+    <task id="LOCAL‎00002" summary="Created and found the source for a face_recognition file">
+      <created>1645090734711</created>
+      <option name="number" value="LOCAL‎00002" />
+      <option name="presentableId" value="LOCAL‎00002" />
+      <updated>1645090734711</updated>
+    </task>
+    <task id="LOCAL‎00003" summary="Couldn't work out face recognition so I deleted the file.&#10;&#10;Made it so whenever it finds a face in a frame it keeps it's picture.">
+      <created>1645091640927</created>
+      <option name="number" value="LOCAL‎00003" />
+      <option name="presentableId" value="LOCAL‎00003" />
+      <updated>1645091640927</updated>
+    </task>
+    <task id="LOCAL‎00004" summary="Created a python file for the Camera class and started working on it, also created a test file for it (:">
+      <created>1645439916108</created>
+      <option name="number" value="LOCAL‎00004" />
+      <option name="presentableId" value="LOCAL‎00004" />
+      <updated>1645439916108</updated>
+    </task>
+    <task id="LOCAL‎00005" summary="Expanded the camera class">
+      <created>1645449452916</created>
+      <option name="number" value="LOCAL‎00005" />
+      <option name="presentableId" value="LOCAL‎00005" />
+      <updated>1645449452916</updated>
+    </task>
+    <task id="LOCAL‎00006" summary="Worked on the Client and Server Cameras classes, created 2 classes for Server and Client Communications, and built their main skeleton (:">
+      <created>1645533585275</created>
+      <option name="number" value="LOCAL‎00006" />
+      <option name="presentableId" value="LOCAL‎00006" />
+      <updated>1645533585275</updated>
+    </task>
+    <task id="LOCAL‎00007" summary="Updated ClientCamera">
+      <created>1645533965554</created>
+      <option name="number" value="LOCAL‎00007" />
+      <option name="presentableId" value="LOCAL‎00007" />
+      <updated>1645533965554</updated>
+    </task>
+    <task id="LOCAL‎00008" summary="A little bit of comments added">
+      <created>1645534312872</created>
+      <option name="number" value="LOCAL‎00008" />
+      <option name="presentableId" value="LOCAL‎00008" />
+      <updated>1645534312872</updated>
+    </task>
+    <task id="LOCAL‎00009" summary="A little bit of comments added">
+      <created>1645617604282</created>
+      <option name="number" value="LOCAL‎00009" />
+      <option name="presentableId" value="LOCAL‎00009" />
+      <updated>1645617604282</updated>
+    </task>
+    <task id="LOCAL‎00010" summary="Created Server and ClientLogic">
+      <created>1645623559639</created>
+      <option name="number" value="LOCAL‎00010" />
+      <option name="presentableId" value="LOCAL‎00010" />
+      <updated>1645623559639</updated>
+    </task>
+    <task id="LOCAL‎00011" summary="Updated">
+      <created>1645623852017</created>
+      <option name="number" value="LOCAL‎00011" />
+      <option name="presentableId" value="LOCAL‎00011" />
+      <updated>1645623852017</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Expended some of the client and server comms and cameras. (:">
+      <created>1646738773654</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1646738773654</updated>
+    </task>
+    <task id="LOCAL‎00013" summary="Expended some of the client and server communications.">
+      <created>1646827650167</created>
+      <option name="number" value="LOCAL‎00013" />
+      <option name="presentableId" value="LOCAL‎00013" />
+      <updated>1646827650167</updated>
+    </task>
+    <task id="LOCAL‎00014" summary="Polished the code a little.">
+      <created>1646828151552</created>
+      <option name="number" value="LOCAL‎00014" />
+      <option name="presentableId" value="LOCAL‎00014" />
+      <updated>1646828151552</updated>
+    </task>
+    <task id="LOCAL‎00015" summary="Added some functions to client and server communications, and added comments.">
+      <created>1646828900571</created>
+      <option name="number" value="LOCAL‎00015" />
+      <option name="presentableId" value="LOCAL‎00015" />
+      <updated>1646828900571</updated>
+    </task>
+    <task id="LOCAL‎00016" summary="Polished some lines.">
+      <created>1646829584144</created>
+      <option name="number" value="LOCAL‎00016" />
+      <option name="presentableId" value="LOCAL‎00016" />
+      <updated>1646829584144</updated>
+    </task>
+    <task id="LOCAL‎00017" summary="Added a single comment.">
+      <created>1646830011058</created>
+      <option name="number" value="LOCAL‎00017" />
+      <option name="presentableId" value="LOCAL‎00017" />
+      <updated>1646830011058</updated>
+    </task>
+    <task id="LOCAL‎00018" summary="Created Server protocol">
+      <created>1648039103604</created>
+      <option name="number" value="LOCAL‎00018" />
+      <option name="presentableId" value="LOCAL‎00018" />
+      <updated>1648039103604</updated>
+    </task>
+    <task id="LOCAL‎00019" summary="Created Client Protocol and built important functions, need to finish the unpacked() function in both.">
+      <created>1648040798741</created>
+      <option name="number" value="LOCAL‎00019" />
+      <option name="presentableId" value="LOCAL‎00019" />
+      <updated>1648040798741</updated>
+    </task>
+    <task id="LOCAL‎00020" summary="Expended server and client protocol">
+      <created>1648041489065</created>
+      <option name="number" value="LOCAL‎00020" />
+      <option name="presentableId" value="LOCAL‎00020" />
+      <updated>1648041489065</updated>
+    </task>
+    <task id="LOCAL‎00021" summary="Expended server protocol">
+      <created>1648478432338</created>
+      <option name="number" value="LOCAL‎00021" />
+      <option name="presentableId" value="LOCAL‎00021" />
+      <updated>1648478432338</updated>
+    </task>
+    <task id="LOCAL‎00022" summary="Expended Protocols and Comms both in Server and Client">
+      <created>1648554002821</created>
+      <option name="number" value="LOCAL‎00022" />
+      <option name="presentableId" value="LOCAL‎00022" />
+      <updated>1648554002821</updated>
+    </task>
+    <task id="LOCAL‎00023" summary="Fixed some code">
+      <created>1648555326695</created>
+      <option name="number" value="LOCAL‎00023" />
+      <option name="presentableId" value="LOCAL‎00023" />
+      <updated>1648555326695</updated>
+    </task>
+    <task id="LOCAL‎00024" summary="Updated Client Comms more similar to Server Comms, made Client Protocol a class, and removed unnecessary imports">
+      <created>1648641236465</created>
+      <option name="number" value="LOCAL‎00024" />
+      <option name="presentableId" value="LOCAL‎00024" />
+      <updated>1648641236465</updated>
+    </task>
+    <task id="LOCAL‎00025" summary="Updated comments.">
+      <created>1648642610163</created>
+      <option name="number" value="LOCAL‎00025" />
+      <option name="presentableId" value="LOCAL‎00025" />
+      <updated>1648642610163</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Added the DB class">
+      <created>1648683180420</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1648683180421</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Cleaned the DB class">
+      <created>1648683282537</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1648683282537</updated>
+    </task>
+    <task id="LOCAL‎00028" summary="Just 1 line">
+      <created>1648719019500</created>
+      <option name="number" value="LOCAL‎00028" />
+      <option name="presentableId" value="LOCAL‎00028" />
+      <updated>1648719019500</updated>
+    </task>
+    <task id="LOCAL‎00029" summary="Updated the DB class to be the admins db class">
+      <created>1649062170984</created>
+      <option name="number" value="LOCAL‎00029" />
+      <option name="presentableId" value="LOCAL‎00029" />
+      <updated>1649062170984</updated>
+    </task>
+    <task id="LOCAL‎00030" summary="Updated the DB class to be the admins db class">
+      <created>1649062215476</created>
+      <option name="number" value="LOCAL‎00030" />
+      <option name="presentableId" value="LOCAL‎00030" />
+      <updated>1649062215476</updated>
+    </task>
+    <task id="LOCAL‎00031" summary="Added the option to get the email and the full name of a username, also the option to check if passwords match">
+      <created>1649063949735</created>
+      <option name="number" value="LOCAL‎00031" />
+      <option name="presentableId" value="LOCAL‎00031" />
+      <updated>1649063949735</updated>
+    </task>
+    <task id="LOCAL‎00032" summary="Changed fullName to full_name, and changed a little of the main function where I test the DB functions">
+      <created>1649064485269</created>
+      <option name="number" value="LOCAL‎00032" />
+      <option name="presentableId" value="LOCAL‎00032" />
+      <updated>1649064485269</updated>
+    </task>
+    <task id="LOCAL‎00033" summary="Added the function to be able to check if the email already exists in the database, and applied some conventions suggestions">
+      <created>1649065104549</created>
+      <option name="number" value="LOCAL‎00033" />
+      <option name="presentableId" value="LOCAL‎00033" />
+      <updated>1649065104549</updated>
+    </task>
+    <task id="LOCAL‎00034" summary="Applied some conventions suggestions, and created the server graphics class">
+      <created>1649074069213</created>
+      <option name="number" value="LOCAL‎00034" />
+      <option name="presentableId" value="LOCAL‎00034" />
+      <updated>1649074069213</updated>
+    </task>
+    <task id="LOCAL‎00035" summary="Updated the DB class">
+      <created>1649074501872</created>
+      <option name="number" value="LOCAL‎00035" />
+      <option name="presentableId" value="LOCAL‎00035" />
+      <updated>1649074501872</updated>
+    </task>
+    <task id="LOCAL‎00036" summary="Updated the DB class and made it 2 tables instead of 1, the admins table and the cameras table, the admins table is probably finished, the cameras table needs some more functions (:">
+      <created>1649159354952</created>
+      <option name="number" value="LOCAL‎00036" />
+      <option name="presentableId" value="LOCAL‎00036" />
+      <updated>1649159354952</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Added more function to deal with the Camera aspect of the DB, the functions lets you:&#10;- Check if the position of the camera is already taken.&#10;- Update the place of the camera.&#10;- Update the position of the camera.">
+      <created>1649356366230</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1649356366230</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
+    <servers />
+  </component>
+  <component name="TodoView" selected-index="4">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.11011591" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32936078" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49947312" weight="0.27843988" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32936078" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.3217768" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49947312" weight="0.32936078" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50052685" side_tool="true" weight="0.32936078" />
+      <window_info anchor="bottom" id="Python Console" order="10" weight="0.3281471" />
+      <window_info anchor="bottom" id="SonarLint" order="11" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Expended some of the client and server comms and cameras. (:" />
+    <MESSAGE value="Expended some of the client and server communications." />
+    <MESSAGE value="Polished the code a little." />
+    <MESSAGE value="Added some functions to client and server communications, and added comments." />
+    <MESSAGE value="Polished some lines." />
+    <MESSAGE value="Added a single comment." />
+    <MESSAGE value="Created Server protocol" />
+    <MESSAGE value="Created Client Protocol and built important functions, need to finish the unpacked() function in both." />
+    <MESSAGE value="Expended server and client protocol" />
+    <MESSAGE value="Expended server protocol" />
+    <MESSAGE value="Expended Protocols and Comms both in Server and Client" />
+    <MESSAGE value="Fixed some code" />
+    <MESSAGE value="Updated Client Comms more similar to Server Comms, made Client Protocol a class, and removed unnecessary imports" />
+    <MESSAGE value="Updated comments." />
+    <MESSAGE value="Added the DB class" />
+    <MESSAGE value="Cleaned the DB class" />
+    <MESSAGE value="Just 1 line" />
+    <MESSAGE value="Updated the DB class to be the admins db class" />
+    <MESSAGE value="Added the option to get the email and the full name of a username, also the option to check if passwords match" />
+    <MESSAGE value="Changed fullName to full_name, and changed a little of the main function where I test the DB functions" />
+    <MESSAGE value="Added the function to be able to check if the email already exists in the database, and applied some conventions suggestions" />
+    <MESSAGE value="Applied some conventions suggestions, and created the server graphics class" />
+    <MESSAGE value="Updated the DB class" />
+    <MESSAGE value="Updated the DB class and made it 2 tables instead of 1, the admins table and the cameras table, the admins table is probably finished, the cameras table needs some more functions (:" />
+    <MESSAGE value="Added more function to deal with the Camera aspect of the DB, the functions lets you:&#10;- Check if the position of the camera is already taken.&#10;- Update the place of the camera.&#10;- Update the position of the camera." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added more function to deal with the Camera aspect of the DB, the functions lets you:&#10;- Check if the position of the camera is already taken.&#10;- Update the place of the camera.&#10;- Update the position of the camera." />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/NoamCam$ClientComms.coverage" NAME="ClientComms Coverage Results" MODIFIED="1648492458107" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/NoamCam$DB_Class.coverage" NAME="DB_Class Coverage Results" MODIFIED="1649356492594" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="setValue">
+      <expression>
+        <expression-string>'C:\\AllInOne\\PortableApps\\Python374\\python.exe
+C:\\AllInOne\\PortableApps\\PyCharm\\helpers\\pydev\\pydevconsole.py - -mode = client - -port = 55675
+import sys;
+
+print(\'Python %s on %s\' % (sys.version, sys.platform))
+sys.path.extend([\'E:\\\\NoamCam\', \'E:/NoamCam\'])
+
+PyDev
+console: starting.
+Python
+3.7
+.4(tags / v3
+.7
+.4: e09359112e, Jul
+8
+2019, 20: 34:20) [MSC v.1916 64 bit(AMD64)]
+on
+win32
+n = 5
+print(n)
+5
+print(tpye(n))
+Traceback(most
+recent
+call
+last):
+File
+&quot;&lt;input&gt;&quot;, line
+1, in &lt; module &gt;
+NameError: name
+\'tpye\' is not defined
+print(type(n))
+&lt;
+
+class \'int\'&gt;
+
+
+n = &quot;5&quot;
+print(type(n))
+&lt;
+
+class \'str\'&gt;
+
+
+n = [5]
+print(type(n))
+&lt;
+
+class \'list\'&gt;
+
+
+n = {5: 5}
+print(type(n))
+&lt;
+
+class \'dict\'&gt;
+
+
+n = (5)
+print(type(n))
+&lt;
+
+class \'int\'&gt;
+
+
+n = (5, 5)
+print(type(n))
+&lt;
+
+class \'tuple\'&gt;
+
+
+n = tuple(5)
+Traceback(most
+recent
+call
+last):
+File
+&quot;&lt;input&gt;&quot;, line
+1, in &lt; module &gt;
+TypeError: \'int\'
+object is not iterable
+n = tuple(5, 5)
+Traceback(most
+recent
+call
+last):
+File
+&quot;&lt;input&gt;&quot;, line
+1, in &lt; module &gt;
+TypeError: t...'</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>'&lt;input&gt;'</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>5</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>(5)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>'Im good thassnks!'</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/22.png" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/126.png" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/124.png" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/125.png" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/127.png" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/33.png" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/11.png" />
+    <entry file="file://$PROJECT_DIR$/FaceCompare/pax_global_header" />
+    <entry file="file://$PROJECT_DIR$/FaceCompare/face-comparison-1.1.2/setup.py" />
+    <entry file="file://$PROJECT_DIR$/FaceCompare/face-comparison-1.1.2/README.md" />
+    <entry file="file://$PROJECT_DIR$/FaceCompare/face-comparison-1.1.2/bin/compare_faces.py" />
+    <entry file="file://$PROJECT_DIR$/TESTTTT.py" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/70.png" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/79.png" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/77.png" />
+    <entry file="file://$PROJECT_DIR$/TestingFaceRecognition.py" />
+    <entry file="file://$PROJECT_DIR$/TESTTTTTTTTTT.py" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/1.png" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/25.png" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/82.png" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/91.png" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/83.png" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/29.png" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/65.png" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/57.png" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/66.png" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/54.png" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/42.png" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/39.png" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/10.png" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/26.png" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/27.png" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/16.png" />
+    <entry file="file://$PROJECT_DIR$/datasets/Noam/13.png" />
+    <entry file="file://C:/AllInOne/PortableApps/Python374/Lib/site-packages/install/__init__.py" />
+    <entry file="file://C:/AllInOne/PortableApps/Python374/Lib/site-packages/pip/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TestCamera.py" />
+    <entry file="file://$PROJECT_DIR$/RandomTest.py" />
+    <entry file="file://$PROJECT_DIR$/haarcascade_frontalface_default.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClientComms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="206">
+          <caret line="34" column="54" selection-start-line="34" selection-start-column="54" selection-end-line="34" selection-end-column="54" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClientProtocol.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="21" lean-forward="true" selection-start-column="21" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClientLogic.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="7" column="26" lean-forward="true" selection-start-line="7" selection-start-column="26" selection-end-line="7" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ServerCamera.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ServerComms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1386">
+          <caret line="66" column="47" selection-start-line="66" selection-start-column="47" selection-end-line="66" selection-end-column="47" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ServerLogic.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="4" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ServerProtocol.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-882" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="8" column="112" selection-start-line="8" selection-start-column="112" selection-end-line="8" selection-end-column="112" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClientCamera.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1292">
+          <caret line="135" column="21" selection-start-line="135" selection-start-column="21" selection-end-line="135" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TestingFaceDetection.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-474">
+          <caret line="12" column="47" selection-start-line="12" selection-start-column="47" selection-end-line="12" selection-end-column="47" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ServerGraphics.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DB_Class.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="304" column="24" selection-start-line="304" selection-start-column="24" selection-end-line="304" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+            <element signature="e#81#475#0" />
+            <element signature="e#510#887#0" />
+            <element signature="e#1043#1464#0" />
+            <element signature="e#1509#1911#0" />
+            <element signature="e#1983#3125#0" />
+            <element signature="e#3172#3836#0" />
+            <element signature="e#3903#4599#0" />
+            <element signature="e#4658#5343#0" />
+            <element signature="e#5408#6114#0" />
+            <element signature="e#6170#6689#0" />
+            <element signature="e#6746#7253#0" />
+            <element signature="e#7317#8139#0" />
+            <element signature="e#8423#8857#0" />
+            <element signature="e#8997#10102#0" />
+            <element signature="e#8905#9425#0" />
+            <element signature="e#9538#10115#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
