@@ -164,12 +164,18 @@ class DB:
         ret_value = False
 
         if self._username_exist(username):
-            sql = f"UPDATE {self.ADMINS_TAB} SET email='{new_email}' WHERE username='{username}'"
-            self.cursor.execute(sql)
-            # So the DB will update instantly
-            self.conn.commit()
 
-            ret_value = True
+            # Check if the email is already registered
+            if not self._email_exist(new_email):
+                sql = f"UPDATE {self.ADMINS_TAB} SET email='{new_email}' WHERE username='{username}'"
+                self.cursor.execute(sql)
+                # So the DB will update instantly
+                self.conn.commit()
+
+                ret_value = True
+
+            else:
+                print("The given email address is already registered in the system")
 
         return ret_value
 
@@ -276,6 +282,20 @@ class DB:
 
         return not len(self.cursor.fetchall()) == 0
 
+    def _position_exists(self, position):
+        """
+        The function gets a position and returns whether the position exists already (CAMERAS_TAB)
+        :param position: A position
+        :type position: String
+        :return: Whether the given position exists already
+        :rtype: Boolean
+        """
+
+        sql = f"SELECT position FROM {self.CAMERAS_TAB} WHERE position='{position}'"
+        self.cursor.execute(sql)
+
+        return not len(self.cursor.fetchall()) == 0
+
     def add_camera(self, mac_address, position, place):
         """
         The function gets a MAC address of a computer that's connected to a camera, the position of the camera, and the place of the camera, and adds them to the current table if the MAC address don't already exists, and returns whether he was added successfully or not (CAMERAS_TAB)
@@ -339,6 +359,55 @@ class DB:
             ret_value = self.cursor.fetchall()
 
         return ret_value
+
+    def update_place(self, mac_address, new_place):
+        """
+        The function gets a key which is a MAC address and a new place to change the current place of the key if found (CAMERAS_TAB)
+        :param mac_address: A MAC address
+        :type mac_address: String
+        :param new_place: A place
+        :type new_place: String
+        :return: Whether the MAC address was found and the place was updated or not
+        """
+
+        ret_value = False
+
+        if self._mac_exist(mac_address):
+            sql = f"UPDATE {self.CAMERAS_TAB} SET email='{new_place}' WHERE MAC='{mac_address}'"
+            self.cursor.execute(sql)
+            # So the DB will update instantly
+            self.conn.commit()
+
+            ret_value = True
+
+        return ret_value
+
+    def update_position(self, mac_address, new_position):
+        """
+        The function gets a key which is a MAC address and a new position to change the current position of the key if found (CAMERAS_TAB)
+        :param mac_address: A MAC address
+        :type mac_address: String
+        :param new_position: A position
+        :type new_position: Integer
+        :return: Whether the MAC address was found and the position was updated or not
+        """
+
+        ret_value = False
+
+        if self._mac_exist(mac_address):
+            if not self._position_exists(new_position):
+                sql = f"UPDATE {self.CAMERAS_TAB} SET position='{new_position}' WHERE MAC='{mac_address}'"
+                self.cursor.execute(sql)
+                # So the DB will update instantly
+                self.conn.commit()
+
+                ret_value = True
+
+            else:
+                print("The given position is already taken in the system")
+
+        return ret_value
+
 
 if __name__ == "__main__":
 
