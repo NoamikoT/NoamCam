@@ -1,7 +1,7 @@
 import os
 import cv2
 
-# Load the cascade
+# Loading the cascade
 # The cascade xml file is a set of input data that allows to detect faces in pictures
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 

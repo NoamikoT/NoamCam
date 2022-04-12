@@ -9,4 +9,3 @@ class ServerLogic:
 
         self.recv_q = recv_q
         self.running = False
-

@@ -44,6 +44,10 @@ class DB:
         # So the DB will update
         self.conn.commit()
 
+    """ --------------------------------- ADMINS_TAB ---------------------------------
+    The following functions are for the admins table (ADMINS_TAB)
+    """
+
     def _username_exist(self, username):
         """
         The function gets a username and returns whether the username exists already (ADMINS_TAB)
@@ -267,6 +271,9 @@ class DB:
 
         return ret_value
 
+    """ --------------------------------- CAMERAS_TAB ---------------------------------
+    The following functions are for the cameras table (CAMERAS_TAB)
+    """
 
     def _mac_exist(self, mac_address):
         """
