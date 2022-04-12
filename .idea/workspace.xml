@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c2dcd42c-ff15-48d6-85bd-c1f1c5a77cea" name="Default Changelist" comment="Small grammer fix">
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+    <list default="true" id="c2dcd42c-ff15-48d6-85bd-c1f1c5a77cea" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/e/c/ec918bb6e23e50f3190c8fe82e528da076c3fc76" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ClientLogic.py" beforeDir="false" afterPath="$PROJECT_DIR$/ClientLogic.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DB_Class.py" beforeDir="false" afterPath="$PROJECT_DIR$/DB_Class.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ServerCamera.py" beforeDir="false" afterPath="$PROJECT_DIR$/ServerCamera.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ServerLogic.py" beforeDir="false" afterPath="$PROJECT_DIR$/ServerLogic.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestingFaceDetection.py" beforeDir="false" afterPath="$PROJECT_DIR$/TestingFaceDetection.py" afterDir="false" />
     </list>
     <list id="2dc151e2-ce3e-4500-bf9e-fdb0b6b7ebbb" name="A little bit of comments added" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -162,7 +157,7 @@
       <recent name="F:\NoamCam" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.ServerGraphics">
+  <component name="RunManager" selected="Python.DB_Class">
     <configuration name="ClientComms" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="NoamCam" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -275,8 +270,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.ServerGraphics" />
         <item itemvalue="Python.DB_Class" />
+        <item itemvalue="Python.ServerGraphics" />
         <item itemvalue="Python.admins_DB_Class" />
         <item itemvalue="Python.RandomTest" />
         <item itemvalue="Python.ClientComms" />
@@ -319,7 +314,7 @@
       <workItem from="1649776289602" duration="356000" />
       <workItem from="1649776748204" duration="637000" />
       <workItem from="1649777446222" duration="224000" />
-      <workItem from="1649785037524" duration="533000" />
+      <workItem from="1649785037524" duration="2105000" />
     </task>
     <task id="LOCAL‎00001" summary="Added the feature that saves the pictures of the faces in a folder">
       <created>1645088934226</created>
@@ -561,7 +556,14 @@
       <option name="project" value="LOCAL" />
       <updated>1649777263690</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="Minor conventions fixed">
+      <created>1649785626976</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1649785626976</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -636,7 +638,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added some functions to client and server communications, and added comments." />
     <MESSAGE value="Polished some lines." />
     <MESSAGE value="Added a single comment." />
     <MESSAGE value="Created Server protocol" />
@@ -661,12 +662,13 @@
     <MESSAGE value="Made some changes according to conventions." />
     <MESSAGE value="Small grammer fix" />
     <MESSAGE value="Small grammar fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="Small grammar fix" />
+    <MESSAGE value="Minor conventions fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="Minor conventions fixed" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/NoamCam$ServerGraphics.coverage" NAME="ServerGraphics Coverage Results" MODIFIED="1649370927285" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoamCam$ClientComms.coverage" NAME="ClientComms Coverage Results" MODIFIED="1648492458107" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/NoamCam$DB_Class.coverage" NAME="DB_Class Coverage Results" MODIFIED="1649356492594" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/NoamCam$DB_Class.coverage" NAME="DB_Class Coverage Results" MODIFIED="1649788711695" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="setValue">

@@ -289,7 +289,7 @@ class DB:
 
         return len(self.cursor.fetchall()) != 0
 
-    def _position_exists(self, position):
+    def _position_taken(self, position):
         """
         The function gets a position and returns whether the position exists already (CAMERAS_TAB)
         :param position: A position
@@ -305,7 +305,7 @@ class DB:
 
     def add_camera(self, mac_address, position, place):
         """
-        The function gets a MAC address of a computer that's connected to a camera, the position of the camera, and the place of the camera, and adds them to the current table if the MAC address don't already exists, and returns whether he was added successfully or not (CAMERAS_TAB)
+        The function gets a MAC address of a computer that's connected to a camera, the position of the camera, and the place of the camera, and adds them to the current table if the MAC address and position don't already exist, and the position is valid, and returns whether he was added successfully or not (CAMERAS_TAB)
         :param mac_address: A MAC address of a computer connected to a camera
         :type mac_address: String
         :param position: The position of the camera
@@ -319,15 +319,45 @@ class DB:
         ret_value = False
 
         if not self._mac_exist(mac_address):
+            if 1 <= position <= 9:
+                if not self._position_taken(position):
 
-            ret_value = True
-            sql = f"INSERT INTO {self.CAMERAS_TAB} VALUES ('{mac_address}','{position}','{place}')"
+                    ret_value = True
+                    sql = f"INSERT INTO {self.CAMERAS_TAB} VALUES ('{mac_address}','{position}','{place}')"
+                    self.cursor.execute(sql)
+                    # So the DB will update instantly
+                    self.conn.commit()
+
+                else:
+                    print("The given position is already taken")
+
+            else:
+                print("The given position is invalid (1-9)")
+
+        else:
+            print("The given MAC address is already registered in the system")
+
+        return ret_value
+
+    def remove_camera(self, mac_address):
+        """
+        The function gets a MAC address, checks if it is included in the table and if it is removes it and returns True, if it's not, returning False (CAMERAS_TAB)
+        :param mac_address: A MAC address
+        :type mac_address: String
+        :return: Whether it was in the table and got removed, or he was not in the table
+        :rtype: Boolean
+        """
+
+        ret_value = False
+
+        if self._mac_exist(mac_address):
+
+            sql = f"DELETE FROM {self.CAMERAS_TAB} WHERE MAC='{mac_address}'"
             self.cursor.execute(sql)
             # So the DB will update instantly
             self.conn.commit()
 
-        else:
-            print("The given MAC address is already registered in the system")
+            ret_value = True
 
         return ret_value
 
@@ -402,7 +432,7 @@ class DB:
         ret_value = False
 
         if self._mac_exist(mac_address):
-            if not self._position_exists(new_position):
+            if not self._position_taken(new_position):
                 sql = f"UPDATE {self.CAMERAS_TAB} SET position='{new_position}' WHERE MAC='{mac_address}'"
                 self.cursor.execute(sql)
                 # So the DB will update instantly
@@ -418,7 +448,7 @@ class DB:
 
 if __name__ == "__main__":
 
-    # Creating a new DB object with the name adminsDB
+    # Creating a new DB object with the name myDB
     myDB = DB("myDB")
 
     # Testing the add_user function
@@ -430,7 +460,7 @@ if __name__ == "__main__":
     print(myDB.add_user("TempUser", "Delete This", "Temp.User@gmail.com", "TestDelete"))
 
     # Delay checking the user was really added
-    time.sleep(3)
+    # time.sleep(3)
 
     print(myDB.remove_user("TempUser"))
 
@@ -461,3 +491,11 @@ if __name__ == "__main__":
         print(get_email[0][0])
     except Exception as e:
         print("DB_Class.py:283", str(e))
+
+    # Testing the camera's table aspect
+    myDB.add_camera("FE:GG:SA:GE", 6, "Kitchen")
+
+    myDB.add_camera("FE:GG:SA:GS", 7, "Kitchen")
+    myDB.add_camera("FE:GG:SA:GF", 9, "Room")
+    myDB.add_camera("FE:GG:SA:AS", 7, "Kitchen")
+    myDB.add_camera("HE:GS:SA:GE", 1, "Kids Room")
