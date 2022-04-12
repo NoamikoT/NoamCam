@@ -52,7 +52,7 @@ class ClientCamera:
 
     def stop_camera(self):
         """
-        Stoping the camera
+        Stopping the camera
         """
 
         self.camera_active = False
@@ -93,6 +93,7 @@ class ClientCamera:
         # Drawing a rectangle around detected faces, and capturing a picture of the face
         for (x, y, w, h) in faces:
             cv2.rectangle(img, (x, y), (x + w, y + h), (50, 50, 250), 2)
+
             # face = gray[y:y + h, x:x + w]
             # face_resize = cv2.resize(face, (500, 500))
             cv2.imwrite('% s/% s.png' % (self.path, self.count), img)

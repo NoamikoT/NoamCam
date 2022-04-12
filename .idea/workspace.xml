@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c2dcd42c-ff15-48d6-85bd-c1f1c5a77cea" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/e/c/ec918bb6e23e50f3190c8fe82e528da076c3fc76" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DB_Class.py" beforeDir="false" afterPath="$PROJECT_DIR$/DB_Class.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClientCamera.py" beforeDir="false" afterPath="$PROJECT_DIR$/ClientCamera.py" afterDir="false" />
     </list>
     <list id="2dc151e2-ce3e-4500-bf9e-fdb0b6b7ebbb" name="A little bit of comments added" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -67,13 +63,13 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/TestingFaceDetection.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ClientLogic.py" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/ServerLogic.py" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/ClientComms.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ClientCamera.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ServerCamera.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ServerComms.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ServerLogic.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ClientComms.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/TestingFaceDetection.py" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -140,14 +136,16 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="true" />
     <property name="TODO_SCOPE" value="All Places" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="codeWithMe.voiceChat.enabledByDefault" value="false" />
     <property name="full.screen.before.presentation.mode" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/myDB" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -157,7 +155,7 @@
       <recent name="F:\NoamCam" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.DB_Class">
+  <component name="RunManager" selected="Python.ServerGraphics">
     <configuration name="ClientComms" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="NoamCam" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -270,9 +268,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.ServerGraphics" />
         <item itemvalue="Python.DB_Class" />
         <item itemvalue="Python.admins_DB_Class" />
-        <item itemvalue="Python.ServerGraphics" />
         <item itemvalue="Python.RandomTest" />
         <item itemvalue="Python.ClientComms" />
       </list>
@@ -307,7 +305,12 @@
       <workItem from="1649315506843" duration="1303000" />
       <workItem from="1649317265085" duration="608000" />
       <workItem from="1649318687298" duration="1191000" />
-      <workItem from="1649343612074" duration="5299000" />
+      <workItem from="1649343612074" duration="6719000" />
+      <workItem from="1649581823179" duration="2219000" />
+      <workItem from="1649598749296" duration="2496000" />
+      <workItem from="1649753090992" duration="61000" />
+      <workItem from="1649776289602" duration="356000" />
+      <workItem from="1649776748204" duration="382000" />
     </task>
     <task id="LOCAL‎00001" summary="Added the feature that saves the pictures of the faces in a folder">
       <created>1645088934226</created>
@@ -535,7 +538,14 @@
       <option name="project" value="LOCAL" />
       <updated>1649356366230</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="Made some changes according to conventions.">
+      <created>1649357243683</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1649357243683</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -573,6 +583,17 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
+      </list>
+    </option>
+  </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -599,7 +620,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Expended some of the client and server comms and cameras. (:" />
     <MESSAGE value="Expended some of the client and server communications." />
     <MESSAGE value="Polished the code a little." />
     <MESSAGE value="Added some functions to client and server communications, and added comments." />
@@ -624,9 +644,11 @@
     <MESSAGE value="Updated the DB class" />
     <MESSAGE value="Updated the DB class and made it 2 tables instead of 1, the admins table and the cameras table, the admins table is probably finished, the cameras table needs some more functions (:" />
     <MESSAGE value="Added more function to deal with the Camera aspect of the DB, the functions lets you:&#10;- Check if the position of the camera is already taken.&#10;- Update the place of the camera.&#10;- Update the position of the camera." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added more function to deal with the Camera aspect of the DB, the functions lets you:&#10;- Check if the position of the camera is already taken.&#10;- Update the place of the camera.&#10;- Update the position of the camera." />
+    <MESSAGE value="Made some changes according to conventions." />
+    <option name="LAST_COMMIT_MESSAGE" value="Made some changes according to conventions." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/NoamCam$ServerGraphics.coverage" NAME="ServerGraphics Coverage Results" MODIFIED="1649370927285" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoamCam$ClientComms.coverage" NAME="ClientComms Coverage Results" MODIFIED="1648492458107" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoamCam$DB_Class.coverage" NAME="DB_Class Coverage Results" MODIFIED="1649356492594" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
