@@ -6,12 +6,12 @@ import cv2
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 # Capturing video from the webcam
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 
 # Creating the video file to which the stream is being recorded
 fourcc = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')
-VideoWriter = cv2.VideoWriter('E:/NoamCam/video.avi', fourcc, 10.0, (640, 480))
+VideoWriter = cv2.VideoWriter('video.avi', fourcc, 10.0, (640, 480))
 
 datasets = 'datasets'
 sub_data = 'Noam'

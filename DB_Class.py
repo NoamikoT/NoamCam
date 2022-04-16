@@ -22,6 +22,8 @@ class DB:
         # The pointer to the DB's cursor
         self.cursor = None
 
+        self.taken_ids = []
+
         # Creating the DB
         self.create_db()
 
@@ -33,11 +35,11 @@ class DB:
         self.conn = sqlite3.connect(self.db_name)
         self.cursor = self.conn.cursor()
 
-        sql = f"CREATE TABLE IF NOT EXISTS {self.ADMINS_TAB} (username TEXT, full_name TEXT, email TEXT, password TEXT)"
+        sql = f"CREATE TABLE IF NOT EXISTS {self.ADMINS_TAB} (username TEXT, full_name TEXT, email TEXT, password TEXT, active TEXT)"
 
         self.cursor.execute(sql)
 
-        sql = f"CREATE TABLE IF NOT EXISTS {self.CAMERAS_TAB} (MAC TEXT, position INT, place TEXT)"
+        sql = f"CREATE TABLE IF NOT EXISTS {self.CAMERAS_TAB} (MAC TEXT, position INT, place TEXT, status TEXT, ID INT)"
         
         self.cursor.execute(sql)
 
@@ -76,9 +78,9 @@ class DB:
 
         return len(self.cursor.fetchall()) != 0
 
-    def add_user(self, username, full_name, email, password):
+    def add_user(self, username, full_name, email, password, active):
         """
-        The function gets a username, a name, an email and a password, and adds them to the current table if the username and email don't already exists, and returns whether he was added successfully or not (ADMINS_TAB)
+        The function gets a username, a name, an email, a password, and the active state, and adds them to the current table if the username and email don't already exists, and returns whether he was added successfully or not (ADMINS_TAB)
         :param username: A username
         :type username: String
         :param full_name: A name
@@ -87,6 +89,8 @@ class DB:
         :type email: String
         :param password: A password
         :type password: String
+        :param active: The active state
+        :type active: String
         :return: Whether the user was added successfully or not
         :rtype: Boolean
         """
@@ -98,7 +102,7 @@ class DB:
             if not self._username_exist(username):
 
                 ret_value = True
-                sql = f"INSERT INTO {self.ADMINS_TAB} VALUES ('{username}','{full_name}','{email}','{password}')"
+                sql = f"INSERT INTO {self.ADMINS_TAB} VALUES ('{username}','{full_name}','{email}','{password}','{active}')"
                 self.cursor.execute(sql)
                 # So the DB will update instantly
                 self.conn.commit()
@@ -153,11 +157,14 @@ class DB:
 
             ret_value = True
 
+        else:
+            print("The given username is not in the system")
+
         return ret_value
 
     def update_email(self, username, new_email):
         """
-        The function gets a key which is a username and a new gender to change the current email of the key if found (ADMINS_TAB)
+        The function gets a key which is a username and a new email to change the current email of the key if found (ADMINS_TAB)
         :param username: A username
         :type username: String
         :param new_email: A email
@@ -185,7 +192,7 @@ class DB:
 
     def update_password(self, username, new_password):
         """
-        The function gets a key which is a username and a new gender to change the current password of the key if found (ADMINS_TAB)
+        The function gets a key which is a username and a new password to change the current password of the key if found (ADMINS_TAB)
         :param username: A username
         :type username: String
         :param new_password: A password
@@ -200,6 +207,37 @@ class DB:
             self.cursor.execute(sql)
             # So the DB will update instantly
             self.conn.commit()
+
+            ret_value = True
+
+        else:
+            print("The given username is not in the system")
+
+        return ret_value
+
+    def update_active(self, username, new_active):
+        """
+        The function gets a key which is a username and a new active state (IN\OUT) to change the current active state of the key if found (ADMINS_TAB)
+        :param username: A username
+        :type username: String
+        :param new_active: A state
+        :type new_active: String
+        :return: Whether the username was found and the state was updated or not
+        """
+
+        ret_value = False
+
+        if self._username_exist(username):
+
+            if new_active.upper() == "IN" or new_active.upper() == "OUT":
+
+                sql = f"UPDATE {self.ADMINS_TAB} SET active='{new_active}' WHERE username='{username}'"
+                self.cursor.execute(sql)
+                # So the DB will update instantly
+                self.conn.commit()
+
+            else:
+                print("The given state is not valid")
 
             ret_value = True
 
@@ -221,6 +259,9 @@ class DB:
 
             ret_value = self.cursor.fetchall()
 
+        else:
+            print("The given username is not in the system")
+
         return ret_value
 
     def get_email_by_username(self, username):
@@ -238,6 +279,30 @@ class DB:
             self.cursor.execute(f"SELECT email FROM {self.ADMINS_TAB} WHERE username='{username}'")
 
             ret_value = self.cursor.fetchall()
+
+        else:
+            print("The given username is not in the system")
+
+        return ret_value
+
+    def get_active_by_username(self, username):
+        """
+        Returns the active state of the username (ADMINS_TAB)
+        :param username: The username of the person
+        :type username: String
+        :return: Returns the state corresponding to the username
+        :rtype: String inside a tuple inside a list [("IN")]
+        """
+
+        ret_value = None
+
+        if self._username_exist(username):
+            self.cursor.execute(f"SELECT active FROM {self.ADMINS_TAB} WHERE username='{username}'")
+
+            ret_value = self.cursor.fetchall()
+
+        else:
+            print("The given username is not in the system")
 
         return ret_value
 
@@ -303,15 +368,17 @@ class DB:
 
         return len(self.cursor.fetchall()) != 0
 
-    def add_camera(self, mac_address, position, place):
+    def add_camera(self, mac_address, position, place, status):
         """
-        The function gets a MAC address of a computer that's connected to a camera, the position of the camera, and the place of the camera, and adds them to the current table if the MAC address and position don't already exist, and the position is valid, and returns whether he was added successfully or not (CAMERAS_TAB)
+        The function gets a MAC address of a computer that's connected to a camera, the position of the camera, the place of the camera, and the status of the camera, and adds them to the current table if the MAC address and position don't already exist, and the position is valid, and returns whether he was added successfully or not (CAMERAS_TAB)
         :param mac_address: A MAC address of a computer connected to a camera
         :type mac_address: String
         :param position: The position of the camera
         :type position: Integer
         :param place: The place of the camera
         :type place: String
+        :param status: The status of the camera
+        :type status: String
         :return: Whether the camera was added successfully or not
         :rtype: Boolean
         """
@@ -322,8 +389,16 @@ class DB:
             if 1 <= position <= 9:
                 if not self._position_taken(position):
 
+                    # Fincding a free id and adding it to the taken_ids list
+                    id = 0
+
+                    while id in self.taken_ids:
+                        id += 1
+
+                    self.taken_ids.append(id)
+
                     ret_value = True
-                    sql = f"INSERT INTO {self.CAMERAS_TAB} VALUES ('{mac_address}','{position}','{place}')"
+                    sql = f"INSERT INTO {self.CAMERAS_TAB} VALUES ('{mac_address}','{position}','{place}','{status}','{id}')"
                     self.cursor.execute(sql)
                     # So the DB will update instantly
                     self.conn.commit()
@@ -352,6 +427,10 @@ class DB:
 
         if self._mac_exist(mac_address):
 
+            # Removing the ID from the taken_ids list so that it can be used again
+            list.remove(self.get_id_by_mac(mac_address))
+
+            # Deleting the camera from the table
             sql = f"DELETE FROM {self.CAMERAS_TAB} WHERE MAC='{mac_address}'"
             self.cursor.execute(sql)
             # So the DB will update instantly
@@ -397,6 +476,42 @@ class DB:
 
         return ret_value
 
+    def get_status_by_mac(self, mac_address):
+        """
+        Returns the status of the camera by the camera's MAC address(CAMERA_TAB)
+        :param mac_address: The MAC address of the camera
+        :type mac_address: String
+        :return: Returns the status corresponding to the MAC address
+        :rtype: String inside a tuple inside a list [("ON")]
+        """
+
+        ret_value = None
+
+        if self._mac_exist(mac_address):
+            self.cursor.execute(f"SELECT status FROM {self.CAMERAS_TAB} WHERE mac='{mac_address}'")
+
+            ret_value = self.cursor.fetchall()
+
+        return ret_value
+
+    def get_id_by_mac(self, mac_address):
+        """
+        Returns the ID of the camera by the camera's MAC address(CAMERA_TAB)
+        :param mac_address: The MAC address of the camera
+        :type mac_address: String
+        :return: Returns the ID corresponding to the MAC address
+        :rtype: String inside a tuple inside a list [(23)]
+        """
+
+        ret_value = None
+
+        if self._mac_exist(mac_address):
+            self.cursor.execute(f"SELECT ID FROM {self.CAMERAS_TAB} WHERE mac='{mac_address}'")
+
+            ret_value = self.cursor.fetchall()
+
+        return ret_value
+
     def update_place(self, mac_address, new_place):
         """
         The function gets a key which is a MAC address and a new place to change the current place of the key if found (CAMERAS_TAB)
@@ -410,7 +525,7 @@ class DB:
         ret_value = False
 
         if self._mac_exist(mac_address):
-            sql = f"UPDATE {self.CAMERAS_TAB} SET email='{new_place}' WHERE MAC='{mac_address}'"
+            sql = f"UPDATE {self.CAMERAS_TAB} SET place='{new_place}' WHERE MAC='{mac_address}'"
             self.cursor.execute(sql)
             # So the DB will update instantly
             self.conn.commit()
@@ -433,7 +548,39 @@ class DB:
 
         if self._mac_exist(mac_address):
             if not self._position_taken(new_position):
-                sql = f"UPDATE {self.CAMERAS_TAB} SET position='{new_position}' WHERE MAC='{mac_address}'"
+                if 1 <= new_position <= 9:
+
+                    sql = f"UPDATE {self.CAMERAS_TAB} SET position='{new_position}' WHERE MAC='{mac_address}'"
+                    self.cursor.execute(sql)
+                    # So the DB will update instantly
+                    self.conn.commit()
+
+                    ret_value = True
+
+                else:
+                    print("The given position is invalid (1-9)")
+
+            else:
+                print("The given position is already taken in the system")
+
+        return ret_value
+
+    def update_status(self, mac_address, new_status):
+        """
+        The function gets a key which is a MAC address and a new status to change the current status of the key if found (CAMERAS_TAB)
+        :param mac_address: A MAC address
+        :type mac_address: String
+        :param new_status: A status
+        :type new_status: String
+        :return: Whether the MAC address was found and the status was updated or not
+        """
+
+        ret_value = False
+
+        if self._mac_exist(mac_address):
+            if new_status.upper() == "ON" or new_status.upper() == "OFF":
+
+                sql = f"UPDATE {self.CAMERAS_TAB} SET status='{new_status}' WHERE MAC='{mac_address}'"
                 self.cursor.execute(sql)
                 # So the DB will update instantly
                 self.conn.commit()
@@ -441,7 +588,7 @@ class DB:
                 ret_value = True
 
             else:
-                print("The given position is already taken in the system")
+                print("The given status is invalid (ON/OFF)")
 
         return ret_value
 
@@ -451,51 +598,53 @@ if __name__ == "__main__":
     # Creating a new DB object with the name myDB
     myDB = DB("myDB")
 
-    # Testing the add_user function
-    print(myDB.add_user("Noamiko", "Noam Tirosh", "noamiko.tirosh@gmail.com", "RandomPass"))
-    print(myDB.add_user("Noamiko", "Noam Tirosh", "noamiko.tirosh@gmail.com", "RandomPass"))
+    print(myDB.add_user("Noamiko2004", "Noam Tirosh", "noamiko.tirosh@gmail.com", "12345"))
 
-    # Testing the remove_user function
-
-    print(myDB.add_user("TempUser", "Delete This", "Temp.User@gmail.com", "TestDelete"))
-
-    # Delay checking the user was really added
-    # time.sleep(3)
-
-    print(myDB.remove_user("TempUser"))
-
-    # Testing the update functions
-
-    print(myDB.update_full_name("Noamiko", "Dina Kol"))
-
-    print(myDB.update_email("Noamiko", "Check@gmail.com"))
-
-    print(myDB.update_password("Noamiko", "NewPassword"))
-
-    print(myDB.add_user("UserTest1", "User One", "User.One@gmail.com", "RandomPass"))
-
-    print(myDB.add_user("UserTest2", "User Two", "User.Two@gmail.com", "RandomPass"))
-
-    print(myDB.add_user("UserTest3", "User Three", "User.Three@gmail.com", "RandomPass"))
-
-    get_name = myDB.get_name_by_username("Noamiko")
-
-    try:
-        print(get_name[0][0])
-    except Exception as e:
-        print("DB_Class.py:276", str(e))
-
-    get_email = myDB.get_email_by_username("Noamiko")
-
-    try:
-        print(get_email[0][0])
-    except Exception as e:
-        print("DB_Class.py:283", str(e))
-
-    # Testing the camera's table aspect
-    myDB.add_camera("FE:GG:SA:GE", 6, "Kitchen")
-
-    myDB.add_camera("FE:GG:SA:GS", 7, "Kitchen")
-    myDB.add_camera("FE:GG:SA:GF", 9, "Room")
-    myDB.add_camera("FE:GG:SA:AS", 7, "Kitchen")
-    myDB.add_camera("HE:GS:SA:GE", 1, "Kids Room")
+    # # Testing the add_user function
+    # print(myDB.add_user("Noamiko", "Noam Tirosh", "noamiko.tirosh@gmail.com", "RandomPass"))
+    # print(myDB.add_user("Noamiko", "Noam Tirosh", "noamiko.tirosh@gmail.com", "RandomPass"))
+    #
+    # # Testing the remove_user function
+    #
+    # print(myDB.add_user("TempUser", "Delete This", "Temp.User@gmail.com", "TestDelete"))
+    #
+    # # Delay checking the user was really added
+    # # time.sleep(3)
+    #
+    # print(myDB.remove_user("TempUser"))
+    #
+    # # Testing the update functions
+    #
+    # print(myDB.update_full_name("Noamiko", "Dina Kol"))
+    #
+    # print(myDB.update_email("Noamiko", "Check@gmail.com"))
+    #
+    # print(myDB.update_password("Noamiko", "NewPassword"))
+    #
+    # print(myDB.add_user("UserTest1", "User One", "User.One@gmail.com", "RandomPass"))
+    #
+    # print(myDB.add_user("UserTest2", "User Two", "User.Two@gmail.com", "RandomPass"))
+    #
+    # print(myDB.add_user("UserTest3", "User Three", "User.Three@gmail.com", "RandomPass"))
+    #
+    # get_name = myDB.get_name_by_username("Noamiko")
+    #
+    # try:
+    #     print(get_name[0][0])
+    # except Exception as e:
+    #     print("DB_Class.py:276", str(e))
+    #
+    # get_email = myDB.get_email_by_username("Noamiko")
+    #
+    # try:
+    #     print(get_email[0][0])
+    # except Exception as e:
+    #     print("DB_Class.py:283", str(e))
+    #
+    # # Testing the camera's table aspect
+    # myDB.add_camera("FE:GG:SA:GE", 6, "Kitchen")
+    #
+    # myDB.add_camera("FE:GG:SA:GS", 7, "Kitchen")
+    # myDB.add_camera("FE:GG:SA:GF", 9, "Room")
+    # myDB.add_camera("FE:GG:SA:AS", 7, "Kitchen")
+    # myDB.add_camera("HE:GS:SA:GE", 1, "Kids Room")
