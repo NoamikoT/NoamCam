@@ -1,3 +1,4 @@
+import win32gui
 import wx
 import DB_Class
 
@@ -11,8 +12,12 @@ class LoginDialog(wx.Dialog):
     # ----------------------------------------------------------------------
     def __init__(self):
         """Constructor"""
-        wx.Dialog.__init__(self, None, title="Login")
+        wx.Dialog.__init__(self, None, title="Login Screen")
         self.logged_in = False
+
+        icon = wx.Icon()
+        icon.CopyFromBitmap(wx.Bitmap("NoamCamLens.ico", wx.BITMAP_TYPE_ANY))
+        self.SetIcon(icon)
 
         self.myDB = DB_Class.DB("myDB")
 
@@ -65,26 +70,56 @@ class LoginDialog(wx.Dialog):
 
 
 ########################################################################
-class MyPanel(wx.Panel):
+class CameraPanel(wx.Panel):
     """"""
 
     # ----------------------------------------------------------------------
-    def __init__(self, parent):
-        """Constructor"""
-        wx.Panel.__init__(self, parent)
+    def __init__(self, parent, id):
+        wx.Panel.__init__(self, parent, id)
+
+        self.SetBackgroundColour("white")
+        self.Bind(wx.EVT_PAINT, self.OnPaint)
+
+
+    def OnPaint(self, event):
+        """set up the device context (DC) for painting"""
+        dc = wx.PaintDC(self)
+
+        # Black filled rectangle
+        dc.SetPen(wx.Pen("black"))
+        dc.SetBrush(wx.Brush("black"))
+        dc.DrawRectangle(220, 10, 200, 200)
+
+
+        # Red filled rectangle
+        dc.SetPen(wx.Pen("red"))
+        dc.SetBrush(wx.Brush("red"))
+        dc.DrawRectangle(220, 210, 200, 100)
+
+
 
 
 ########################################################################
 class MainFrame(wx.Frame):
-    """"""
 
     # ----------------------------------------------------------------------
     def __init__(self):
         """Constructor"""
-        wx.Frame.__init__(self, None, title="Main App")
-        panel = MyPanel(self)
 
-        # Ask user to login
+        camera_window_placement = [[]]
+
+        wx.Frame.__init__(self, None, size=(1900, 1000), title="Main Screen")
+        panel = CameraPanel(self, -1)
+
+        # Locking the size of the frame
+        self.SetMaxSize(wx.Size(1900, 1000))
+        self.SetMinSize(wx.Size(1900, 1000))
+
+        icon = wx.Icon()
+        icon.CopyFromBitmap(wx.Bitmap("NoamCamLens.ico", wx.BITMAP_TYPE_ANY))
+        self.SetIcon(icon)
+
+        # Asking the user to login
         dlg = LoginDialog()
         dlg.ShowModal()
         authenticated = dlg.logged_in
@@ -92,6 +127,7 @@ class MainFrame(wx.Frame):
             self.Close()
 
         self.Show()
+        self.Centre()
 
 
 if __name__ == "__main__":

@@ -19,7 +19,6 @@ while True:
     if ret:
         cv2.imshow('Video', frame)
         videoWriter.write(frame)
-
     c = cv2.waitKey(1)
     if c == 27:
         break

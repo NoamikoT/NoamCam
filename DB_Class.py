@@ -101,11 +101,16 @@ class DB:
 
             if not self._username_exist(username):
 
-                ret_value = True
-                sql = f"INSERT INTO {self.ADMINS_TAB} VALUES ('{username}','{full_name}','{email}','{password}','{active}')"
-                self.cursor.execute(sql)
-                # So the DB will update instantly
-                self.conn.commit()
+                if active.upper() == "IN" or active.upper() == "OUT":
+
+                    ret_value = True
+                    sql = f"INSERT INTO {self.ADMINS_TAB} VALUES ('{username}','{full_name}','{email}','{password}','{active}')"
+                    self.cursor.execute(sql)
+                    # So the DB will update instantly
+                    self.conn.commit()
+
+                else:
+                    print("The active state must be either 'IN' or 'OUT'")
 
             else:
                 print("The given username is already registered in the system")
@@ -237,7 +242,7 @@ class DB:
                 self.conn.commit()
 
             else:
-                print("The given state is not valid")
+                print("The active state must be either 'IN' or 'OUT'")
 
             ret_value = True
 
@@ -598,7 +603,7 @@ if __name__ == "__main__":
     # Creating a new DB object with the name myDB
     myDB = DB("myDB")
 
-    print(myDB.add_user("Noamiko2004", "Noam Tirosh", "noamiko.tirosh@gmail.com", "12345"))
+    print(myDB.add_user("Noamiko2004", "Noam Tirosh", "noamiko.tirosh@gmail.com", "12345", "IN"))
 
     # # Testing the add_user function
     # print(myDB.add_user("Noamiko", "Noam Tirosh", "noamiko.tirosh@gmail.com", "RandomPass"))
