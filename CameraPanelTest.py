@@ -2,6 +2,71 @@ import wx
 import DB_Class
 
 
+class LoginDialog(wx.Dialog):
+    """
+    Class to define login dialog
+    """
+
+    # ----------------------------------------------------------------------
+    def __init__(self):
+        """Constructor"""
+        wx.Dialog.__init__(self, None, title="Login Screen")
+        self.logged_in = False
+
+        icon = wx.Icon()
+        icon.CopyFromBitmap(wx.Bitmap("NoamCamLens.ico", wx.BITMAP_TYPE_ANY))
+        self.SetIcon(icon)
+
+        self.myDB = DB_Class.DB("myDB")
+
+        # user info
+        user_sizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        user_lbl = wx.StaticText(self, label="Username:")
+        user_sizer.Add(user_lbl, 0, wx.ALL | wx.CENTER, 5)
+        self.user = wx.TextCtrl(self)
+        user_sizer.Add(self.user, 0, wx.ALL, 5)
+
+        # pass info
+        p_sizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        p_lbl = wx.StaticText(self, label="Password:")
+        p_sizer.Add(p_lbl, 0, wx.ALL | wx.CENTER, 5)
+        self.password = wx.TextCtrl(self, style=wx.TE_PASSWORD | wx.TE_PROCESS_ENTER)
+        self.password.Bind(wx.EVT_TEXT_ENTER, self.on_login)
+        p_sizer.Add(self.password, 0, wx.ALL, 5)
+
+        main_sizer = wx.BoxSizer(wx.VERTICAL)
+        main_sizer.Add(user_sizer, 0, wx.ALL, 5)
+        main_sizer.Add(p_sizer, 0, wx.ALL, 5)
+
+        btn = wx.Button(self, label="Login")
+        btn.Bind(wx.EVT_BUTTON, self.on_login)
+        main_sizer.Add(btn, 0, wx.ALL | wx.CENTER, 5)
+
+        self.SetSizer(main_sizer)
+
+    # ----------------------------------------------------------------------
+    def on_login(self, event):
+        """
+        Checks the credentials and login
+        """
+
+        username = self.user.GetValue()
+        user_password = self.password.GetValue()
+        if self.myDB.do_passwords_match(username, user_password):
+            self.display_message("Login Successful")
+            self.logged_in = True
+            self.Close()
+        else:
+            self.display_message("Incorrect username or password")
+
+    def display_message(self, message):
+        dlg = wx.MessageDialog(None, message, "Message", wx.OK | wx.ICON_INFORMATION)
+        dlg.ShowModal()
+        dlg.Destroy()
+
+
 class CameraPanel(wx.Panel):
     """"""
 
@@ -73,7 +138,8 @@ class MainFrame(wx.Frame):
 
         super().__init__(None, size=(1900, 1000), title="Main Screen")
 
-        self.
+        # Setting the background to white
+        self.SetBackgroundColour(wx.WHITE)
 
         # First row
         first_panel = CameraPanel(self, start_x, start_y, 1)
@@ -116,6 +182,13 @@ class MainFrame(wx.Frame):
         icon.CopyFromBitmap(wx.Bitmap("NoamCamLens.ico", wx.BITMAP_TYPE_ANY))
         self.SetIcon(icon)
 
+        # Asking the user to login
+        dlg = LoginDialog()
+        dlg.ShowModal()
+        authenticated = dlg.logged_in
+        if not authenticated:
+            self.Close()
+
         # Showing and centring the frame in the screen
         self.Show()
         self.Centre()
@@ -134,6 +207,9 @@ class SettingsFrame(wx.Frame):
         wx.Dialog.__init__(self, None, title="Panel " + str(id_number) + " Settings")
         panel = wx.Panel(self, -1)
 
+        # Setting the background to white
+        self.SetBackgroundColour(wx.LIGHT_GREY)
+
         icon = wx.Icon()
         icon.CopyFromBitmap(wx.Bitmap("NoamCamLens.ico", wx.BITMAP_TYPE_ANY))
         self.SetIcon(icon)
@@ -144,30 +220,36 @@ class SettingsFrame(wx.Frame):
         mac_sizer = wx.BoxSizer(wx.HORIZONTAL)
 
         mac_lbl = wx.StaticText(self, label="MAC Address:")
-        mac_sizer.Add(mac_lbl, 0, wx.ALL | wx.CENTER, 5)
+        mac_sizer.Add(mac_lbl, 0, wx.ALIGN_LEFT, 5)
+        mac_sizer.AddStretchSpacer(1)
         self.mac = wx.TextCtrl(self)
-        mac_sizer.Add(self.mac, 0, wx.ALL, 5)
+        mac_sizer.Add(self.mac, 0, wx.ALIGN_LEFT, 5)
+        mac_sizer.AddSpacer(133)
 
         # number info
         number_sizer = wx.BoxSizer(wx.HORIZONTAL)
 
         number_lbl = wx.StaticText(self, label="Camera number:")
-        number_sizer.Add(number_lbl, 0, wx.ALL | wx.CENTER, 5)
+        number_sizer.Add(number_lbl, 0, wx.ALIGN_LEFT, 5)
+        number_sizer.AddStretchSpacer(1)
         self.number = wx.TextCtrl(self)
-        number_sizer.Add(self.number, 0, wx.ALL, 5)
+        number_sizer.Add(self.number, 0, wx.ALIGN_LEFT, 5)
+        number_sizer.AddSpacer(133)
 
         # place info
         place_sizer = wx.BoxSizer(wx.HORIZONTAL)
 
         place_lbl = wx.StaticText(self, label="Place:")
-        place_sizer.Add(place_lbl, 0, wx.ALL | wx.CENTER, 5)
+        place_sizer.Add(place_lbl, 0, wx.ALIGN_LEFT, 5)
+        place_sizer.AddStretchSpacer(1)
         self.place = wx.TextCtrl(self)
-        number_sizer.Add(self.place, 0, wx.ALL, 5)
+        place_sizer.Add(self.place, 0,  wx.ALIGN_LEFT, 5)
+        place_sizer.AddSpacer(133)
 
         main_sizer = wx.BoxSizer(wx.VERTICAL)
-        main_sizer.Add(mac_sizer, 0, wx.ALL, 5)
-        main_sizer.Add(number_sizer, 0, wx.ALL, 5)
-        main_sizer.Add(place_sizer, 0, wx.ALL, 5)
+        main_sizer.Add(mac_sizer, 0, wx.ALL | wx.EXPAND, 5)
+        main_sizer.Add(number_sizer, 0, wx.ALL | wx.EXPAND, 5)
+        main_sizer.Add(place_sizer, 1, wx.ALL | wx.EXPAND, 5)
 
         btn = wx.Button(self, label="Save")
         btn.Bind(wx.EVT_BUTTON, self.save_settings)
