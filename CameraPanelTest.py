@@ -78,6 +78,7 @@ class CameraPanel(wx.Panel):
     def __init__(self, parent, start_x, start_y, position_number):
         wx.Panel.__init__(self, parent, pos=(start_x, start_y), size=(347, 267))
 
+        self.parent = parent
         self.start_x = start_x
         self.start_y = start_y
         self.position_number = position_number
@@ -93,7 +94,7 @@ class CameraPanel(wx.Panel):
         self.face = wx.ToggleButton(self, label='Face', pos=(50, 235))
         self.face.Bind(wx.EVT_TOGGLEBUTTON, self.toggle_face_detection)
 
-        self.zoom = wx.Button(self, label='zoom', pos=(200, 205))
+        self.zoom = wx.Button(self, label='Zoom', pos=(200, 205))
         self.zoom.Bind(wx.EVT_BUTTON, self.call_zoom_screen)
 
         settings = wx.Button(self, label='Settings', pos=(200, 235))
@@ -110,8 +111,8 @@ class CameraPanel(wx.Panel):
             print("Face detection is off")
 
     def call_zoom_screen(self, e):
-        self.Hide()
-        self.zoom_frame = ZoomFrame()
+        self.parent.Hide()
+        self.parent.parent.show_zoom_panel(self.position_number)
 
     def settings_screen(self, e):
         if not self.settings_frame.IsShown():
@@ -135,10 +136,13 @@ class CameraPanel(wx.Panel):
         dc.DrawRectangle(0, 0 + 197, 347, 70)
 
 
-class ZoomFrame(wx.Frame):
+class ZoomPanel(wx.Panel):
 
-    def __init__(self, position_number):
-        super().__init__(None, size=(1900, 1000), title="Zoom on camera ")
+    def __init__(self, parent, position_number):
+
+        wx.Panel.__init__(self, parent, size=(1900, 1000))
+
+        self.parent = parent
 
         # Setting the background to white
         self.SetBackgroundColour("white")
@@ -191,23 +195,13 @@ class ZoomFrame(wx.Frame):
         dc.DrawRectangle(150, 50, 1600, 900)
 
 
-class MainFrame(wx.Frame):
+class MainPanel(wx.Panel):
 
-    # ----------------------------------------------------------------------
-    def __init__(self, start_x, start_y):
-        """Constructor"""
+    def __init__(self, parent, start_x, start_y, username):
 
-        super().__init__(None, size=(1900, 1000), title="Main Screen")
+        wx.Panel.__init__(self, parent, size=(1900, 1000), pos=(0, 0))
 
-        # Setting the background to white
-        self.SetBackgroundColour(wx.WHITE)
-
-        # Asking the user to login
-        dlg = LoginDialog()
-        dlg.ShowModal()
-        authenticated = dlg.logged_in
-        # Saving the username
-        self.username = dlg.username
+        self.parent = parent
 
         # First row
         first_panel = CameraPanel(self, start_x, start_y, 1)
@@ -237,9 +231,33 @@ class MainFrame(wx.Frame):
         font = wx.Font(25, wx.MODERN, wx.NORMAL, wx.BOLD)
         lbl = wx.StaticText(self, style=wx.ALIGN_CENTER)
         lbl.SetFont(font)
-        lbl.SetLabel(f'Hello {self.username}!')
+        lbl.SetLabel(f'Hello {username}!')
 
         text_hello_box.Add(lbl, 0, wx.ALIGN_CENTER)
+
+    def settings_button_pressed(self, e):
+        print("Settings button pressed")
+
+
+class MainFrame(wx.Frame):
+
+    # ----------------------------------------------------------------------
+    def __init__(self, start_x, start_y):
+        """Constructor"""
+
+        super().__init__(None, size=(1900, 1000), title="Main Screen")
+
+        # Setting the background to white
+        self.SetBackgroundColour(wx.WHITE)
+
+        # Asking the user to login
+        dlg = LoginDialog()
+        dlg.ShowModal()
+        authenticated = dlg.logged_in
+        # Saving the username
+        self.username = dlg.username
+
+        main_panel = MainPanel(self, start_x, start_y, self.username)
 
         # Locking the size of the frame
         self.SetMaxSize(wx.Size(1900, 1000))
@@ -254,8 +272,8 @@ class MainFrame(wx.Frame):
         self.Show()
         self.Centre()
 
-    def settings_button_pressed(self, e):
-        print("Settings button pressed")
+    def show_zoom_panel(self, position_number):
+        zoom_panel = ZoomPanel(self, position_number)
 
 
 class SettingsFrame(wx.Frame):
@@ -389,7 +407,7 @@ class SettingsFrame(wx.Frame):
             self.display_message("Invalid MAC address")
 
 
-        print("The new saved settings are:" + mac_address + " " + position + " " + place + " " + status)
+        print("The new saved settings are:" + mac_address + " " + str(position) + " " + place + " " + status)
 
     def display_message(self, message):
         dlg = wx.MessageDialog(None, message, "Message", wx.OK | wx.ICON_INFORMATION)
