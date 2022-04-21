@@ -1,3 +1,4 @@
+import re
 import sqlite3
 import time
 
@@ -359,7 +360,21 @@ class DB:
 
         return len(self.cursor.fetchall()) != 0
 
-    def _position_taken(self, position):
+    def _id_exist(self, id):
+        """
+        The function gets an ID and returns whether the ID exists already (CAMERAS_TAB)
+        :param id: An ID
+        :type id: String
+        :return: Whether the given MAC address exists already
+        :rtype: Boolean
+        """
+
+        sql = f"SELECT ID FROM {self.CAMERAS_TAB} WHERE ID='{id}'"
+        self.cursor.execute(sql)
+
+        return len(self.cursor.fetchall()) != 0
+
+    def position_taken(self, position):
         """
         The function gets a position and returns whether the position exists already (CAMERAS_TAB)
         :param position: A position
@@ -392,9 +407,9 @@ class DB:
 
         if not self._mac_exist(mac_address):
             if 1 <= position <= 9:
-                if not self._position_taken(position):
+                if not self.position_taken(position):
 
-                    # Fincding a free id and adding it to the taken_ids list
+                    # Finding a free id and adding it to the taken_ids list
                     id = 0
 
                     while id in self.taken_ids:
@@ -517,6 +532,24 @@ class DB:
 
         return ret_value
 
+    def get_mac_by_id(self, id):
+        """
+        Returns the MAC address of the camera by the camera's ID (CAMERA_TAB)
+        :param id: The ID of the camera
+        :type id: String
+        :return: Returns the MAC address corresponding to the ID
+        :rtype: String inside a tuple inside a list [(FF:FF:FF:FF:FF)]
+        """
+
+        ret_value = None
+
+        if self._id_exist(id):
+            self.cursor.execute(f"SELECT MAC FROM {self.CAMERAS_TAB} WHERE ID='{id}'")
+
+            ret_value = self.cursor.fetchall()
+
+        return ret_value
+
     def update_place(self, mac_address, new_place):
         """
         The function gets a key which is a MAC address and a new place to change the current place of the key if found (CAMERAS_TAB)
@@ -552,7 +585,7 @@ class DB:
         ret_value = False
 
         if self._mac_exist(mac_address):
-            if not self._position_taken(new_position):
+            if not self.position_taken(new_position):
                 if 1 <= new_position <= 9:
 
                     sql = f"UPDATE {self.CAMERAS_TAB} SET position='{new_position}' WHERE MAC='{mac_address}'"
@@ -594,6 +627,38 @@ class DB:
 
             else:
                 print("The given status is invalid (ON/OFF)")
+
+        return ret_value
+
+    def update_mac(self, id, new_mac):
+        """
+        The function gets a key which is the ID and a new MAC to change the current MAC of the key if found (CAMERAS_TAB)
+        :param id: An ID
+        :type id: Integer
+        :param new_mac: A MAC address
+        :type new_mac: String
+        :return: Whether the id was found and the MAC was updated or not
+        """
+
+        ret_value = False
+
+        if self._id_exist(id):
+
+            # Checking if the new MAC is valid
+            if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", new_mac.lower()):
+
+                sql = f"UPDATE {self.CAMERAS_TAB} SET MAC='{new_mac}' WHERE ID='{id}'"
+                self.cursor.execute(sql)
+                # So the DB will update instantly
+                self.conn.commit()
+
+                ret_value = True
+
+            else:
+                print("The given MAC is invalid")
+
+        else:
+            print("The given ID wasn't found")
 
         return ret_value
 
