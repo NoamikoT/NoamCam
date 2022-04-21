@@ -231,15 +231,15 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_BUTTON, self.settings_button_pressed, self.settings_button)
 
         # Presenting the name of the user to the screen
-        text_panel = wx.Panel(self, pos=(0, 0), size=(1900, 1000))
-        lbl = wx.StaticText(text_panel, -1, style=wx.ALIGN_CENTER)
+        # text_panel = wx.Panel(self, pos=(0, 0), size=(1900, 1000))
         text_hello_box = wx.BoxSizer(wx.HORIZONTAL)
 
         font = wx.Font(25, wx.MODERN, wx.NORMAL, wx.BOLD)
+        lbl = wx.StaticText(self, style=wx.ALIGN_CENTER)
         lbl.SetFont(font)
         lbl.SetLabel(f'Hello {self.username}!')
 
-        text_hello_box.Add(lbl, 0, wx.CENTER)
+        text_hello_box.Add(lbl, 0, wx.ALIGN_CENTER)
 
         # Locking the size of the frame
         self.SetMaxSize(wx.Size(1900, 1000))
@@ -352,30 +352,35 @@ class SettingsFrame(wx.Frame):
         if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", mac_address.lower()):
 
             if not self.myDB.position_taken(position):
-
-                if 1 <= position <= 9:
-
-                    if place.isalpha():
-
-                        if status.lower() == "on" or status.lower() == "off":
-
-                            # self.myDB.update_mac(self.id)
-                            self.myDB.update_position(mac_address, position)
-                            self.myDB.update_place(mac_address, place)
-                            self.myDB.update_status(mac_address, status)
-
-                            self.display_message("Settings saved successfully")
-
-                            self.Hide()
-
-                        else:
-                            self.display_message("Status must be ON or OFF")
-
-                    else:
-                        self.display_message("Place must be English letters")
+                try:
+                    position = int(position)
+                except Exception as e:
+                    print("Position must be a number")
 
                 else:
-                    self.display_message("Position must be between 1 and 9")
+                    if 1 <= position <= 9:
+
+                        if place.isalpha():
+
+                            if status.lower() == "on" or status.lower() == "off":
+
+                                # self.myDB.update_mac(self.id)
+                                self.myDB.update_position(mac_address, position)
+                                self.myDB.update_place(mac_address, place)
+                                self.myDB.update_status(mac_address, status)
+
+                                self.display_message("Settings saved successfully")
+
+                                self.Hide()
+
+                            else:
+                                self.display_message("Status must be ON or OFF")
+
+                        else:
+                            self.display_message("Place must be English letters")
+
+                    else:
+                        self.display_message("Position must be between 1 and 9")
 
             else:
                 self.display_message("Position taken")
