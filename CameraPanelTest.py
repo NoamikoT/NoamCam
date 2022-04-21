@@ -176,7 +176,7 @@ class ZoomPanel(wx.Panel):
             print("Face detection is off")
 
     def call_zoom_screen(self, e):
-        print("Called zoom on panel " + str(self.position_number))
+        self.parent.hide_zoom_panel()
 
     def settings_screen(self, e):
         if not self.settings_frame.IsShown():
@@ -247,6 +247,9 @@ class MainFrame(wx.Frame):
 
         super().__init__(None, size=(1900, 1000), title="Main Screen")
 
+        self.start_x = start_x
+        self.start_y = start_y
+
         # Setting the background to white
         self.SetBackgroundColour(wx.WHITE)
 
@@ -257,7 +260,7 @@ class MainFrame(wx.Frame):
         # Saving the username
         self.username = dlg.username
 
-        main_panel = MainPanel(self, start_x, start_y, self.username)
+        self.create_main_panel()
 
         # Locking the size of the frame
         self.SetMaxSize(wx.Size(1900, 1000))
@@ -272,8 +275,17 @@ class MainFrame(wx.Frame):
         self.Show()
         self.Centre()
 
+    def create_main_panel(self):
+        self.main_panel = MainPanel(self, self.start_x, self.start_y, self.username)
+
+
     def show_zoom_panel(self, position_number):
-        zoom_panel = ZoomPanel(self, position_number)
+        self.main_panel.Hide()
+        self.zoom_panel = ZoomPanel(self, position_number)
+
+    def hide_zoom_panel(self):
+        self.zoom_panel.Hide()
+        self.main_panel.Show()
 
 
 class SettingsFrame(wx.Frame):
