@@ -1,6 +1,7 @@
 import re
 import wx
 import DB_Class
+import sys
 
 
 class LoginDialog(wx.Dialog):
@@ -46,6 +47,7 @@ class LoginDialog(wx.Dialog):
         main_sizer.Add(btn, 0, wx.ALL | wx.CENTER, 5)
 
         self.SetSizer(main_sizer)
+
 
     # ----------------------------------------------------------------------
     def on_login(self, event):
@@ -120,6 +122,12 @@ class CameraPanel(wx.Panel):
         else:
             self.settings_frame.Hide()
 
+    def close_settings_frame(self):
+        try:
+            self.settings_frame.Destroy()
+        except Exception:
+            pass
+
     def OnPaint(self, event):
         """set up the device context (DC) for painting"""
         dc = wx.PaintDC(self)
@@ -190,6 +198,10 @@ class ZoomPanel(wx.Panel):
             print("Face detection is off")
 
     def call_zoom_screen(self, e):
+        try:
+            self.settings_frame.Destroy()
+        except Exception:
+            pass
         self.parent.hide_zoom_panel()
 
     def settings_screen(self, e):
@@ -209,17 +221,13 @@ class ZoomPanel(wx.Panel):
         dc.DrawRectangle(150, 50, 1600, 900)
 
     def logout_button_pressed(self, e):
-        print("Log out button pressed")
-        self.myDB.update_active(self.parent.username, "OUT")
 
-        self.Destroy()
-        self.parent.Destroy()
+        try:
+            self.settings_frame.Destroy()
+        except Exception:
+            pass
 
-
-        # Asking the user to login again
-
-        frame = MainFrame(426, 98)
-        app.MainLoop()
+        self.parent.main_panel.logout_button_pressed(e)
 
 
 class MainPanel(wx.Panel):
@@ -231,20 +239,22 @@ class MainPanel(wx.Panel):
         self.parent = parent
         self.myDB = DB_Class.DB("myDB")
 
+        self.camera_panels = []
+
         # First row
-        first_panel = CameraPanel(self, start_x, start_y, 1)
-        second_panel = CameraPanel(self, start_x + 349, start_y, 2)
-        third_panel = CameraPanel(self, start_x + 698, start_y, 3)
+        self.camera_panels.append(CameraPanel(self, start_x, start_y, 1))
+        self.camera_panels.append(CameraPanel(self, start_x + 349, start_y, 2))
+        self.camera_panels.append(CameraPanel(self, start_x + 698, start_y, 3))
 
         # Second row
-        forth_panel = CameraPanel(self, start_x, start_y + 269, 4)
-        fifth_panel = CameraPanel(self, start_x + 349, start_y + 269, 5)
-        sixth_panel = CameraPanel(self, start_x + 698, start_y + 269, 6)
+        self.camera_panels.append(CameraPanel(self, start_x, start_y + 269, 4))
+        self.camera_panels.append(CameraPanel(self, start_x + 349, start_y + 269, 5))
+        self.camera_panels.append(CameraPanel(self, start_x + 698, start_y + 269, 6))
 
         # Third row
-        seventh_panel = CameraPanel(self, start_x, start_y + 538, 7)
-        eighth_panel = CameraPanel(self, start_x + 349, start_y + 538, 8)
-        ninth_panel = CameraPanel(self, start_x + 698, start_y + 538, 9)
+        self.camera_panels.append(CameraPanel(self, start_x, start_y + 538, 7))
+        self.camera_panels.append(CameraPanel(self, start_x + 349, start_y + 538, 8))
+        self.camera_panels.append(CameraPanel(self, start_x + 698, start_y + 538, 9))
 
         # Log out button
         self.logout_button = wx.Button(self, label='Log out', pos=(1770, 50))
@@ -274,6 +284,9 @@ class MainPanel(wx.Panel):
     def logout_button_pressed(self, e):
         print("Log out button pressed")
         self.myDB.update_active(self.parent.username, "OUT")
+
+        for panel in self.camera_panels:
+            panel.close_settings_frame()
 
         self.Destroy()
         self.parent.Destroy()
@@ -306,6 +319,11 @@ class MainFrame(wx.Frame):
         dlg = LoginDialog()
         dlg.ShowModal()
         authenticated = dlg.logged_in
+
+        # If the user closed the login window without logging in
+        if not dlg.logged_in:
+            sys.exit()
+
         # Saving the username
         self.username = dlg.username
 
@@ -320,13 +338,14 @@ class MainFrame(wx.Frame):
         icon.CopyFromBitmap(wx.Bitmap("NoamCamLens.ico", wx.BITMAP_TYPE_ANY))
         self.SetIcon(icon)
 
+        self.Bind(wx.EVT_CLOSE, sys.exit)
+
         # Showing and centring the frame in the screen
         self.Show()
         self.Centre()
 
     def create_main_panel(self):
         self.main_panel = MainPanel(self, self.start_x, self.start_y, self.username)
-
 
     def show_zoom_panel(self, position_number):
         self.main_panel.Hide()

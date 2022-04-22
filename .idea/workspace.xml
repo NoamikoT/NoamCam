@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c2dcd42c-ff15-48d6-85bd-c1f1c5a77cea" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CameraPanelTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/CameraPanelTest.py" afterDir="false" />
     </list>
@@ -325,13 +324,7 @@
       <workItem from="1650565020240" duration="8068000" />
       <workItem from="1650574572040" duration="1122000" />
       <workItem from="1650581929945" duration="971000" />
-      <workItem from="1650615151847" duration="6203000" />
-    </task>
-    <task id="LOCAL‎00001" summary="Added the feature that saves the pictures of the faces in a folder">
-      <created>1645088934226</created>
-      <option name="number" value="LOCAL‎00001" />
-      <option name="presentableId" value="LOCAL‎00001" />
-      <updated>1645088934226</updated>
+      <workItem from="1650615151847" duration="7705000" />
     </task>
     <task id="LOCAL‎00002" summary="Created and found the source for a face_recognition file">
       <created>1645090734711</created>
@@ -637,7 +630,14 @@
       <option name="project" value="LOCAL" />
       <updated>1650575089515</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="Able to show and hide the zoom screen">
+      <created>1650625341469</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1650625341470</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -747,7 +747,7 @@
     <SUITE FILE_PATH="coverage/NoamCam$Test2.coverage" NAME="Test2 Coverage Results" MODIFIED="1650458722093" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoamCam$Testing.coverage" NAME="Testing Coverage Results" MODIFIED="1650532518775" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoamCam$ClientProtocol.coverage" NAME="ClientProtocol Coverage Results" MODIFIED="1650020007598" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/NoamCam$CameraPanelTest.coverage" NAME="CameraPanelTest Coverage Results" MODIFIED="1650624996137" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/NoamCam$CameraPanelTest.coverage" NAME="CameraPanelTest Coverage Results" MODIFIED="1650626741482" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoamCam$Test.coverage" NAME="Test Coverage Results" MODIFIED="1650102431479" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoamCam$ServerTest.coverage" NAME="ServerTest Coverage Results" MODIFIED="1650103471635" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoamCam$Test3.coverage" NAME="Test3 Coverage Results" MODIFIED="1650532095387" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
