@@ -1,5 +1,4 @@
 import re
-
 import wx
 import DB_Class
 
@@ -143,6 +142,7 @@ class ZoomPanel(wx.Panel):
         wx.Panel.__init__(self, parent, size=(1900, 1000))
 
         self.parent = parent
+        self.myDB = DB_Class.DB("myDB")
 
         # Setting the background to white
         self.SetBackgroundColour("white")
@@ -153,17 +153,31 @@ class ZoomPanel(wx.Panel):
 
         self.settings_frame = SettingsFrame(self.position_number)
 
-        self.alert = wx.Button(self, label='Alert', pos=(50, 205))
+        self.alert = wx.Button(self, label='Alert', pos=(1770, 600))
         self.alert.Bind(wx.EVT_BUTTON, self.alert_call)
 
-        self.face = wx.ToggleButton(self, label='Face', pos=(50, 235))
+        self.face = wx.ToggleButton(self, label='Face', pos=(1770, 650))
         self.face.Bind(wx.EVT_TOGGLEBUTTON, self.toggle_face_detection)
 
-        self.zoom = wx.Button(self, label='zoom', pos=(200, 205))
+        self.zoom = wx.Button(self, label='unZoom', pos=(1770, 700))
         self.zoom.Bind(wx.EVT_BUTTON, self.call_zoom_screen)
 
-        settings = wx.Button(self, label='Settings', pos=(200, 235))
+        settings = wx.Button(self, label='Settings', pos=(1770, 750))
         settings.Bind(wx.EVT_BUTTON, self.settings_screen)
+
+        # Log out button
+        self.logout_button = wx.Button(self, label='Log out', pos=(1770, 50))
+        self.logout_button.SetBackgroundColour((245, 66, 66, 255))
+        self.logout_button.Bind(wx.EVT_BUTTON, self.logout_button_pressed)
+
+        # Settings button panel
+        settings_panel_button = wx.Panel(self, pos=(1778, 468), size=(72, 72))
+        pic = wx.Bitmap("Settings.bmp", wx.BITMAP_TYPE_ANY)
+        self.settings_button = wx.BitmapButton(settings_panel_button, -1, pic)
+        self.Bind(wx.EVT_BUTTON, self.settings_button_pressed, self.settings_button)
+
+    def settings_button_pressed(self, e):
+        print("Settings button pressed")
 
     def alert_call(self, e):
         print("Called alert")
@@ -194,6 +208,19 @@ class ZoomPanel(wx.Panel):
         dc.SetBrush(wx.Brush("black"))
         dc.DrawRectangle(150, 50, 1600, 900)
 
+    def logout_button_pressed(self, e):
+        print("Log out button pressed")
+        self.myDB.update_active(self.parent.username, "OUT")
+
+        self.Destroy()
+        self.parent.Destroy()
+
+
+        # Asking the user to login again
+
+        frame = MainFrame(426, 98)
+        app.MainLoop()
+
 
 class MainPanel(wx.Panel):
 
@@ -202,6 +229,7 @@ class MainPanel(wx.Panel):
         wx.Panel.__init__(self, parent, size=(1900, 1000), pos=(0, 0))
 
         self.parent = parent
+        self.myDB = DB_Class.DB("myDB")
 
         # First row
         first_panel = CameraPanel(self, start_x, start_y, 1)
@@ -218,8 +246,13 @@ class MainPanel(wx.Panel):
         eighth_panel = CameraPanel(self, start_x + 349, start_y + 538, 8)
         ninth_panel = CameraPanel(self, start_x + 698, start_y + 538, 9)
 
+        # Log out button
+        self.logout_button = wx.Button(self, label='Log out', pos=(1770, 50))
+        self.logout_button.SetBackgroundColour((245, 66, 66, 255))
+        self.logout_button.Bind(wx.EVT_BUTTON, self.logout_button_pressed)
+
         # Settings button panel
-        settings_panel_button = wx.Panel(self, pos=(1800, 468), size=(72, 72))
+        settings_panel_button = wx.Panel(self, pos=(1778, 468), size=(72, 72))
         pic = wx.Bitmap("Settings.bmp", wx.BITMAP_TYPE_ANY)
         self.settings_button = wx.BitmapButton(settings_panel_button, -1, pic)
         self.Bind(wx.EVT_BUTTON, self.settings_button_pressed, self.settings_button)
@@ -238,6 +271,19 @@ class MainPanel(wx.Panel):
     def settings_button_pressed(self, e):
         print("Settings button pressed")
 
+    def logout_button_pressed(self, e):
+        print("Log out button pressed")
+        self.myDB.update_active(self.parent.username, "OUT")
+
+        self.Destroy()
+        self.parent.Destroy()
+
+
+        # Asking the user to login again
+
+        frame = MainFrame(426, 98)
+        app.MainLoop()
+
 
 class MainFrame(wx.Frame):
 
@@ -249,6 +295,9 @@ class MainFrame(wx.Frame):
 
         self.start_x = start_x
         self.start_y = start_y
+
+        self.myDB = DB_Class.DB("myDB")
+
 
         # Setting the background to white
         self.SetBackgroundColour(wx.WHITE)
@@ -282,10 +331,12 @@ class MainFrame(wx.Frame):
     def show_zoom_panel(self, position_number):
         self.main_panel.Hide()
         self.zoom_panel = ZoomPanel(self, position_number)
+        self.SetLabel("Zoom Screen")
 
     def hide_zoom_panel(self):
         self.zoom_panel.Hide()
         self.main_panel.Show()
+        self.SetLabel("Main Screen")
 
 
 class SettingsFrame(wx.Frame):
