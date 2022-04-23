@@ -2,6 +2,8 @@ import re
 import wx
 import DB_Class
 import sys
+import wx.adv
+import wx.lib.scrolledpanel
 
 
 class LoginDialog(wx.Dialog):
@@ -58,7 +60,7 @@ class LoginDialog(wx.Dialog):
         username = self.user.GetValue()
         user_password = self.password.GetValue()
         if self.myDB.do_passwords_match(username, user_password):
-            self.display_message("Login Successful")
+            # self.display_message("Login Successful")
             self.logged_in = True
             self.username = username
             self.myDB.update_active(username, "IN")
@@ -178,6 +180,7 @@ class ZoomPanel(wx.Panel):
         self.logout_button.SetBackgroundColour((245, 66, 66, 255))
         self.logout_button.Bind(wx.EVT_BUTTON, self.logout_button_pressed)
 
+
         # Settings button panel
         settings_panel_button = wx.Panel(self, pos=(1778, 468), size=(72, 72))
         pic = wx.Bitmap("Settings.bmp", wx.BITMAP_TYPE_ANY)
@@ -186,6 +189,7 @@ class ZoomPanel(wx.Panel):
 
     def settings_button_pressed(self, e):
         print("Settings button pressed")
+        self.parent.show_all_cameras_panel()
 
     def alert_call(self, e):
         print("Called alert")
@@ -230,6 +234,60 @@ class ZoomPanel(wx.Panel):
         self.parent.main_panel.logout_button_pressed(e)
 
 
+class AllCamerasPanel(wx.Panel):
+
+    def __init__(self, parent):
+
+        wx.Panel.__init__(self, parent, size=(1900, 1000))
+
+        self.parent = parent
+        self.myDB = DB_Class.DB("myDB")
+
+        cameras_list = self.myDB.get_cameras()
+
+        # Setting the background to white
+        self.SetBackgroundColour("white")
+
+        # Log out button
+        self.logout_button = wx.Button(self, label='Log out', pos=(1770, 50))
+        self.logout_button.SetBackgroundColour((245, 66, 66, 255))
+        self.logout_button.Bind(wx.EVT_BUTTON, self.logout_button_pressed)
+
+        # Back button
+        self.back_button = wx.Button(self, label='Back', pos=(25, 50))
+        # self.back_button.SetBackgroundColour((245, 66, 66, 255))
+        self.back_button.Bind(wx.EVT_BUTTON, self.back_button_pressed)
+        
+        # scrolled panel
+        self.scrollP = wx.lib.scrolledpanel.ScrolledPanel(self, -1, size=(426, 400), pos=(740, 400), style=wx.SIMPLE_BORDER)
+        self.scrollP.SetAutoLayout(1)
+        self.scrollP.SetupScrolling()
+        self.scrollP.SetBackgroundColour('#FFFFFF')
+
+        cameras_id_and_names = []
+
+        for camera in cameras_list:
+            cameras_id_and_names.append((str(camera[4]) + " - " + camera[2]))
+
+        self.spSizer = wx.BoxSizer(wx.VERTICAL)
+        for word in cameras_id_and_names:
+            text = wx.TextCtrl(self.scrollP, value=word)
+            text.Bind(wx.EVT_CHILD_FOCUS, self.file_selected)
+            self.spSizer.Add(text)
+        self.scrollP.SetSizer(self.spSizer)
+
+    def file_selected(self, event):
+
+        print(event.GetWindow().GetValue())
+
+    def logout_button_pressed(self, e):
+
+        self.parent.main_panel.logout_button_pressed(e)
+
+    def back_button_pressed(self, e):
+        self.parent.hide_all_cameras_panel()
+
+
 class MainPanel(wx.Panel):
 
     def __init__(self, parent, start_x, start_y, username):
@@ -267,6 +325,11 @@ class MainPanel(wx.Panel):
         self.settings_button = wx.BitmapButton(settings_panel_button, -1, pic)
         self.Bind(wx.EVT_BUTTON, self.settings_button_pressed, self.settings_button)
 
+        # Info button
+        self.info_button = wx.Button(self, label='Info', pos=(25, 910))
+        self.info_button.Bind(wx.EVT_BUTTON, self.onAbout)
+
+
         # Presenting the name of the user to the screen
         # text_panel = wx.Panel(self, pos=(0, 0), size=(1900, 1000))
         text_hello_box = wx.BoxSizer(wx.HORIZONTAL)
@@ -280,6 +343,7 @@ class MainPanel(wx.Panel):
 
     def settings_button_pressed(self, e):
         print("Settings button pressed")
+        self.parent.show_all_cameras_panel()
 
     def logout_button_pressed(self, e):
         print("Log out button pressed")
@@ -296,6 +360,16 @@ class MainPanel(wx.Panel):
 
         frame = MainFrame(426, 98)
         app.MainLoop()
+
+    def onAbout(self, e):
+        info = wx.adv.AboutDialogInfo()
+        info.SetName('Noam Camera')
+        info.SetVersion('0.22B')
+        info.SetDescription('A program for controlling the Noam Camera system')
+        info.SetCopyright('(C) 2020 Noam')
+        info.AddDeveloper("Noam Tirosh")
+
+        wx.adv.AboutBox(info)
 
 
 class MainFrame(wx.Frame):
@@ -346,6 +420,21 @@ class MainFrame(wx.Frame):
 
     def create_main_panel(self):
         self.main_panel = MainPanel(self, self.start_x, self.start_y, self.username)
+
+    def show_all_cameras_panel(self):
+        self.main_panel.Hide()
+        # Hiding the zoom panel if it's visible
+        try:
+            self.zoom_panel.Hide()
+        except Exception:
+            pass
+        self.all_cameras_panel = AllCamerasPanel(self)
+        self.SetLabel("All Cameras Settings")
+
+    def hide_all_cameras_panel(self):
+        self.all_cameras_panel.Hide()
+        self.main_panel.Show()
+        self.SetLabel("Main Screen")
 
     def show_zoom_panel(self, position_number):
         self.main_panel.Hide()
@@ -463,6 +552,8 @@ class SettingsFrame(wx.Frame):
                         if place.isalpha():
 
                             if status.lower() == "on" or status.lower() == "off":
+
+                                mac_address = mac_address.higher()
 
                                 # self.myDB.update_mac(self.id)
                                 self.myDB.update_position(mac_address, position)

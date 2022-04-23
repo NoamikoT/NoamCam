@@ -662,6 +662,15 @@ class DB:
 
         return ret_value
 
+    def get_cameras(self):
+        """
+        The function returns a list with all the contents of CAMERAS_TAB
+        :return: A list with all the contents of CAMERAS_TAB
+        """
+
+        sql = f"SELECT * FROM {self.CAMERAS_TAB}"
+        self.cursor.execute(sql)
+        return self.cursor.fetchall()
 
 if __name__ == "__main__":
 
