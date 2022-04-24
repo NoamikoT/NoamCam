@@ -91,6 +91,8 @@ class CameraPanel(wx.Panel):
 
         self.settings_frame = SettingsFrame(self.position_number)
 
+        self.parent.parent.settings_screens_open.append(self.settings_frame)
+
         self.alert = wx.Button(self, label='Alert', pos=(50, 205))
         self.alert.Bind(wx.EVT_BUTTON, self.alert_call)
 
@@ -215,6 +217,13 @@ class ZoomPanel(wx.Panel):
         else:
             self.settings_frame.Hide()
 
+    def list_screen(self, e):
+        if not self.list.IsShown():
+            self.settings_frame.Show()
+
+        else:
+            self.settings_frame.Hide()
+
     def OnPaint(self, event):
         """set up the device context (DC) for painting"""
         dc = wx.PaintDC(self)
@@ -234,6 +243,87 @@ class ZoomPanel(wx.Panel):
         self.parent.main_panel.logout_button_pressed(e)
 
 
+class ListFrame(wx.Frame):
+
+    def __init__(self, *args, **kw):
+        super(ListFrame, self).__init__(*args, **kw)
+
+        self.InitUI()
+
+    def InitUI(self):
+
+        panel = wx.Panel(self)
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.listbox = wx.ListBox(panel)
+        hbox.Add(self.listbox, wx.ID_ANY, wx.EXPAND | wx.ALL, 20)
+
+        self.myDB = DB_Class.DB("myDB")
+
+        cameras_list = self.myDB.get_cameras()
+
+        for camera in cameras_list:
+            self.listbox.Append(str(camera[4]))
+
+        btnPanel = wx.Panel(panel)
+        vbox = wx.BoxSizer(wx.VERTICAL)
+        # newBtn = wx.Button(btnPanel, wx.ID_ANY, 'New', size=(90, 30))
+        ediBtn = wx.Button(btnPanel, wx.ID_ANY, 'Edit', size=(90, 30))
+        delBtn = wx.Button(btnPanel, wx.ID_ANY, 'Delete', size=(90, 30))
+        # clrBtn = wx.Button(btnPanel, wx.ID_ANY, 'Clear', size=(90, 30))
+
+        # self.Bind(wx.EVT_BUTTON, self.NewItem, id=newBtn.GetId())
+        self.Bind(wx.EVT_BUTTON, self.OnEdit, id=ediBtn.GetId())
+        self.Bind(wx.EVT_BUTTON, self.OnDelete, id=delBtn.GetId())
+        # self.Bind(wx.EVT_BUTTON, self.OnClear, id=clrBtn.GetId())
+        self.Bind(wx.EVT_LISTBOX_DCLICK, self.OnEdit)
+
+        vbox.Add((-1, 20))
+        # vbox.Add(newBtn)
+        vbox.Add(ediBtn)
+        vbox.Add(delBtn, 0, wx.TOP, 5)
+        # vbox.Add(clrBtn, 0, wx.TOP, 5)
+
+        btnPanel.SetSizer(vbox)
+        hbox.Add(btnPanel, 0.6, wx.EXPAND | wx.RIGHT, 20)
+        panel.SetSizer(hbox)
+
+        self.SetTitle('wx.ListBox')
+        self.Centre()
+
+    # def NewItem(self, event):
+    #
+    #     text = wx.GetTextFromUser('Enter a new item', 'Insert dialog')
+    #     if text != '':
+    #         self.listbox.Append(text)
+
+    def OnEdit(self, event):
+
+        sel = self.listbox.GetSelection()
+        text = self.listbox.GetString(sel)
+
+        self.current_settings_frame = SettingsFrame(text)
+        self.current_settings_frame.Show()
+
+        # sel = self.listbox.GetSelection()
+        # text = self.listbox.GetString(sel)
+        # renamed = wx.GetTextFromUser('Rename item', 'Rename dialog', text)
+        #
+        # if renamed != '':
+        #     self.listbox.Delete(sel)
+        #     item_id = self.listbox.Insert(renamed, sel)
+        #     self.listbox.SetSelection(item_id)
+
+    def OnDelete(self, event):
+
+        sel = self.listbox.GetSelection()
+        if sel != -1:
+            self.listbox.Delete(sel)
+
+    # def OnClear(self, event):
+    #     self.listbox.Clear()
+
+
 class AllCamerasPanel(wx.Panel):
 
     def __init__(self, parent):
@@ -242,6 +332,8 @@ class AllCamerasPanel(wx.Panel):
 
         self.parent = parent
         self.myDB = DB_Class.DB("myDB")
+
+        self.last_selected = None
 
         cameras_list = self.myDB.get_cameras()
 
@@ -277,6 +369,13 @@ class AllCamerasPanel(wx.Panel):
         self.scrollP.SetSizer(self.spSizer)
 
     def file_selected(self, event):
+
+        self.last_selected = event.GetWindow().GetValue()
+
+        id = self.last_selected.split(" - ")[0]
+
+        self.current_settings_frame = SettingsFrame(id)
+        self.current_settings_frame.Show()
 
         print(event.GetWindow().GetValue())
 
@@ -385,6 +484,7 @@ class MainFrame(wx.Frame):
 
         self.myDB = DB_Class.DB("myDB")
 
+        self.settings_screens_open = []
 
         # Setting the background to white
         self.SetBackgroundColour(wx.WHITE)
@@ -418,18 +518,25 @@ class MainFrame(wx.Frame):
         self.Show()
         self.Centre()
 
+    def hide_all_settings(self):
+        for settings in self.settings_screens_open:
+            settings.Hide()
+
     def create_main_panel(self):
         self.main_panel = MainPanel(self, self.start_x, self.start_y, self.username)
 
     def show_all_cameras_panel(self):
-        self.main_panel.Hide()
-        # Hiding the zoom panel if it's visible
-        try:
-            self.zoom_panel.Hide()
-        except Exception:
-            pass
-        self.all_cameras_panel = AllCamerasPanel(self)
-        self.SetLabel("All Cameras Settings")
+        # self.main_panel.Hide()
+        # # Hiding the zoom panel if it's visible
+        # try:
+        #     self.zoom_panel.Hide()
+        # except Exception:
+        #     pass
+        self.all_cameras_panel = ListFrame(self)
+        if self.all_cameras_panel.IsShown():
+            self.all_cameras_panel.Hide()
+        else:
+            self.all_cameras_panel.Show()
 
     def hide_all_cameras_panel(self):
         self.all_cameras_panel.Hide()
@@ -437,11 +544,13 @@ class MainFrame(wx.Frame):
         self.SetLabel("Main Screen")
 
     def show_zoom_panel(self, position_number):
+        self.hide_all_settings()
         self.main_panel.Hide()
         self.zoom_panel = ZoomPanel(self, position_number)
         self.SetLabel("Zoom Screen")
 
     def hide_zoom_panel(self):
+        self.hide_all_settings()
         self.zoom_panel.Hide()
         self.main_panel.Show()
         self.SetLabel("Main Screen")
