@@ -17,7 +17,7 @@ Security Team.'''
         #The mail addresses and password
         sender_address = 'PythonCameraAlert@gmail.com'
         sender_pass = 'ALERTWASFOUND'
-        receiver_address = 'Noamiko.tirosh3@gmail.com'
+        # receiver_address = 'Noamiko.tirosh3@gmail.com'
 
         #Setup the MIME
         message = MIMEMultipart()
@@ -46,4 +46,4 @@ Security Team.'''
         print('Mail Sent')
 
 if __name__ == '__main__':
-    EmailClass("HEY")
+    EmailClass("Noamiko.tirosh3@gmail.com")

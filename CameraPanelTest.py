@@ -272,6 +272,8 @@ class ListFrame(wx.Frame):
         delBtn = wx.Button(btnPanel, wx.ID_ANY, 'Delete', size=(90, 30))
         # clrBtn = wx.Button(btnPanel, wx.ID_ANY, 'Clear', size=(90, 30))
 
+        self.open_settings_windows = []
+
         # self.Bind(wx.EVT_BUTTON, self.NewItem, id=newBtn.GetId())
         self.Bind(wx.EVT_BUTTON, self.OnEdit, id=ediBtn.GetId())
         self.Bind(wx.EVT_BUTTON, self.OnDelete, id=delBtn.GetId())
@@ -486,6 +488,8 @@ class MainFrame(wx.Frame):
 
         self.settings_screens_open = []
 
+        self.all_cameras_panel = ListFrame(self)
+
         # Setting the background to white
         self.SetBackgroundColour(wx.WHITE)
 
@@ -532,7 +536,6 @@ class MainFrame(wx.Frame):
         #     self.zoom_panel.Hide()
         # except Exception:
         #     pass
-        self.all_cameras_panel = ListFrame(self)
         if self.all_cameras_panel.IsShown():
             self.all_cameras_panel.Hide()
         else:
