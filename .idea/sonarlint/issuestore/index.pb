@@ -1,8 +1,6 @@
 
 S
 #haarcascade_frontalface_default.xml,0\5\05ca1846684c8d6b2ab818b2df4d6b9c97390815
-A
-ServerProtocol.py,e\c\ec918bb6e23e50f3190c8fe82e528da076c3fc76
 ?
 ServerCamera.py,0\d\0d9fdeb26166e435542cec846c7dac411fb6d5b3
 ?
@@ -40,3 +38,13 @@ Testing.py,2\b\2b4ff8028894ca8c595dc0c52e20b5509bb87991
 Test4.py,7\d\7d1772259c6bfca3f495f8fc20e2302f87be1cd7
 8
 Email.py,6\c\6c641e9995a9791632cb79b1354fec76361a365f
+H
+SaveOldServerGraphics.py,5\e\5e09bfa2ad0e99babcb896f8e86eb96035851e27
+A
+ServerProtocol.py,e\c\ec918bb6e23e50f3190c8fe82e528da076c3fc76
+A
+ServerGraphics.py,0\4\04c22317cbc877beb736f9fef71f210d8fd3059b
+;
+DB_Class.py,e\4\e4e54efb5496cefef9075953a0db8cf9463ff235
+8
+Alarm.py,2\1\211b1c0273bab41b181421b51bdeb0f3b30bbb63

@@ -8,5 +8,10 @@ class AlarmSound():
 
         self.duration = duration
 
-    def play_sound(self):
+    def play_alert(self):
+        import winsound
+
+        winsound.PlaySound('Sound.wav', winsound.SND_FILENAME)
+
+    def play_beep(self):
         winsound.Beep(500, self.duration)
