@@ -1,5 +1,7 @@
 import re
 import wx
+
+import Alarm
 import DB_Class
 import sys
 import wx.adv
@@ -107,6 +109,7 @@ class CameraPanel(wx.Panel):
 
     def alert_call(self, e):
         print("Called alert")
+        self.parent.parent.sound_object.play_now = True
 
     def toggle_face_detection(self, e):
         is_pressed = self.face.GetValue()
@@ -195,6 +198,7 @@ class ZoomPanel(wx.Panel):
 
     def alert_call(self, e):
         print("Called alert")
+        self.parent.sound_object.play_now = True
 
     def toggle_face_detection(self, e):
         is_pressed = self.face.GetValue()
@@ -497,7 +501,7 @@ class MainFrame(wx.Frame):
 
         self.settings_screens_open = []
 
-
+        self.sound_object = Alarm.AlarmSound()
 
         # Setting the background to white
         self.SetBackgroundColour(wx.WHITE)

@@ -100,7 +100,6 @@ class ClientCamera:
             self.face_q.put('% s/% s.png' % (self.path, self.count))
 
             self.count += 1
-            print(str(type(img)))
             return img
 
     def start_detection(self):
@@ -152,5 +151,5 @@ if __name__ == '__main__':
             new_camera.start_detection()
 
         # Ascii 10 = Enter
-        elif k == 10:
+        elif k == 13:
             new_camera.stop_detection()
