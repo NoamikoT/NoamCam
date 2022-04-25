@@ -1,11 +1,17 @@
+import pickle
 import socket
 import threading
 import select
+import struct
+
+import cv2
+
+import Setting
 
 
 class ServerComms:
 
-    def __init__(self, port, recv_q):
+    def __init__(self, port, recv_q=None):
 
         self.server_socket = socket.socket()  # Initializing the server's socket
 
@@ -14,6 +20,8 @@ class ServerComms:
 
         self.port = port  # The server's port
         self.recv_q = recv_q  # The queue where messages get stored to and read
+
+        self.payload_size = struct.calcsize(">L")
 
         # Starting the thread that runs the main loop constantly
         threading.Thread(target=self._main_loop, ).start()
@@ -41,26 +49,62 @@ class ServerComms:
                     self.open_clients[client] = address[0]
 
                 else:
-                    # Getting messages from a client
-                    try:
-                        # Receiving the length of the message
-                        length = int(current_socket.recv(8).decode())
-                        data = current_socket.recv(length).decode()
+                    if self.port == Setting.GENERAL_PORT:
 
-                    except Exception as e:
-                        print(str(e))
-                        self.disconnect(current_socket)
+                        # Getting messages from a client
+                        try:
+                            # Receiving the length of the message
+                            length = int(current_socket.recv(8).decode())
+                            data = current_socket.recv(length).decode()
 
-                    else:
-                        # Checking the data isn't empty
-                        if len(data) > 0:
-                            code = data[0:2]
-                            # 01/02 means media file
-                            if code in ["01", "02"]:
-                                file_len = int(data[2:])
-                                self._recv_file(current_socket, code, file_len)
-                            elif code in ["03"]:
-                                self.recv_q.put((self.open_clients[current_socket], code, data[2:]))
+                        except Exception as e:
+                            print(str(e))
+                            self.disconnect(current_socket)
+
+                        else:
+                            # Checking the data isn't empty
+                            if len(data) > 0:
+                                code = data[0:2]
+                                # 01/02 means media file
+                                if code in ["01", "02"]:
+                                    file_len = int(data[2:])
+                                    self._recv_file(current_socket, code, file_len)
+                                elif code in ["03"]:
+                                    self.recv_q.put((self.open_clients[current_socket], code, data[2:]))
+
+                    elif self.port == Setting.STILLS_PORT:
+                        pass
+
+                    elif self.port == Setting.VIDEO_PORT:
+                        data = b""
+                        try:
+                            while len(data) < self.payload_size:
+                                data += current_socket.recv(4096)
+
+                        except Exception as e:
+                            print("Line 81:", str(e))
+
+                        else:
+
+                            # receive image row data form client socket
+                            packed_msg_size = data[:self.payload_size]
+                            data = data[self.payload_size:]
+                            msg_size = struct.unpack(">L", packed_msg_size)[0]
+                            try:
+                                while len(data) < msg_size:
+                                    data += current_socket.recv(4096)
+                            except Exception as e:
+                                print("Line 94:", str(e))
+                            else:
+                                frame_data = data[:msg_size]
+                                data = data[msg_size:]
+                                # unpack image using pickle
+                                frame = pickle.loads(frame_data, fix_imports=True, encoding="bytes")
+                                frame = cv2.imdecode(frame, cv2.IMREAD_COLOR)
+
+                                # TODO: Update view of frame
+                                cv2.imshow('server', frame)
+                                cv2.waitKey(1)
 
     def _recv_file(self, soc, code, file_len):
         """
@@ -138,3 +182,6 @@ class ServerComms:
         if soc in self.open_clients.keys():
             print(f"Disconnected {self.open_clients[soc]}")
             del self.open_clients[soc]
+
+if __name__ == '__main__':
+    server = ServerComms(Setting.VIDEO_PORT)

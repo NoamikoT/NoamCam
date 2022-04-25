@@ -1,16 +1,22 @@
 import socket
+import sys
 import threading
+import Setting
+import pickle
+import struct
 
 
 class ClientComms:
 
-    def __init__(self, server_ip, port, recv_q):
+    def __init__(self, port, recv_q=None):
 
         self.my_socket = socket.socket()  # Initializing the client's socket
 
-        self.server_ip = server_ip  # The server's IP
+        self.server_ip = Setting.IP_SERVER  # The server's IP
         self.port = port  # The server's port
         self.recv_q = recv_q  # The queue where messages get stored to and read
+
+        self.running = False
 
         # Starting the thread that runs the main loop constantly
         threading.Thread(target=self._main_loop, ).start()
@@ -25,25 +31,28 @@ class ClientComms:
             self.my_socket.connect((self.server_ip, self.port))
             print("CONNECTED")
         except Exception as e:
-            print(str(e))
+            print(str(self.port), "CLIENT COMMS LINE 34" + str(e))
             self.my_socket.close()
+            sys.exit("Can't connect")
 
-        while True:
-            # Receiving the length and data
-            try:
-                length = self.my_socket.recv(8).decode()
-                data = self.my_socket.recv(int(length)).decode()
+        if self.port == Setting.GENERAL_PORT:
+            while True:
+                print("IN WHILE")
+                # Receiving the length and data
+                try:
+                    length = self.my_socket.recv(8).decode()
+                    data = self.my_socket.recv(int(length)).decode()
 
-            except Exception as e:
-                print(str(e))
-                self.my_socket.close()
+                except Exception as e:
+                    print("CLIENT COMMS LINE 45" + str(e))
+                    self.my_socket.close()
 
-            else:
-                # Checking the data isn't empty
-                if len(data) > 0:
-                    code = data[0:2]
-                    if code in ["01", "02", "03", "04"]:
-                        self.recv_q.put((code, data[2:]))
+                else:
+                    # Checking the data isn't empty
+                    if len(data) > 0:
+                        code = data[0:2]
+                        if code in ["01", "02", "03", "04"]:
+                            self.recv_q.put((code, data[2:]))
 
     def send(self, message):
         """
@@ -62,7 +71,7 @@ class ClientComms:
             self.my_socket.send(message_length + message)
 
         except Exception as e:
-            print(str(e))
+            print("CLIENT COMMS LINE 72" + str(e))
             self.my_socket.close()
 
     def send_file(self, code, file_path):
@@ -87,5 +96,17 @@ class ClientComms:
             self.my_socket.send(file)
 
         except Exception as e:
-            print(str(e))
+            print("CLIENT COMMS LINE 97" + str(e))
             self.my_socket.close()
+
+    def start_client(self):
+        self.running = True
+
+    def stop_client(self):
+        self.running = False
+
+    def send_video(self, data):
+        size = len(data)
+
+        # if img_counter % 10 == 0:
+        self.my_socket.sendall(struct.pack(">L", size) + data)
