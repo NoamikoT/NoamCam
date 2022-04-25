@@ -672,6 +672,19 @@ class DB:
         self.cursor.execute(sql)
         return self.cursor.fetchall()
 
+    def get_camera_info_by_id(self, id):
+        """
+        The function gets an ID and returns the info for the ID
+        :param id: An ID
+        :type id: String
+        :return: The info for the ID
+        :rtype: List
+        """
+
+        sql = f"SELECT * FROM {self.CAMERAS_TAB} WHERE ID='{id}'"
+        self.cursor.execute(sql)
+        return self.cursor.fetchall()
+
 if __name__ == "__main__":
 
     # Creating a new DB object with the name myDB

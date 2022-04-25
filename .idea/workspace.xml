@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c2dcd42c-ff15-48d6-85bd-c1f1c5a77cea" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Alarm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DB_Class.py" beforeDir="false" afterPath="$PROJECT_DIR$/DB_Class.py" afterDir="false" />
     </list>
     <list id="2dc151e2-ce3e-4500-bf9e-fdb0b6b7ebbb" name="A little bit of comments added" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -133,6 +130,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
     "WebServerToolWindowFactoryState": "false"
   }
 }]]></component>
@@ -224,7 +222,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ServerGraphics.py" />
+      <option name="SCRIPT_NAME" value="D:\NoamCam\SaveOldServerGraphics.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -307,7 +305,7 @@
       <workItem from="1649927441250" duration="5449000" />
       <workItem from="1650018414904" duration="134000" />
       <workItem from="1650019089895" duration="4409000" />
-      <workItem from="1650871827534" duration="226000" />
+      <workItem from="1650871827534" duration="493000" />
     </task>
     <task id="LOCAL‎00001" summary="Added the feature that saves the pictures of the faces in a folder">
       <created>1645088934226</created>
@@ -563,7 +561,14 @@
       <option name="project" value="LOCAL" />
       <updated>1649789848589</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="Created the class for sounding the alarm.">
+      <created>1650872141832</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1650872141834</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -638,7 +643,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added a single comment." />
     <MESSAGE value="Created Server protocol" />
     <MESSAGE value="Created Client Protocol and built important functions, need to finish the unpacked() function in both." />
     <MESSAGE value="Expended server and client protocol" />
@@ -663,7 +667,8 @@
     <MESSAGE value="Small grammar fix" />
     <MESSAGE value="Minor conventions fixed" />
     <MESSAGE value="Updated the add_camera function to check the position and not just the MAC address,&#10; Added a remove_camera function." />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated the add_camera function to check the position and not just the MAC address,&#10; Added a remove_camera function." />
+    <MESSAGE value="Created the class for sounding the alarm." />
+    <option name="LAST_COMMIT_MESSAGE" value="Created the class for sounding the alarm." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/NoamCam$ServerGraphics.coverage" NAME="ServerGraphics Coverage Results" MODIFIED="1649370927285" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
