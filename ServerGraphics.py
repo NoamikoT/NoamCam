@@ -290,14 +290,23 @@ class ListFrame(wx.Frame):
         hbox.Add(btnPanel, 0.6, wx.EXPAND | wx.RIGHT, 20)
         panel.SetSizer(hbox)
 
+        # When event closed send to function OnClose
+        self.Bind(wx.EVT_CLOSE, self.OnClose)
+
         self.SetTitle('wx.ListBox')
         self.Centre()
+
+        self.Show()
 
     # def NewItem(self, event):
     #
     #     text = wx.GetTextFromUser('Enter a new item', 'Insert dialog')
     #     if text != '':
     #         self.listbox.Append(text)
+
+    def OnClose(self, event):
+
+        self.Destroy()
 
     def OnEdit(self, event):
 
@@ -488,7 +497,7 @@ class MainFrame(wx.Frame):
 
         self.settings_screens_open = []
 
-        self.all_cameras_panel = ListFrame(self)
+
 
         # Setting the background to white
         self.SetBackgroundColour(wx.WHITE)
@@ -536,10 +545,11 @@ class MainFrame(wx.Frame):
         #     self.zoom_panel.Hide()
         # except Exception:
         #     pass
-        if self.all_cameras_panel.IsShown():
-            self.all_cameras_panel.Hide()
-        else:
-            self.all_cameras_panel.Show()
+        try:
+            if self.all_cameras_panel.IsShown():
+                self.all_cameras_panel.Destroy()
+        except Exception:
+            self.all_cameras_panel = ListFrame(self)
 
     def hide_all_cameras_panel(self):
         self.all_cameras_panel.Hide()

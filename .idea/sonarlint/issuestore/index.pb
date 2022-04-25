@@ -26,8 +26,6 @@ G
 :
 
 Testing.py,2\b\2b4ff8028894ca8c595dc0c52e20b5509bb87991
-A
-ServerGraphics.py,0\4\04c22317cbc877beb736f9fef71f210d8fd3059b
 8
 Test3.py,f\c\fcae82be8f4175e0a22c01026e3968a22165c859
 7
@@ -40,9 +38,5 @@ A
 Test5.py,2\3\233ff7671c8aa7988f7459035b89f262c2e280b4
 8
 Test4.py,7\d\7d1772259c6bfca3f495f8fc20e2302f87be1cd7
-;
-DB_Class.py,e\4\e4e54efb5496cefef9075953a0db8cf9463ff235
 8
 Email.py,6\c\6c641e9995a9791632cb79b1354fec76361a365f
-B
-CameraPanelTest.py,4\6\462c4a7ff3956a23e244992ec8ef004d470f0a03
