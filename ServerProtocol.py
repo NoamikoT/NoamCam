@@ -24,6 +24,10 @@ class ServerProtocol:
             elif data == "1":
                 unpacked_message = "Camera is connected"
 
+        # MAC Code
+        elif code == "05":
+            unpacked_message = data
+
         return [code, unpacked_message]
 
     @staticmethod
@@ -85,3 +89,20 @@ class ServerProtocol:
         code = "04"
 
         return code
+
+    @staticmethod
+    def build_send_port(port):
+
+        """
+        Building a message telling the computer to turn off
+        :return: The packed message ready to send
+        :rtype: String
+        """
+
+        code = "06"
+
+        packed_message = f"{code}{port}"
+
+        return packed_message
+
+

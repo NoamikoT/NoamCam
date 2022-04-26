@@ -23,8 +23,6 @@ class DB:
         # The pointer to the DB's cursor
         self.cursor = None
 
-        self.taken_ids = []
-
         # Creating the DB
         self.create_db()
 
@@ -40,7 +38,7 @@ class DB:
 
         self.cursor.execute(sql)
 
-        sql = f"CREATE TABLE IF NOT EXISTS {self.CAMERAS_TAB} (MAC TEXT, position INT, place TEXT, status TEXT, ID INT)"
+        sql = f"CREATE TABLE IF NOT EXISTS {self.CAMERAS_TAB} (MAC TEXT, position INT, place TEXT, status TEXT, port INT)"
         
         self.cursor.execute(sql)
 
@@ -231,23 +229,24 @@ class DB:
         :return: Whether the username was found and the state was updated or not
         """
 
-        ret_value = False
-
-        if self._username_exist(username):
-
-            if new_active.upper() == "IN" or new_active.upper() == "OUT":
-
-                sql = f"UPDATE {self.ADMINS_TAB} SET active='{new_active}' WHERE username='{username}'"
-                self.cursor.execute(sql)
-                # So the DB will update instantly
-                self.conn.commit()
-
-            else:
-                print("The active state must be either 'IN' or 'OUT'")
-
-            ret_value = True
-
-        return ret_value
+        # ret_value = False
+        #
+        # if self._username_exist(username):
+        #
+        #     if new_active.upper() == "IN" or new_active.upper() == "OUT":
+        #
+        #         sql = f"UPDATE {self.ADMINS_TAB} SET active='{new_active}' WHERE username='{username}'"
+        #         self.cursor.execute(sql)
+        #         # So the DB will update instantly
+        #         self.conn.commit()
+        #
+        #     else:
+        #         print("The active state must be either 'IN' or 'OUT'")
+        #
+        #     ret_value = True
+        #
+        # return ret_value
+        pass
 
     def get_name_by_username(self, username):
         """
@@ -346,7 +345,7 @@ class DB:
     The following functions are for the cameras table (CAMERAS_TAB)
     """
 
-    def _mac_exist(self, mac_address):
+    def mac_exist(self, mac_address):
         """
         The function gets a MAC address and returns whether the address exists already (CAMERAS_TAB)
         :param mac_address: A MAC address
@@ -356,20 +355,6 @@ class DB:
         """
 
         sql = f"SELECT MAC FROM {self.CAMERAS_TAB} WHERE MAC='{mac_address}'"
-        self.cursor.execute(sql)
-
-        return len(self.cursor.fetchall()) != 0
-
-    def _id_exist(self, id):
-        """
-        The function gets an ID and returns whether the ID exists already (CAMERAS_TAB)
-        :param id: An ID
-        :type id: String
-        :return: Whether the given MAC address exists already
-        :rtype: Boolean
-        """
-
-        sql = f"SELECT ID FROM {self.CAMERAS_TAB} WHERE ID='{id}'"
         self.cursor.execute(sql)
 
         return len(self.cursor.fetchall()) != 0
@@ -388,9 +373,9 @@ class DB:
 
         return len(self.cursor.fetchall()) != 0
 
-    def add_camera(self, mac_address, position, place, status):
+    def add_camera(self, mac_address, position, place, status, port):
         """
-        The function gets a MAC address of a computer that's connected to a camera, the position of the camera, the place of the camera, and the status of the camera, and adds them to the current table if the MAC address and position don't already exist, and the position is valid, and returns whether he was added successfully or not (CAMERAS_TAB)
+        The function gets a MAC address of a computer that's connected to a camera, the position of the camera, the place of the camera, the status of the camera, and the port of the camera, and adds them to the current table if the MAC address and position don't already exist, and the position is valid, and returns whether he was added successfully or not (CAMERAS_TAB)
         :param mac_address: A MAC address of a computer connected to a camera
         :type mac_address: String
         :param position: The position of the camera
@@ -405,20 +390,12 @@ class DB:
 
         ret_value = False
 
-        if not self._mac_exist(mac_address):
+        if not self.mac_exist(mac_address):
             if 1 <= position <= 9:
                 if not self.position_taken(position):
 
-                    # Finding a free id and adding it to the taken_ids list
-                    id = 0
-
-                    while id in self.taken_ids:
-                        id += 1
-
-                    self.taken_ids.append(id)
-
                     ret_value = True
-                    sql = f"INSERT INTO {self.CAMERAS_TAB} VALUES ('{mac_address}','{position}','{place}','{status}','{id}')"
+                    sql = f"INSERT INTO {self.CAMERAS_TAB} VALUES ('{mac_address}','{position}','{place}','{status}','{port}')"
                     self.cursor.execute(sql)
                     # So the DB will update instantly
                     self.conn.commit()
@@ -445,7 +422,7 @@ class DB:
 
         ret_value = False
 
-        if self._mac_exist(mac_address):
+        if self.mac_exist(mac_address):
 
             # Removing the ID from the taken_ids list so that it can be used again
             list.remove(self.get_id_by_mac(mac_address))
@@ -471,7 +448,7 @@ class DB:
 
         ret_value = None
 
-        if self._mac_exist(mac_address):
+        if self.mac_exist(mac_address):
             self.cursor.execute(f"SELECT position FROM {self.CAMERAS_TAB} WHERE mac='{mac_address}'")
 
             ret_value = self.cursor.fetchall()
@@ -489,7 +466,7 @@ class DB:
 
         ret_value = None
 
-        if self._mac_exist(mac_address):
+        if self.mac_exist(mac_address):
             self.cursor.execute(f"SELECT place FROM {self.CAMERAS_TAB} WHERE mac='{mac_address}'")
 
             ret_value = self.cursor.fetchall()
@@ -507,48 +484,30 @@ class DB:
 
         ret_value = None
 
-        if self._mac_exist(mac_address):
+        if self.mac_exist(mac_address):
             self.cursor.execute(f"SELECT status FROM {self.CAMERAS_TAB} WHERE mac='{mac_address}'")
 
             ret_value = self.cursor.fetchall()
 
         return ret_value
 
-    def get_id_by_mac(self, mac_address):
+    def get_port_by_mac(self, mac_address):
         """
-        Returns the ID of the camera by the camera's MAC address(CAMERA_TAB)
+        Returns the place of the camera by the camera's MAC address(CAMERA_TAB)
         :param mac_address: The MAC address of the camera
         :type mac_address: String
-        :return: Returns the ID corresponding to the MAC address
-        :rtype: String inside a tuple inside a list [(23)]
+        :return: Returns the place corresponding to the MAC address
+        :rtype: String inside a tuple inside a list [("Living Room")]
         """
 
         ret_value = None
 
-        if self._mac_exist(mac_address):
-            self.cursor.execute(f"SELECT ID FROM {self.CAMERAS_TAB} WHERE mac='{mac_address}'")
+        if self.mac_exist(mac_address):
+            self.cursor.execute(f"SELECT port FROM {self.CAMERAS_TAB} WHERE mac='{mac_address}'")
 
             ret_value = self.cursor.fetchall()
 
-        return ret_value
-
-    def get_mac_by_id(self, id):
-        """
-        Returns the MAC address of the camera by the camera's ID (CAMERA_TAB)
-        :param id: The ID of the camera
-        :type id: String
-        :return: Returns the MAC address corresponding to the ID
-        :rtype: String inside a tuple inside a list [(FF:FF:FF:FF:FF)]
-        """
-
-        ret_value = None
-
-        if self._id_exist(id):
-            self.cursor.execute(f"SELECT MAC FROM {self.CAMERAS_TAB} WHERE ID='{id}'")
-
-            ret_value = self.cursor.fetchall()
-
-        return ret_value
+        return ret_value[0][0]
 
     def update_place(self, mac_address, new_place):
         """
@@ -562,7 +521,7 @@ class DB:
 
         ret_value = False
 
-        if self._mac_exist(mac_address):
+        if self.mac_exist(mac_address):
             sql = f"UPDATE {self.CAMERAS_TAB} SET place='{new_place}' WHERE MAC='{mac_address}'"
             self.cursor.execute(sql)
             # So the DB will update instantly
@@ -584,7 +543,7 @@ class DB:
 
         ret_value = False
 
-        if self._mac_exist(mac_address):
+        if self.mac_exist(mac_address):
             if not self.position_taken(new_position):
                 if 1 <= new_position <= 9:
 
@@ -615,7 +574,7 @@ class DB:
 
         ret_value = False
 
-        if self._mac_exist(mac_address):
+        if self.mac_exist(mac_address):
             if new_status.upper() == "ON" or new_status.upper() == "OFF":
 
                 sql = f"UPDATE {self.CAMERAS_TAB} SET status='{new_status}' WHERE MAC='{mac_address}'"
@@ -630,60 +589,18 @@ class DB:
 
         return ret_value
 
-    def update_mac(self, id, new_mac):
-        """
-        The function gets a key which is the ID and a new MAC to change the current MAC of the key if found (CAMERAS_TAB)
-        :param id: An ID
-        :type id: Integer
-        :param new_mac: A MAC address
-        :type new_mac: String
-        :return: Whether the id was found and the MAC was updated or not
-        """
-
-        ret_value = False
-
-        if self._id_exist(id):
-
-            # Checking if the new MAC is valid
-            if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", new_mac.lower()):
-
-                sql = f"UPDATE {self.CAMERAS_TAB} SET MAC='{new_mac}' WHERE ID='{id}'"
-                self.cursor.execute(sql)
-                # So the DB will update instantly
-                self.conn.commit()
-
-                ret_value = True
-
-            else:
-                print("The given MAC is invalid")
-
-        else:
-            print("The given ID wasn't found")
-
-        return ret_value
-
     def get_cameras(self):
         """
         The function returns a list with all the contents of CAMERAS_TAB
         :return: A list with all the contents of CAMERAS_TAB
         """
 
-        sql = f"SELECT * FROM {self.CAMERAS_TAB}"
+        sql = f"SELECT mac,position,place,port FROM {self.CAMERAS_TAB}"
         self.cursor.execute(sql)
         return self.cursor.fetchall()
 
-    def get_camera_info_by_id(self, id):
-        """
-        The function gets an ID and returns the info for the ID
-        :param id: An ID
-        :type id: String
-        :return: The info for the ID
-        :rtype: List
-        """
-
-        sql = f"SELECT * FROM {self.CAMERAS_TAB} WHERE ID='{id}'"
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()
+    def close(self):
+        self.conn.close()
 
 if __name__ == "__main__":
 
@@ -740,3 +657,10 @@ if __name__ == "__main__":
     # myDB.add_camera("FE:GG:SA:GF", 9, "Room")
     # myDB.add_camera("FE:GG:SA:AS", 7, "Kitchen")
     # myDB.add_camera("HE:GS:SA:GE", 1, "Kids Room")
+
+    save_c = (myDB.get_cameras())
+    x = [xx[0] for xx in save_c]
+    print(x)
+
+    y = [[xx[1],xx[3]] for xx in save_c]
+    print(y)

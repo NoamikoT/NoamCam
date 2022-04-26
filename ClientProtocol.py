@@ -38,7 +38,10 @@ class ClientProtocol:
         elif code == "04":
             unpacked_message = "Shut off computer"
 
-        return [code, unpacked_message]
+        elif code == "06":
+            unpacked_message = int(data)
+
+        return code, unpacked_message
 
     @staticmethod
     def build_cam_status(status):
@@ -87,3 +90,20 @@ class ClientProtocol:
         packed_message = f"{code}{photo_path}"
 
         return packed_message
+
+    @staticmethod
+    def build_mac_send(mac_address):
+        """
+        Building a message containing a photo caught by face recognition
+        :param photo_path: The path to the photo
+        :type photo_path: String
+        :return: The packed message ready to send
+        :rtype: String
+        """
+
+        code = "05"
+
+        packed_message = f"{code}{mac_address}"
+
+        return packed_message
+

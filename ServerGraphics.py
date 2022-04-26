@@ -1,8 +1,7 @@
+import os
 import re
-
 import cv2
 import wx
-
 import Alarm
 import DB_Class
 import sys
@@ -28,7 +27,6 @@ class LoginDialog(wx.Dialog):
         icon.CopyFromBitmap(wx.Bitmap("NoamCamLens.ico", wx.BITMAP_TYPE_ANY))
         self.SetIcon(icon)
 
-        self.myDB = DB_Class.DB("myDB")
 
         # user info
         user_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -64,16 +62,20 @@ class LoginDialog(wx.Dialog):
         Checks the credentials and login
         """
 
+        self.myDB = DB_Class.DB("myDB")
+
         username = self.user.GetValue()
         user_password = self.password.GetValue()
         if self.myDB.do_passwords_match(username, user_password):
             # self.display_message("Login Successful")
             self.logged_in = True
             self.username = username
-            self.myDB.update_active(username, "IN")
+            # self.myDB.update_active(username, "IN")
             self.Close()
         else:
             self.display_message("Incorrect username or password")
+
+        self.myDB.close()
 
     def display_message(self, message):
         dlg = wx.MessageDialog(None, message, "Message", wx.OK | wx.ICON_INFORMATION)
@@ -87,7 +89,7 @@ class CameraPanel(wx.Panel):
     """"""
 
     # ----------------------------------------------------------------------
-    def __init__(self, parent, start_x, start_y, position_number):
+    def __init__(self, parent, start_x, start_y, position_number, port):
         wx.Panel.__init__(self, parent, pos=(start_x, start_y), size=(347, 267))
 
         self.parent = parent
@@ -123,9 +125,9 @@ class CameraPanel(wx.Panel):
         self.width = 347
         self.height = 197
 
+        self.port = port
 
-
-        pub.subscribe(self.update_frame, "update frame")
+        pub.subscribe(self.update_frame, f"update frame-{self.port}")
 
         #ret, self.data = self.capture.read()
         # self.frame = imutils.resize(self.frame, width=347, height=197, interpolation = cv2.INTER_AREA)
@@ -161,7 +163,7 @@ class CameraPanel(wx.Panel):
 
 
     def update_frame(self, video_frame):
-        print("in update frame")
+        print("in update frame", self.port)
         self.bmp = wx.BitmapFromBuffer(self.width, self.height, video_frame)
 
         data = cv2.resize(video_frame, (347, 197), interpolation=cv2.INTER_AREA)
@@ -223,7 +225,7 @@ class ZoomPanel(wx.Panel):
         wx.Panel.__init__(self, parent, size=(1900, 1000))
 
         self.parent = parent
-        self.myDB = DB_Class.DB("myDB")
+        # self.myDB = DB_Class.DB("myDB")
 
         # Setting the background to white
         self.SetBackgroundColour("white")
@@ -315,9 +317,10 @@ class ZoomPanel(wx.Panel):
 
 class ListFrame(wx.Frame):
 
-    def __init__(self, *args, **kw):
+    def __init__(self, parent, *args, **kw):
         super(ListFrame, self).__init__(*args, **kw)
 
+        self.parent = parent
         self.InitUI()
 
     def InitUI(self):
@@ -328,12 +331,14 @@ class ListFrame(wx.Frame):
         self.listbox = wx.ListBox(panel)
         hbox.Add(self.listbox, wx.ID_ANY, wx.EXPAND | wx.ALL, 20)
 
-        self.myDB = DB_Class.DB("myDB")
 
-        cameras_list = self.myDB.get_cameras()
 
-        for camera in cameras_list:
-            self.listbox.Append(str(camera[4]))
+        # cameras_list = self.myDB.get_cameras()
+
+        mac_list = [parm[0] for parm in self.parent.camera_details]
+
+        for camera in mac_list:
+            self.listbox.Append(camera)
 
         btnPanel = wx.Panel(panel)
         vbox = wx.BoxSizer(wx.VERTICAL)
@@ -412,11 +417,11 @@ class AllCamerasPanel(wx.Panel):
         wx.Panel.__init__(self, parent, size=(1900, 1000))
 
         self.parent = parent
-        self.myDB = DB_Class.DB("myDB")
+        # self.myDB = DB_Class.DB("myDB")
 
         self.last_selected = None
 
-        cameras_list = self.myDB.get_cameras()
+        # cameras_list = self.myDB.get_cameras()
 
         # Setting the background to white
         self.SetBackgroundColour("white")
@@ -475,24 +480,32 @@ class MainPanel(wx.Panel):
         wx.Panel.__init__(self, parent, size=(1900, 1000), pos=(0, 0))
 
         self.parent = parent
-        self.myDB = DB_Class.DB("myDB")
+        # self.myDB = DB_Class.DB("myDB")
 
         self.camera_panels = []
 
+
+        ports = [[xx[1],xx[3]] for xx in self.parent.camera_details]
+
+        port_for_position = {}
+
+        for pos,port in ports:
+            port_for_position[pos] = port
+
         # First row
-        self.camera_panels.append(CameraPanel(self, start_x, start_y, 1))
-        self.camera_panels.append(CameraPanel(self, start_x + 349, start_y, 2))
-        self.camera_panels.append(CameraPanel(self, start_x + 698, start_y, 3))
+        self.camera_panels.append(CameraPanel(self, start_x, start_y, 1, port_for_position[1]))
+        self.camera_panels.append(CameraPanel(self, start_x + 349, start_y, 2, port_for_position[2]))
+        self.camera_panels.append(CameraPanel(self, start_x + 698, start_y, 3, port_for_position[3]))
 
         # Second row
-        self.camera_panels.append(CameraPanel(self, start_x, start_y + 269, 4))
-        self.camera_panels.append(CameraPanel(self, start_x + 349, start_y + 269, 5))
-        self.camera_panels.append(CameraPanel(self, start_x + 698, start_y + 269, 6))
+        self.camera_panels.append(CameraPanel(self, start_x, start_y + 269, 4, port_for_position[4]))
+        self.camera_panels.append(CameraPanel(self, start_x + 349, start_y + 269, 5, port_for_position[5]))
+        self.camera_panels.append(CameraPanel(self, start_x + 698, start_y + 269, 6, port_for_position[6]))
 
         # Third row
-        self.camera_panels.append(CameraPanel(self, start_x, start_y + 538, 7))
-        self.camera_panels.append(CameraPanel(self, start_x + 349, start_y + 538, 8))
-        self.camera_panels.append(CameraPanel(self, start_x + 698, start_y + 538, 9))
+        self.camera_panels.append(CameraPanel(self, start_x, start_y + 538, 7, port_for_position[7]))
+        self.camera_panels.append(CameraPanel(self, start_x + 349, start_y + 538, 8, port_for_position[8]))
+        self.camera_panels.append(CameraPanel(self, start_x + 698, start_y + 538, 9, port_for_position[9]))
 
         # Log out button
         self.logout_button = wx.Button(self, label='Log out', pos=(1770, 50))
@@ -529,7 +542,7 @@ class MainPanel(wx.Panel):
 
     def logout_button_pressed(self, e):
         print("Log out button pressed")
-        self.myDB.update_active(self.parent.username, "OUT")
+        # self.myDB.update_active(self.parent.username, "OUT")
 
         for panel in self.camera_panels:
             panel.close_settings_frame()
@@ -557,17 +570,25 @@ class MainPanel(wx.Panel):
 class MainFrame(wx.Frame):
 
     # ----------------------------------------------------------------------
-    def __init__(self, start_x, start_y):
+    def __init__(self, server):
         """Constructor"""
 
         super().__init__(None, size=(1900, 1000), title="Main Screen", style = wx.DEFAULT_FRAME_STYLE & ~wx.MAXIMIZE_BOX ^ wx.RESIZE_BORDER)
 
-        self.start_x = start_x
-        self.start_y = start_y
+        self.server = server
 
-        self.myDB = DB_Class.DB("myDB")
+        self.start_x = 426
+        self.start_y = 98
+
+        # self.myDB = DB_Class.DB("myDB")
 
         self.settings_screens_open = []
+
+        myDB = DB_Class.DB("myDB")
+
+        self.camera_details = myDB.get_cameras()
+
+        myDB.close()
 
         # self.sound_object = Alarm.AlarmSound()
 
@@ -658,7 +679,7 @@ class SettingsFrame(wx.Frame):
         icon.CopyFromBitmap(wx.Bitmap("NoamCamLens.ico", wx.BITMAP_TYPE_ANY))
         self.SetIcon(icon)
 
-        self.myDB = DB_Class.DB("myDB")
+        # self.myDB = DB_Class.DB("myDB")
 
         # mac info
         mac_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -733,42 +754,42 @@ class SettingsFrame(wx.Frame):
 
         # Checking if the mac address is valid
         if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", mac_address.lower()):
-
-            if not self.myDB.position_taken(position):
-                try:
-                    position = int(position)
-                except Exception as e:
-                    print("Position must be a number")
-
-                else:
-                    if 1 <= position <= 9:
-
-                        if place.isalpha():
-
-                            if status.lower() == "on" or status.lower() == "off":
-
-                                mac_address = mac_address.higher()
-
-                                # self.myDB.update_mac(self.id)
-                                self.myDB.update_position(mac_address, position)
-                                self.myDB.update_place(mac_address, place)
-                                self.myDB.update_status(mac_address, status)
-
-                                self.display_message("Settings saved successfully")
-
-                                self.Hide()
-
-                            else:
-                                self.display_message("Status must be ON or OFF")
-
-                        else:
-                            self.display_message("Place must be English letters")
-
-                    else:
-                        self.display_message("Position must be between 1 and 9")
-
-            else:
-                self.display_message("Position taken")
+            pass
+            # if not self.myDB.position_taken(position):
+            #     try:
+            #         position = int(position)
+            #     except Exception as e:
+            #         print("Position must be a number")
+            #
+            #     else:
+            #         if 1 <= position <= 9:
+            #
+            #             if place.isalpha():
+            #
+            #                 if status.lower() == "on" or status.lower() == "off":
+            #
+            #                     mac_address = mac_address.higher()
+            #
+            #                     # self.myDB.update_mac(self.id)
+            #                     self.myDB.update_position(mac_address, position)
+            #                     self.myDB.update_place(mac_address, place)
+            #                     self.myDB.update_status(mac_address, status)
+            #
+            #                     self.display_message("Settings saved successfully")
+            #
+            #                     self.Hide()
+            #
+            #                 else:
+            #                     self.display_message("Status must be ON or OFF")
+            #
+            #             else:
+            #                 self.display_message("Place must be English letters")
+            #
+            #         else:
+            #             self.display_message("Position must be between 1 and 9")
+            #
+            # else:
+            #     self.display_message("Position taken")
 
         else:
             self.display_message("Invalid MAC address")

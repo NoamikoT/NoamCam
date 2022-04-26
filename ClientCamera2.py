@@ -8,6 +8,7 @@ import Setting
 import ClientComms
 import imutils
 import queue
+from pubsub import pub
 
 
 class ClientCamera():
@@ -20,6 +21,8 @@ class ClientCamera():
         self.encode_param = None
         self.cap = None
 
+        pub.subscribe(self.close_camera, "CLOSE CAMERA")
+
         threading.Thread(target=self._init_camera, ).start()
 
     def start_camera(self):
@@ -29,6 +32,7 @@ class ClientCamera():
         self.running = False
 
     def close_camera(self):
+        print("Closed the camera")
         self.cap.release()
 
     def _init_camera(self):

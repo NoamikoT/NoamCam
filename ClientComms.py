@@ -1,9 +1,14 @@
 import socket
 import sys
 import threading
+
+import wx
+
 import Setting
 import pickle
 import struct
+import ClientProtocol
+from pubsub import pub
 from uuid import getnode
 
 
@@ -33,11 +38,16 @@ class ClientComms:
         try:
             # Connecting the client's socket to the server socket
             self.my_socket.connect((self.server_ip, self.port))
-            self.my_socket.send_msg(self.mac)
+            if self.port == Setting.GENERAL_PORT:
+                print(self.mac)
+
+                message = ClientProtocol.ClientProtocol.build_mac_send(self.mac)
+                self.send_msg(message)
             print("CONNECTED")
         except Exception as e:
             print(str(self.port), "CLIENT COMMS LINE 34" + str(e))
             self.my_socket.close()
+            self.recv_q.put(("QU", "QU"))
             sys.exit("Can't connect")
 
         if self.port == Setting.GENERAL_PORT:
@@ -51,13 +61,15 @@ class ClientComms:
                 except Exception as e:
                     print("CLIENT COMMS LINE 45" + str(e))
                     self.my_socket.close()
+                    self.recv_q.put(("QU", "QU"))
+                    sys.exit()
 
                 else:
+                    print("CLIENT COMM DATA:", data)
                     # Checking the data isn't empty
                     if len(data) > 0:
-                        code = data[0:2]
-                        if code in ["01", "02", "03", "04"]:
-                            self.recv_q.put((code, data[2:]))
+                        code, data = ClientProtocol.ClientProtocol.unpack(data)
+                        self.recv_q.put((code, data))
 
     def send_msg(self, message):
         """
@@ -65,7 +77,7 @@ class ClientComms:
         :param message: The message to be sent to the server
         :type message: String
         """
-
+        print("SEND MESSAGE CLIENT COMMS:", message)
         # Getting the length of the message
         if type(message) == str:
             message = message.encode()
@@ -111,11 +123,14 @@ class ClientComms:
         self.running = False
 
     def send_video(self, data):
-        size = len(data)
+        try:
+            size = len(data)
 
-        # if img_counter % 10 == 0:
-        self.my_socket.sendall(struct.pack(">L", size) + data)
+            # if img_counter % 10 == 0:
+            self.my_socket.sendall(struct.pack(">L", size) + data)
+        except:
+            pass
 
     def get_macAddress(self):
         """ returns  mac address"""
-        self.mac =  ':'.join(['{:02x}'.format((getnode() >> i) & 0xff) for i in range(0, 8 * 6, 8)][::-1])
+        return ':'.join(['{:02x}'.format((getnode() >> i) & 0xff) for i in range(0, 8 * 6, 8)][::-1])

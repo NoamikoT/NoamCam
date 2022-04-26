@@ -1,14 +1,16 @@
+import os
 import pickle
 import socket
 import threading
 import select
 import struct
-
-import cv2
-
-import Setting
-from pubsub import pub
 import wx
+import cv2
+import DB_Class
+import Setting
+import ServerProtocol
+from pubsub import pub
+
 
 
 class ServerComms:
@@ -16,6 +18,8 @@ class ServerComms:
     def __init__(self, port, recv_q=None):
 
         self.server_socket = socket.socket()  # Initializing the server's socket
+
+        self.myDB = DB_Class.DB("myDB")
 
         self.open_clients = {}  # A dictionary socket -> ip
         self.file_num = 0
@@ -40,7 +44,6 @@ class ServerComms:
         while True:
 
             rlist, wlist, xlist = select.select(list(self.open_clients.keys()) + [self.server_socket], [], [], 0.5)
-
             for current_socket in rlist:
                 if current_socket is self.server_socket:
                     # When a new client connects
@@ -64,20 +67,18 @@ class ServerComms:
                             self.disconnect(current_socket)
 
                         else:
+                            print("IN SERVER DATA:", data)
                             # Checking the data isn't empty
                             if len(data) > 0:
-                                code = data[0:2]
+                                code, message = ServerProtocol.ServerProtocol.unpack(data)
                                 # 01/02 means media file
                                 if code in ["01", "02"]:
                                     file_len = int(data[2:])
                                     self._recv_file(current_socket, code, file_len)
-                                elif code in ["03"]:
-                                    self.recv_q.put((self.open_clients[current_socket], code, data[2:]))
+                                else:
+                                    self.recv_q.put((self.open_clients[current_socket], code, message))
 
-                    elif self.port == Setting.STILLS_PORT:
-                        pass
-
-                    elif self.port == Setting.VIDEO_PORT:
+                    else:
                         data = b""
                         try:
                             while len(data) < self.payload_size:
@@ -105,8 +106,8 @@ class ServerComms:
                                 frame = cv2.imdecode(frame, cv2.IMREAD_COLOR)
 
                                 # TODO: Update view of frame
-                                print("server comm before pub sub")
-                                wx.CallAfter(pub.sendMessage, "update frame", video_frame=frame)
+                                print("server comm before pub sub", self.port)
+                                wx.CallAfter(pub.sendMessage, f"update frame-{self.port}", video_frame=frame)
                                 #cv2.imshow('server', frame)
                                 #cv2.waitKey(1)
 
@@ -139,7 +140,7 @@ class ServerComms:
 
         self.recv_q.put((self.open_clients[soc], code, file_name))
 
-    def send(self, ip, message):
+    def send_message(self, ip, message):
         """
         Sends a message to a client
         :param ip: The IP of the client
