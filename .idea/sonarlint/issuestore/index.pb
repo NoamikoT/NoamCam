@@ -21,9 +21,6 @@ G
 NewG.py,9\d\9d03b2944154aefbf53b396389c60e049d4d5c1f
 >
 ServerLogic.py,6\a\6a58c195cc9cdad19d7b82077379b22a6d85ae02
-:
-
-Testing.py,2\b\2b4ff8028894ca8c595dc0c52e20b5509bb87991
 8
 Test3.py,f\c\fcae82be8f4175e0a22c01026e3968a22165c859
 7
@@ -42,9 +39,9 @@ H
 SaveOldServerGraphics.py,5\e\5e09bfa2ad0e99babcb896f8e86eb96035851e27
 A
 ServerProtocol.py,e\c\ec918bb6e23e50f3190c8fe82e528da076c3fc76
-A
-ServerGraphics.py,0\4\04c22317cbc877beb736f9fef71f210d8fd3059b
 ;
 DB_Class.py,e\4\e4e54efb5496cefef9075953a0db8cf9463ff235
+A
+ServerGraphics.py,0\4\04c22317cbc877beb736f9fef71f210d8fd3059b
 8
 Alarm.py,2\1\211b1c0273bab41b181421b51bdeb0f3b30bbb63

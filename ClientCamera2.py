@@ -34,7 +34,7 @@ class ClientCamera():
 
         try:
             # Capturing video from the webcam
-            self.cap = cv2.VideoCapture(0)
+            self.cap = cv2.VideoCapture(cv2.CAP_DSHOW)
         except Exception:
             print("Couldn't connect to camera")
             sys.exit("Check camera")
@@ -61,7 +61,7 @@ class ClientCamera():
                 # Read the frame
                 ret, frame = self.cap.read()
 
-                frame = imutils.resize(frame, width=320)
+                frame = cv2.resize(frame, dsize=(347, 197), interpolation=cv2.INTER_AREA)
                 # frame = cv2.flip(frame, 180)
                 result, image = cv2.imencode('.jpg', frame, self.encode_param)
                 data = pickle.dumps(image, 0)
