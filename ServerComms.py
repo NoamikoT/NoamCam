@@ -7,6 +7,8 @@ import struct
 import cv2
 
 import Setting
+from pubsub import pub
+import wx
 
 
 class ServerComms:
@@ -103,8 +105,10 @@ class ServerComms:
                                 frame = cv2.imdecode(frame, cv2.IMREAD_COLOR)
 
                                 # TODO: Update view of frame
-                                cv2.imshow('server', frame)
-                                cv2.waitKey(1)
+                                print("server comm before pub sub")
+                                wx.CallAfter(pub.sendMessage, "update frame", video_frame=frame)
+                                #cv2.imshow('server', frame)
+                                #cv2.waitKey(1)
 
     def _recv_file(self, soc, code, file_len):
         """

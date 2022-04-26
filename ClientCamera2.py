@@ -7,6 +7,7 @@ import os
 import Setting
 import ClientComms
 import imutils
+import queue
 
 
 class ClientCamera():
@@ -26,6 +27,9 @@ class ClientCamera():
 
     def stop_camera(self):
         self.running = False
+
+    def close_camera(self):
+        self.cap.release()
 
     def _init_camera(self):
         """
@@ -56,7 +60,7 @@ class ClientCamera():
         The function handles the camera, takes frames and pushes them into the queue, calls face detection if needed
         """
         while True:
-
+            count = 0
             while self.running:
                 # Read the frame
                 ret, frame = self.cap.read()
@@ -66,7 +70,10 @@ class ClientCamera():
                 result, image = cv2.imencode('.jpg', frame, self.encode_param)
                 data = pickle.dumps(image, 0)
 
-                self.video_comm.send_video(data)
+                if count%5 == 0:
+                    self.video_comm.send_video(data)
+                    count = 0
+                count+=1
 
                 # if img_counter % 10 == 0:
                 # img_counter += 1
@@ -75,9 +82,11 @@ class ClientCamera():
                     break
 
 if __name__ == '__main__':
+
+    rcv_q = queue.Queue()
     client_video = ClientComms.ClientComms(Setting.VIDEO_PORT)
     # client_stills = ClientComms.ClientComms(Setting.STILLS_PORT)
-    # client_command = ClientComms.ClientComms(Setting.GENERAL_PORT)
+    # client_command = ClientComms.ClientComms(Setting.GENERAL_PORT, rcv_q)
 
     client_camera = ClientCamera(client_video, None)
 

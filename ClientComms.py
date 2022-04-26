@@ -4,6 +4,9 @@ import threading
 import Setting
 import pickle
 import struct
+from uuid import getnode
+
+
 
 
 class ClientComms:
@@ -17,6 +20,7 @@ class ClientComms:
         self.recv_q = recv_q  # The queue where messages get stored to and read
 
         self.running = False
+        self.mac = self.get_macAddress()
 
         # Starting the thread that runs the main loop constantly
         threading.Thread(target=self._main_loop, ).start()
@@ -29,6 +33,7 @@ class ClientComms:
         try:
             # Connecting the client's socket to the server socket
             self.my_socket.connect((self.server_ip, self.port))
+            self.my_socket.send_msg(self.mac)
             print("CONNECTED")
         except Exception as e:
             print(str(self.port), "CLIENT COMMS LINE 34" + str(e))
@@ -54,7 +59,7 @@ class ClientComms:
                         if code in ["01", "02", "03", "04"]:
                             self.recv_q.put((code, data[2:]))
 
-    def send(self, message):
+    def send_msg(self, message):
         """
         The function sends a message to the server
         :param message: The message to be sent to the server
@@ -110,3 +115,7 @@ class ClientComms:
 
         # if img_counter % 10 == 0:
         self.my_socket.sendall(struct.pack(">L", size) + data)
+
+    def get_macAddress(self):
+        """ returns  mac address"""
+        self.mac =  ':'.join(['{:02x}'.format((getnode() >> i) & 0xff) for i in range(0, 8 * 6, 8)][::-1])

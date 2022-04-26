@@ -8,6 +8,9 @@ import DB_Class
 import sys
 import wx.adv
 import wx.lib.scrolledpanel
+from pubsub import pub
+import ServerComms
+import Setting
 
 
 class LoginDialog(wx.Dialog):
@@ -92,8 +95,6 @@ class CameraPanel(wx.Panel):
         self.start_y = start_y
         self.position_number = position_number
 
-        self.capture = cv2.VideoCapture(cv2.CAP_DSHOW)
-
         self.SetBackgroundColour("white")
         self.Bind(wx.EVT_PAINT, self.OnPaint)
 
@@ -113,42 +114,64 @@ class CameraPanel(wx.Panel):
         settings = wx.Button(self, label='Settings', pos=(200, 235))
         settings.Bind(wx.EVT_BUTTON, self.settings_screen)
 
-        if position_number == 1:
-            self.imgSizer = (1900, 1000)
-            self.image = wx.EmptyImage(self.imgSizer[0], self.imgSizer[1])
-            self.imageBit = wx.BitmapFromImage(self.image)
-            self.staticBit = wx.StaticBitmap(self, wx.ID_ANY, self.imageBit)
+    #     if position_number == 1:
+        self.imgSizer = (1900, 1000)
+        self.image = wx.EmptyImage(self.imgSizer[0], self.imgSizer[1])
+        self.imageBit = wx.BitmapFromImage(self.image)
+        self.staticBit = wx.StaticBitmap(self, wx.ID_ANY, self.imageBit)
+
+        self.width = 347
+        self.height = 197
 
 
 
-            ret, self.frame = self.capture.read()
-            # self.frame = imutils.resize(self.frame, width=347, height=197, interpolation = cv2.INTER_AREA)
-            self.frame = cv2.resize(self.frame, dsize=(347, 197), interpolation=cv2.INTER_AREA)
+        pub.subscribe(self.update_frame, "update frame")
+
+        #ret, self.data = self.capture.read()
+        # self.frame = imutils.resize(self.frame, width=347, height=197, interpolation = cv2.INTER_AREA)
+        #self.data = cv2.resize(self.data, dsize=(347, 197), interpolation=cv2.INTER_AREA)
 
 
-            if ret:
-                self.width = 347
-                self.height = 197
-                self.bmp = wx.BitmapFromBuffer(self.width, self.height, self.frame)
-
-                self.timex = wx.Timer(self)
-                self.timex.Start(1000. / 24)
-                self.Bind(wx.EVT_TIMER, self.redraw)
-                self.SetSize(self.imgSizer)
-            else:
-                print("Error no webcam image")
-            # self.SetSizer(self.vbox)
-            # self.vbox.Fit(self)
-            # self.Show()
-
+        # if ret:
+        #     self.width = 347
+        #     self.height = 197
+        #     self.bmp = wx.BitmapFromBuffer(self.width, self.height, self.data)
+        #
+        #     self.timex = wx.Timer(self)
+        #     self.timex.Start(1000. / 24)
+        #     self.Bind(wx.EVT_TIMER, self.redraw)
+        #     self.SetSize(self.imgSizer)
+        #
+        # else:
+        #     print("Error no webcam image")
+        # self.SetSizer(self.vbox)
+        # self.vbox.Fit(self)
+        # self.Show()
+    #
+    #     #self.frame.Layout()
+    #
     def redraw(self, e):
-        ret, self.frame = self.capture.read()
+        ret, self.data = self.capture.read()
         if ret:
-            self.frame = cv2.resize(self.frame, (347, 197), interpolation=cv2.INTER_AREA)
-            self.frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
-            self.bmp.CopyFromBuffer(self.frame)
+            self.data = cv2.resize(self.data, (347, 197), interpolation=cv2.INTER_AREA)
+            self.data = cv2.cvtColor(self.data, cv2.COLOR_BGR2RGB)
+            self.bmp.CopyFromBuffer(self.data)
             self.staticBit.SetBitmap(self.bmp)
-            # self.Refresh()
+        # self.Refresh()
+
+
+    def update_frame(self, video_frame):
+        print("in update frame")
+        self.bmp = wx.BitmapFromBuffer(self.width, self.height, video_frame)
+
+        data = cv2.resize(video_frame, (347, 197), interpolation=cv2.INTER_AREA)
+        data = cv2.cvtColor(data, cv2.COLOR_BGR2RGB)
+        self.bmp.CopyFromBuffer(data)
+        self.staticBit.SetBitmap(self.bmp)
+
+        self.Refresh()
+
+
 
     def alert_call(self, e):
         print("Called alert")
@@ -760,6 +783,7 @@ class SettingsFrame(wx.Frame):
 
 
 if __name__ == "__main__":
+    server = ServerComms.ServerComms(Setting.VIDEO_PORT)
     app = wx.App(False)
     frame = MainFrame(426, 98)
     app.MainLoop()
