@@ -39,9 +39,3 @@ H
 SaveOldServerGraphics.py,5\e\5e09bfa2ad0e99babcb896f8e86eb96035851e27
 A
 ServerProtocol.py,e\c\ec918bb6e23e50f3190c8fe82e528da076c3fc76
-;
-DB_Class.py,e\4\e4e54efb5496cefef9075953a0db8cf9463ff235
-A
-ServerGraphics.py,0\4\04c22317cbc877beb736f9fef71f210d8fd3059b
-8
-Alarm.py,2\1\211b1c0273bab41b181421b51bdeb0f3b30bbb63

@@ -8,9 +8,8 @@ import wx
 import Setting
 
 
-
-
 def handle_mac_address(ip, mac, server):
+    """Handling the mac address of a user"""
     myDB = DB_Class.DB("myDB")
 
     print(mac)
@@ -25,12 +24,13 @@ def handle_mac_address(ip, mac, server):
 
     myDB.close()
 
-operation_dic = {}
-operation_dic['05'] = handle_mac_address
+
+# A dictionary of functions
+operation_dic = {'05': handle_mac_address}
 
 
-
-def handle_recieve_message(recv_q, server):
+def handle_receive_message(recv_q, server):
+    """Handling the received message"""
     while True:
         ip, code, data = recv_q.get()
         if code in operation_dic.keys():
@@ -38,11 +38,16 @@ def handle_recieve_message(recv_q, server):
 
 
 if __name__ == '__main__':
+    # Create a queue to receive the messages
     recv_q = queue.Queue()
+
+    # Create a server object
     server = ServerComms.ServerComms(Setting.GENERAL_PORT, recv_q)
 
+    # Create a thread to handle the received message in the background
+    threading.Thread(target=handle_receive_message, args=(recv_q, server,)).start()
 
-    threading.Thread(target=handle_recieve_message, args=(recv_q, server, )).start()
+    # Launching the app (ServerGraphics - WXPython)
     app = wx.App(False)
     graphics = ServerGraphics.MainFrame(server)
     app.MainLoop()

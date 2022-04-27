@@ -493,11 +493,11 @@ class DB:
 
     def get_port_by_mac(self, mac_address):
         """
-        Returns the place of the camera by the camera's MAC address(CAMERA_TAB)
+        Returns the port of the camera by the camera's MAC address(CAMERA_TAB)
         :param mac_address: The MAC address of the camera
         :type mac_address: String
-        :return: Returns the place corresponding to the MAC address
-        :rtype: String inside a tuple inside a list [("Living Room")]
+        :return: Returns the port corresponding to the MAC address
+        :rtype: String inside a tuple inside a list [(2012)]
         """
 
         ret_value = None

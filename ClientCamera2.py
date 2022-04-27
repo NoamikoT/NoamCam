@@ -69,7 +69,7 @@ class ClientCamera():
                 # Read the frame
                 ret, frame = self.cap.read()
 
-                frame = cv2.resize(frame, dsize=(347, 197), interpolation=cv2.INTER_AREA)
+                frame = cv2.resize(frame, dsize=(530, 300), interpolation=cv2.INTER_AREA)
                 # frame = cv2.flip(frame, 180)
                 result, image = cv2.imencode('.jpg', frame, self.encode_param)
                 data = pickle.dumps(image, 0)

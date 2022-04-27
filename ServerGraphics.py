@@ -90,7 +90,7 @@ class CameraPanel(wx.Panel):
 
     # ----------------------------------------------------------------------
     def __init__(self, parent, start_x, start_y, position_number, port):
-        wx.Panel.__init__(self, parent, pos=(start_x, start_y), size=(347, 267))
+        wx.Panel.__init__(self, parent, pos=(start_x, start_y), size=(530, 330))
 
         self.parent = parent
         self.start_x = start_x
@@ -104,16 +104,16 @@ class CameraPanel(wx.Panel):
 
         self.parent.parent.settings_screens_open.append(self.settings_frame)
 
-        self.alert = wx.Button(self, label='Alert', pos=(50, 205))
+        self.alert = wx.Button(self, label='Alert', pos=(0, 332))
         self.alert.Bind(wx.EVT_BUTTON, self.alert_call)
 
-        self.face = wx.ToggleButton(self, label='Face', pos=(50, 235))
+        self.face = wx.ToggleButton(self, label='Face', pos=(125, 332))
         self.face.Bind(wx.EVT_TOGGLEBUTTON, self.toggle_face_detection)
 
-        self.zoom = wx.Button(self, label='Zoom', pos=(200, 205))
+        self.zoom = wx.Button(self, label='Zoom', pos=(250, 332))
         self.zoom.Bind(wx.EVT_BUTTON, self.call_zoom_screen)
 
-        settings = wx.Button(self, label='Settings', pos=(200, 235))
+        settings = wx.Button(self, label='Settings', pos=(475, 332))
         settings.Bind(wx.EVT_BUTTON, self.settings_screen)
 
     #     if position_number == 1:
@@ -122,8 +122,8 @@ class CameraPanel(wx.Panel):
         self.imageBit = wx.BitmapFromImage(self.image)
         self.staticBit = wx.StaticBitmap(self, wx.ID_ANY, self.imageBit)
 
-        self.width = 347
-        self.height = 197
+        self.width = 530
+        self.height = 300
 
         self.port = port
 
@@ -155,7 +155,7 @@ class CameraPanel(wx.Panel):
     def redraw(self, e):
         ret, self.data = self.capture.read()
         if ret:
-            self.data = cv2.resize(self.data, (347, 197), interpolation=cv2.INTER_AREA)
+            self.data = cv2.resize(self.data, (530, 300), interpolation=cv2.INTER_AREA)
             self.data = cv2.cvtColor(self.data, cv2.COLOR_BGR2RGB)
             self.bmp.CopyFromBuffer(self.data)
             self.staticBit.SetBitmap(self.bmp)
@@ -166,7 +166,7 @@ class CameraPanel(wx.Panel):
         print("in update frame", self.port)
         self.bmp = wx.BitmapFromBuffer(self.width, self.height, video_frame)
 
-        data = cv2.resize(video_frame, (347, 197), interpolation=cv2.INTER_AREA)
+        data = cv2.resize(video_frame, (530, 300), interpolation=cv2.INTER_AREA)
         data = cv2.cvtColor(data, cv2.COLOR_BGR2RGB)
         self.bmp.CopyFromBuffer(data)
         self.staticBit.SetBitmap(self.bmp)
@@ -210,12 +210,12 @@ class CameraPanel(wx.Panel):
         # Black filled rectangle
         dc.SetPen(wx.Pen("black"))
         dc.SetBrush(wx.Brush("black"))
-        dc.DrawRectangle(0, 0, 347, 197)
+        dc.DrawRectangle(0, 0, 530, 300)
 
         # Red filled rectangle
         dc.SetPen(wx.Pen("red"))
         dc.SetBrush(wx.Brush("red"))
-        dc.DrawRectangle(0, 0 + 197, 347, 70)
+        dc.DrawRectangle(0, 330, 530, 30)
 
 
 class ZoomPanel(wx.Panel):
@@ -494,18 +494,18 @@ class MainPanel(wx.Panel):
 
         # First row
         self.camera_panels.append(CameraPanel(self, start_x, start_y, 1, port_for_position[1]))
-        self.camera_panels.append(CameraPanel(self, start_x + 349, start_y, 2, port_for_position[2]))
-        self.camera_panels.append(CameraPanel(self, start_x + 698, start_y, 3, port_for_position[3]))
+        self.camera_panels.append(CameraPanel(self, start_x + 530, start_y, 2, port_for_position[2]))
+        self.camera_panels.append(CameraPanel(self, start_x + 1060, start_y, 3, port_for_position[3]))
 
         # Second row
-        self.camera_panels.append(CameraPanel(self, start_x, start_y + 269, 4, port_for_position[4]))
-        self.camera_panels.append(CameraPanel(self, start_x + 349, start_y + 269, 5, port_for_position[5]))
-        self.camera_panels.append(CameraPanel(self, start_x + 698, start_y + 269, 6, port_for_position[6]))
+        self.camera_panels.append(CameraPanel(self, start_x, start_y + 330, 4, port_for_position[4]))
+        self.camera_panels.append(CameraPanel(self, start_x + 530, start_y + 330, 5, port_for_position[5]))
+        self.camera_panels.append(CameraPanel(self, start_x + 1060, start_y + 330, 6, port_for_position[6]))
 
         # Third row
-        self.camera_panels.append(CameraPanel(self, start_x, start_y + 538, 7, port_for_position[7]))
-        self.camera_panels.append(CameraPanel(self, start_x + 349, start_y + 538, 8, port_for_position[8]))
-        self.camera_panels.append(CameraPanel(self, start_x + 698, start_y + 538, 9, port_for_position[9]))
+        self.camera_panels.append(CameraPanel(self, start_x, start_y + 660, 7, port_for_position[7]))
+        self.camera_panels.append(CameraPanel(self, start_x + 530, start_y + 330, 8, port_for_position[8]))
+        self.camera_panels.append(CameraPanel(self, start_x + 1060, start_y + 330, 9, port_for_position[9]))
 
         # Log out button
         self.logout_button = wx.Button(self, label='Log out', pos=(1770, 50))
@@ -525,14 +525,14 @@ class MainPanel(wx.Panel):
 
         # Presenting the name of the user to the screen
         # text_panel = wx.Panel(self, pos=(0, 0), size=(1900, 1000))
-        text_hello_box = wx.BoxSizer(wx.HORIZONTAL)
-
-        font = wx.Font(25, wx.MODERN, wx.NORMAL, wx.BOLD)
-        lbl = wx.StaticText(self, style=wx.ALIGN_CENTER)
-        lbl.SetFont(font)
-        lbl.SetLabel(f'Hello {username}!')
-
-        text_hello_box.Add(lbl, 0, wx.ALIGN_CENTER)
+        # text_hello_box = wx.BoxSizer(wx.HORIZONTAL)
+        #
+        # font = wx.Font(25, wx.MODERN, wx.NORMAL, wx.BOLD)
+        # lbl = wx.StaticText(self, style=wx.ALIGN_CENTER)
+        # lbl.SetFont(font)
+        # lbl.SetLabel(f'Hello {username}!')
+        #
+        # text_hello_box.Add(lbl, 0, wx.ALIGN_CENTER)
 
         self.Layout()
 
@@ -577,8 +577,8 @@ class MainFrame(wx.Frame):
 
         self.server = server
 
-        self.start_x = 426
-        self.start_y = 98
+        self.start_x = 0
+        self.start_y = 0
 
         # self.myDB = DB_Class.DB("myDB")
 
@@ -806,5 +806,5 @@ class SettingsFrame(wx.Frame):
 if __name__ == "__main__":
     server = ServerComms.ServerComms(Setting.VIDEO_PORT)
     app = wx.App(False)
-    frame = MainFrame(426, 98)
+    frame = MainFrame()
     app.MainLoop()
