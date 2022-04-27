@@ -90,37 +90,44 @@ class CameraPanel(wx.Panel):
 
     # ----------------------------------------------------------------------
     def __init__(self, parent, start_x, start_y, position_number, port):
-        wx.Panel.__init__(self, parent, pos=(start_x, start_y), size=(530, 330))
+        wx.Panel.__init__(self, parent, size=(530, 330))
 
         self.parent = parent
         self.start_x = start_x
         self.start_y = start_y
         self.position_number = position_number
 
+        self.imgSizer = (530, 300)
+        self.image = wx.EmptyImage(self.imgSizer[0], self.imgSizer[1])
+        self.imageBit = wx.BitmapFromImage(self.image)
+        self.staticBit = wx.StaticBitmap(self, wx.ID_ANY, self.imageBit)
+
         self.SetBackgroundColour("white")
         self.Bind(wx.EVT_PAINT, self.OnPaint)
+
+        # self.button_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        # self.button_sizer.SetDimension(x=0, y=300, width=530, height=30)
 
         self.settings_frame = SettingsFrame(self.position_number)
 
         self.parent.parent.settings_screens_open.append(self.settings_frame)
 
-        self.alert = wx.Button(self, label='Alert', pos=(0, 332))
+        self.alert = wx.Button(self, label='Alert', pos=(33, 302))
         self.alert.Bind(wx.EVT_BUTTON, self.alert_call)
 
-        self.face = wx.ToggleButton(self, label='Face', pos=(125, 332))
+        self.face = wx.ToggleButton(self, label='Face', pos=(158, 302))
         self.face.Bind(wx.EVT_TOGGLEBUTTON, self.toggle_face_detection)
 
-        self.zoom = wx.Button(self, label='Zoom', pos=(250, 332))
+        self.zoom = wx.Button(self, label='Zoom', pos=(283, 302))
         self.zoom.Bind(wx.EVT_BUTTON, self.call_zoom_screen)
 
-        settings = wx.Button(self, label='Settings', pos=(475, 332))
-        settings.Bind(wx.EVT_BUTTON, self.settings_screen)
+        self.settings = wx.Button(self, label='Settings', pos=(408, 302))
+        self.settings.Bind(wx.EVT_BUTTON, self.settings_screen)
 
-    #     if position_number == 1:
-        self.imgSizer = (1900, 1000)
-        self.image = wx.EmptyImage(self.imgSizer[0], self.imgSizer[1])
-        self.imageBit = wx.BitmapFromImage(self.image)
-        self.staticBit = wx.StaticBitmap(self, wx.ID_ANY, self.imageBit)
+        # self.button_sizer.AddMany([self.alert, self.face, self.zoom, self.settings])
+
+
+
 
         self.width = 530
         self.height = 300
@@ -128,6 +135,14 @@ class CameraPanel(wx.Panel):
         self.port = port
 
         pub.subscribe(self.update_frame, f"update frame-{self.port}")
+
+
+
+        # self.SetSizer(self.button_sizer)
+
+        self.Layout()
+        self.Show()
+
 
         #ret, self.data = self.capture.read()
         # self.frame = imutils.resize(self.frame, width=347, height=197, interpolation = cv2.INTER_AREA)
@@ -215,7 +230,7 @@ class CameraPanel(wx.Panel):
         # Red filled rectangle
         dc.SetPen(wx.Pen("red"))
         dc.SetBrush(wx.Brush("red"))
-        dc.DrawRectangle(0, 330, 530, 30)
+        dc.DrawRectangle(0, 300, 530, 30)
 
 
 class ZoomPanel(wx.Panel):
@@ -409,68 +424,68 @@ class ListFrame(wx.Frame):
     # def OnClear(self, event):
     #     self.listbox.Clear()
 
-
-class AllCamerasPanel(wx.Panel):
-
-    def __init__(self, parent):
-
-        wx.Panel.__init__(self, parent, size=(1900, 1000))
-
-        self.parent = parent
-        # self.myDB = DB_Class.DB("myDB")
-
-        self.last_selected = None
-
-        # cameras_list = self.myDB.get_cameras()
-
-        # Setting the background to white
-        self.SetBackgroundColour("white")
-
-        # Log out button
-        self.logout_button = wx.Button(self, label='Log out', pos=(1770, 50))
-        self.logout_button.SetBackgroundColour((245, 66, 66, 255))
-        self.logout_button.Bind(wx.EVT_BUTTON, self.logout_button_pressed)
-
-        # Back button
-        self.back_button = wx.Button(self, label='Back', pos=(25, 50))
-        # self.back_button.SetBackgroundColour((245, 66, 66, 255))
-        self.back_button.Bind(wx.EVT_BUTTON, self.back_button_pressed)
-        
-        # scrolled panel
-        self.scrollP = wx.lib.scrolledpanel.ScrolledPanel(self, -1, size=(426, 400), pos=(740, 400), style=wx.SIMPLE_BORDER)
-        self.scrollP.SetAutoLayout(1)
-        self.scrollP.SetupScrolling()
-        self.scrollP.SetBackgroundColour('#FFFFFF')
-
-        cameras_id_and_names = []
-
-        for camera in cameras_list:
-            cameras_id_and_names.append((str(camera[4]) + " - " + camera[2]))
-
-        self.spSizer = wx.BoxSizer(wx.VERTICAL)
-        for word in cameras_id_and_names:
-            text = wx.TextCtrl(self.scrollP, value=word)
-            text.Bind(wx.EVT_CHILD_FOCUS, self.file_selected)
-            self.spSizer.Add(text)
-        self.scrollP.SetSizer(self.spSizer)
-
-    def file_selected(self, event):
-
-        self.last_selected = event.GetWindow().GetValue()
-
-        id = self.last_selected.split(" - ")[0]
-
-        self.current_settings_frame = SettingsFrame(id)
-        self.current_settings_frame.Show()
-
-        print(event.GetWindow().GetValue())
-
-    def logout_button_pressed(self, e):
-
-        self.parent.main_panel.logout_button_pressed(e)
-
-    def back_button_pressed(self, e):
-        self.parent.hide_all_cameras_panel()
+#
+# class AllCamerasPanel(wx.Panel):
+#
+#     def __init__(self, parent):
+#
+#         wx.Panel.__init__(self, parent, size=(1900, 1000))
+#
+#         self.parent = parent
+#         # self.myDB = DB_Class.DB("myDB")
+#
+#         self.last_selected = None
+#
+#         # cameras_list = self.myDB.get_cameras()
+#
+#         # Setting the background to white
+#         self.SetBackgroundColour("white")
+#
+#         # Log out button
+#         self.logout_button = wx.Button(self, label='Log out', pos=(1770, 50))
+#         self.logout_button.SetBackgroundColour((245, 66, 66, 255))
+#         self.logout_button.Bind(wx.EVT_BUTTON, self.logout_button_pressed)
+#
+#         # Back button
+#         self.back_button = wx.Button(self, label='Back', pos=(25, 50))
+#         # self.back_button.SetBackgroundColour((245, 66, 66, 255))
+#         self.back_button.Bind(wx.EVT_BUTTON, self.back_button_pressed)
+#
+#         # scrolled panel
+#         self.scrollP = wx.lib.scrolledpanel.ScrolledPanel(self, -1, size=(426, 400), pos=(740, 400), style=wx.SIMPLE_BORDER)
+#         self.scrollP.SetAutoLayout(1)
+#         self.scrollP.SetupScrolling()
+#         self.scrollP.SetBackgroundColour('#FFFFFF')
+#
+#         cameras_id_and_names = []
+#
+#         for camera in cameras_list:
+#             cameras_id_and_names.append((str(camera[4]) + " - " + camera[2]))
+#
+#         self.spSizer = wx.BoxSizer(wx.VERTICAL)
+#         for word in cameras_id_and_names:
+#             text = wx.TextCtrl(self.scrollP, value=word)
+#             text.Bind(wx.EVT_CHILD_FOCUS, self.file_selected)
+#             self.spSizer.Add(text)
+#         self.scrollP.SetSizer(self.spSizer)
+#
+#     def file_selected(self, event):
+#
+#         self.last_selected = event.GetWindow().GetValue()
+#
+#         id = self.last_selected.split(" - ")[0]
+#
+#         self.current_settings_frame = SettingsFrame(id)
+#         self.current_settings_frame.Show()
+#
+#         print(event.GetWindow().GetValue())
+#
+#     def logout_button_pressed(self, e):
+#
+#         self.parent.main_panel.logout_button_pressed(e)
+#
+#     def back_button_pressed(self, e):
+#         self.parent.hide_all_cameras_panel()
 
 
 class MainPanel(wx.Panel):
@@ -489,6 +504,8 @@ class MainPanel(wx.Panel):
 
         port_for_position = {}
 
+
+
         for pos,port in ports:
             port_for_position[pos] = port
 
@@ -504,8 +521,8 @@ class MainPanel(wx.Panel):
 
         # Third row
         self.camera_panels.append(CameraPanel(self, start_x, start_y + 660, 7, port_for_position[7]))
-        self.camera_panels.append(CameraPanel(self, start_x + 530, start_y + 330, 8, port_for_position[8]))
-        self.camera_panels.append(CameraPanel(self, start_x + 1060, start_y + 330, 9, port_for_position[9]))
+        self.camera_panels.append(CameraPanel(self, start_x + 530, start_y + 660, 8, port_for_position[8]))
+        self.camera_panels.append(CameraPanel(self, start_x + 1060, start_y + 660, 9, port_for_position[9]))
 
         # Log out button
         self.logout_button = wx.Button(self, label='Log out', pos=(1770, 50))
@@ -519,7 +536,7 @@ class MainPanel(wx.Panel):
         self.Bind(wx.EVT_BUTTON, self.settings_button_pressed, self.settings_button)
 
         # Info button
-        self.info_button = wx.Button(self, label='Info', pos=(25, 910))
+        self.info_button = wx.Button(self, label='Info', pos=(1770, 910))
         self.info_button.Bind(wx.EVT_BUTTON, self.onAbout)
 
 
@@ -534,6 +551,15 @@ class MainPanel(wx.Panel):
         #
         # text_hello_box.Add(lbl, 0, wx.ALIGN_CENTER)
 
+        self.sizer_contain_sizer = wx.BoxSizer()
+        self.sizer_contain_sizer.SetDimension(0, 0, 1590, 990)
+
+        self.main_sizer = wx.GridSizer(3, 3, 0, 0)
+        self.main_sizer.AddMany(self.camera_panels)
+
+        self.sizer_contain_sizer.Add(self.main_sizer,0)
+
+        self.SetSizer(self.sizer_contain_sizer)
         self.Layout()
 
     def settings_button_pressed(self, e):
@@ -573,7 +599,9 @@ class MainFrame(wx.Frame):
     def __init__(self, server):
         """Constructor"""
 
-        super().__init__(None, size=(1900, 1000), title="Main Screen", style = wx.DEFAULT_FRAME_STYLE & ~wx.MAXIMIZE_BOX ^ wx.RESIZE_BORDER)
+        super().__init__(None, size=(1900, 1029), title="Main Screen", style = wx.DEFAULT_FRAME_STYLE & ~wx.MAXIMIZE_BOX ^ wx.RESIZE_BORDER)
+
+        self.SetSize(1900, 1029)
 
         self.server = server
 
@@ -609,9 +637,9 @@ class MainFrame(wx.Frame):
 
         self.create_main_panel()
 
-        # Locking the size of the frame
-        self.SetMaxSize(wx.Size(1900, 1000))
-        self.SetMinSize(wx.Size(1900, 1000))
+        # # Locking the size of the frame
+        # self.SetMaxSize(wx.Size(1900, 1000))
+        # self.SetMinSize(wx.Size(1900, 1000))
 
         # Setting the icon of the frame
         icon = wx.Icon()
@@ -623,6 +651,7 @@ class MainFrame(wx.Frame):
         # Showing and centring the frame in the screen
         self.Show()
         self.Centre()
+
 
     def hide_all_settings(self):
         for settings in self.settings_screens_open:

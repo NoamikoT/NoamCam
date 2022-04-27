@@ -70,6 +70,11 @@ class ClientComms:
                     if len(data) > 0:
                         code, data = ClientProtocol.ClientProtocol.unpack(data)
                         self.recv_q.put((code, data))
+                    else:
+                        print("CLIENT COMMS LINE 74")
+                        self.my_socket.close()
+                        self.recv_q.put(("QU", "QU"))
+                        sys.exit()
 
     def send_msg(self, message):
         """

@@ -78,6 +78,9 @@ class ServerComms:
                                 else:
                                     self.recv_q.put((self.open_clients[current_socket], code, message))
 
+                            else:
+                                self.disconnect(current_socket)
+
                     else:
                         data = b""
                         try:
@@ -86,6 +89,7 @@ class ServerComms:
 
                         except Exception as e:
                             print("Line 81:", str(e))
+                            self.disconnect(current_socket)
 
                         else:
 
@@ -98,6 +102,7 @@ class ServerComms:
                                     data += current_socket.recv(4096)
                             except Exception as e:
                                 print("Line 94:", str(e))
+                                self.disconnect(current_socket)
                             else:
                                 frame_data = data[:msg_size]
                                 data = data[msg_size:]
@@ -186,6 +191,7 @@ class ServerComms:
 
         if soc in self.open_clients.keys():
             print(f"Disconnected {self.open_clients[soc]}")
+            soc.close()
             del self.open_clients[soc]
 
 if __name__ == '__main__':

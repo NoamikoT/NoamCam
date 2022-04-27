@@ -12,6 +12,7 @@ def open_video_stills_comms(port):
     client_camera.start_camera()
     x = quit_q.get()
     client_camera.stop_camera()
+    client_camera.close_camera()
     # stills_clinet_comms = ClientComms.ClientComms(port + 1)
 
 
