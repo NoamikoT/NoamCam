@@ -34,47 +34,50 @@ class ClientComms:
         """
         The function connects to the server and listens, every new message gets put into recv_q
         """
+        while True:
+            self.my_socket=socket.socket()
+            try:
+                # Connecting the client's socket to the server socket
+                self.my_socket.connect((self.server_ip, self.port))
+                if self.port == Setting.GENERAL_PORT:
+                    print(self.mac)
 
-        try:
-            # Connecting the client's socket to the server socket
-            self.my_socket.connect((self.server_ip, self.port))
-            if self.port == Setting.GENERAL_PORT:
-                print(self.mac)
+                    message = ClientProtocol.ClientProtocol.build_mac_send(self.mac)
+                    self.send_msg(message)
+                print("CONNECTED")
+            except Exception as e:
+                print(str(self.port), "CLIENT COMMS LINE 34" + str(e))
+                self.my_socket.close()
+                # self.recv_q.put(("QU", "QU"))
+                # sys.exit("Can't connect")
+            else:
+                if self.port == Setting.GENERAL_PORT:
+                    while True:
+                        print("IN WHILE")
+                        # Receiving the length and data
+                        try:
+                            length = self.my_socket.recv(8).decode()
+                            data = self.my_socket.recv(int(length)).decode()
 
-                message = ClientProtocol.ClientProtocol.build_mac_send(self.mac)
-                self.send_msg(message)
-            print("CONNECTED")
-        except Exception as e:
-            print(str(self.port), "CLIENT COMMS LINE 34" + str(e))
-            self.my_socket.close()
-            self.recv_q.put(("QU", "QU"))
-            sys.exit("Can't connect")
+                        except Exception as e:
+                            print("CLIENT COMMS LINE 45" + str(e))
+                            self.my_socket.close()
+                            # self.recv_q.put(("QU", "QU"))
+                            break
+                            # sys.exit()
 
-        if self.port == Setting.GENERAL_PORT:
-            while True:
-                print("IN WHILE")
-                # Receiving the length and data
-                try:
-                    length = self.my_socket.recv(8).decode()
-                    data = self.my_socket.recv(int(length)).decode()
-
-                except Exception as e:
-                    print("CLIENT COMMS LINE 45" + str(e))
-                    self.my_socket.close()
-                    self.recv_q.put(("QU", "QU"))
-                    sys.exit()
-
-                else:
-                    print("CLIENT COMM DATA:", data)
-                    # Checking the data isn't empty
-                    if len(data) > 0:
-                        code, data = ClientProtocol.ClientProtocol.unpack(data)
-                        self.recv_q.put((code, data))
-                    else:
-                        print("CLIENT COMMS LINE 74")
-                        self.my_socket.close()
-                        self.recv_q.put(("QU", "QU"))
-                        sys.exit()
+                        else:
+                            print("CLIENT COMM DATA:", data)
+                            # Checking the data isn't empty
+                            if len(data) > 0:
+                                code, data = ClientProtocol.ClientProtocol.unpack(data)
+                                self.recv_q.put((code, data))
+                            else:
+                                print("CLIENT COMMS LINE 74")
+                                self.my_socket.close()
+                                # self.recv_q.put(("QU", "QU"))
+                                break
+                                # sys.exit()
 
     def send_msg(self, message):
         """

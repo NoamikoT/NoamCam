@@ -68,22 +68,27 @@ class ClientCamera():
             while self.running:
                 # Read the frame
                 ret, frame = self.cap.read()
+                print(ret)
+                if ret or frame!=None:
+                    frame = cv2.resize(frame, dsize=(530, 300), interpolation=cv2.INTER_AREA)
+                    # frame = cv2.flip(frame, 180)
+                    result, image = cv2.imencode('.jpg', frame, self.encode_param)
+                    data = pickle.dumps(image, 0)
 
-                frame = cv2.resize(frame, dsize=(530, 300), interpolation=cv2.INTER_AREA)
-                # frame = cv2.flip(frame, 180)
-                result, image = cv2.imencode('.jpg', frame, self.encode_param)
-                data = pickle.dumps(image, 0)
+                    if count%5 == 0:
+                        self.video_comm.send_video(data)
+                        count = 0
+                    count+=1
 
-                if count%5 == 0:
-                    self.video_comm.send_video(data)
-                    count = 0
-                count+=1
+                    # if img_counter % 10 == 0:
+                    # img_counter += 1
 
-                # if img_counter % 10 == 0:
-                # img_counter += 1
-
-                if cv2.waitKey(1) & 0xFF == ord('q'):
-                    break
+                    if cv2.waitKey(1) & 0xFF == ord('q'):
+                        break
+                else:
+                    self.close_camera()
+                    self.cap = cv2.VideoCapture(cv2.CAP_DSHOW)
+                    print("Resetted the camera")
 
 if __name__ == '__main__':
 
