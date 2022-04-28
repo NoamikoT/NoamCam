@@ -6,7 +6,7 @@ import cv2
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 # Capturing video from the webcam
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 
 
 # Creating the video file to which the stream is being recorded
@@ -43,6 +43,7 @@ while True:
     # Displaying the frame
     cv2.imshow('img', img)
 
+    print(img)
     # Saving the frame to the video
     VideoWriter.write(img)
 

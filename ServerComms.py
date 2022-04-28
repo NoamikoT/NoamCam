@@ -8,7 +8,9 @@ import wx
 import cv2
 import DB_Class
 import Setting
+import queue
 import ServerProtocol
+from datetime import datetime
 from pubsub import pub
 
 
@@ -27,10 +29,22 @@ class ServerComms:
         self.port = port  # The server's port
         self.recv_q = recv_q  # The queue where messages get stored to and read
 
+        self.video_q = queue.Queue()
+        self.stills_q = queue.Queue()
+
         self.payload_size = struct.calcsize(">L")
+        self.path = None
 
         # Starting the thread that runs the main loop constantly
         threading.Thread(target=self._main_loop, ).start()
+
+
+        if self.port != Setting.GENERAL_PORT:
+
+            threading.Thread(target=self.handle_video_rec, ).start()
+
+            threading.Thread(target=self.handle_stills, ).start()
+
 
     def _main_loop(self):
         """
@@ -52,6 +66,11 @@ class ServerComms:
 
                     # Adding the new client to the dictionaries
                     self.open_clients[client] = address[0]
+
+                    if self.port != Setting.GENERAL_PORT:
+
+                        self.path = self.get_path()
+                        print(self.get_path(),"ServerComms.py:73")
 
                 else:
                     if self.port == Setting.GENERAL_PORT:
@@ -93,28 +112,34 @@ class ServerComms:
 
                         else:
 
-                            # receive image row data form client socket
-                            packed_msg_size = data[:self.payload_size]
-                            data = data[self.payload_size:]
-                            msg_size = struct.unpack(">L", packed_msg_size)[0]
-                            try:
-                                while len(data) < msg_size:
-                                    data += current_socket.recv(4096)
-                            except Exception as e:
-                                print("Line 94:", str(e))
-                                self.disconnect(current_socket)
-                            else:
-                                frame_data = data[:msg_size]
-                                data = data[msg_size:]
-                                # unpack image using pickle
-                                frame = pickle.loads(frame_data, fix_imports=True, encoding="bytes")
-                                frame = cv2.imdecode(frame, cv2.IMREAD_COLOR)
+                            if self.port%2 == 0:        # Making sure it's the video port
 
-                                # TODO: Update view of frame
-                                print("server comm before pub sub", self.port)
-                                wx.CallAfter(pub.sendMessage, f"update frame-{self.port}", video_frame=frame)
-                                #cv2.imshow('server', frame)
-                                #cv2.waitKey(1)
+                                # receive image row data form client socket
+                                packed_msg_size = data[:self.payload_size]
+                                data = data[self.payload_size:]
+                                msg_size = struct.unpack(">L", packed_msg_size)[0]
+                                try:
+                                    while len(data) < msg_size:
+                                        data += current_socket.recv(4096)
+                                except Exception as e:
+                                    print("Line 94:", str(e))
+                                    self.disconnect(current_socket)
+                                else:
+                                    frame_data = data[:msg_size]
+                                    data = data[msg_size:]
+                                    # unpack image using pickle
+                                    frame = pickle.loads(frame_data, fix_imports=True, encoding="bytes")
+                                    frame = cv2.imdecode(frame, cv2.IMREAD_COLOR)
+
+                                    # TODO: Update view of frame
+                                    print("server comm before pub sub", self.port)
+                                    wx.CallAfter(pub.sendMessage, f"update frame-{self.port}", video_frame=frame)
+                                    #cv2.imshow('server', frame)
+                                    #cv2.waitKey(1)
+                                    self.video_q.put(frame)
+
+                            else:       # Stills port
+                                self.stills_q.put(data)
 
     def _recv_file(self, soc, code, file_len):
         """
@@ -193,6 +218,67 @@ class ServerComms:
             print(f"Disconnected {self.open_clients[soc]}")
             soc.close()
             del self.open_clients[soc]
+
+
+
+    def get_path(self):
+
+        if self.port % 2 == 0:  # Making sure it's the video port
+            dir_name = "Video"
+        else:
+            dir_name = "Stills"
+
+        myDB = DB_Class.DB("myDB")
+
+
+        mac = myDB.get_mac_by_port(self.port)
+
+        myDB.close()
+
+        mac = mac.replace(":", "_")
+
+        date = datetime.today().strftime('%Y_%m_%d')
+
+        path = f"{os.getcwd()}\\Server\\{dir_name}\\{mac}_{date}"
+
+        if not os.path.exists(path):
+            os.mkdir(path)
+        print(path)
+        return path
+
+
+
+    def handle_video_rec(self):
+        print("HANDLEVIDEO")
+        # Creating the video file to which the stream is being recorded
+        fourcc = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')
+
+        hour = datetime.today().strftime('%H_%M_%S')
+
+        while self.path is None:
+            pass
+
+        VideoWriter = cv2.VideoWriter(f"{self.path}\\{hour}.avi", fourcc, 5.0, (530, 300))
+
+
+        while True:
+
+            frame = self.video_q.get()
+            print("Out of queue", frame)
+            # Saving the frame to the video
+            VideoWriter.write(frame)
+
+    def handle_stills(self):
+
+        count = 1
+
+        while True:
+            pic = self.stills_q.get()
+
+            with open(f"{self.path}\\pic_{count}", "wb") as f:
+                f.write(pic)
+
+            count+=1
 
 if __name__ == '__main__':
     server = ServerComms(Setting.VIDEO_PORT)

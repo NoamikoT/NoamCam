@@ -509,6 +509,27 @@ class DB:
 
         return ret_value[0][0]
 
+    def get_mac_by_port(self, port):
+        """
+        Returns the port of the camera by the camera's MAC address(CAMERA_TAB)
+        :param mac_address: The MAC address of the camera
+        :type mac_address: String
+        :return: Returns the port corresponding to the MAC address
+        :rtype: String inside a tuple inside a list [(2012)]
+        """
+
+        ret_value = None
+
+        try:
+            self.cursor.execute(f"SELECT MAC FROM {self.CAMERAS_TAB} WHERE port='{port}'")
+
+            ret_value = self.cursor.fetchall()[0][0]
+
+        except:
+            pass
+
+        return ret_value
+
     def update_place(self, mac_address, new_place):
         """
         The function gets a key which is a MAC address and a new place to change the current place of the key if found (CAMERAS_TAB)
