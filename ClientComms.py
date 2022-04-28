@@ -35,10 +35,12 @@ class ClientComms:
         The function connects to the server and listens, every new message gets put into recv_q
         """
         while True:
+            self.running = False
             self.my_socket=socket.socket()
             try:
                 # Connecting the client's socket to the server socket
                 self.my_socket.connect((self.server_ip, self.port))
+                self.running = True
                 if self.port == Setting.GENERAL_PORT:
                     print(self.mac)
 
@@ -47,12 +49,11 @@ class ClientComms:
                 print("CONNECTED")
             except Exception as e:
                 print(str(self.port), "CLIENT COMMS LINE 34" + str(e))
-                self.my_socket.close()
                 # self.recv_q.put(("QU", "QU"))
                 # sys.exit("Can't connect")
             else:
                 if self.port == Setting.GENERAL_PORT:
-                    while True:
+                    while self.running:
                         print("IN WHILE")
                         # Receiving the length and data
                         try:
@@ -61,7 +62,6 @@ class ClientComms:
 
                         except Exception as e:
                             print("CLIENT COMMS LINE 45" + str(e))
-                            self.my_socket.close()
                             # self.recv_q.put(("QU", "QU"))
                             break
                             # sys.exit()
@@ -74,10 +74,10 @@ class ClientComms:
                                 self.recv_q.put((code, data))
                             else:
                                 print("CLIENT COMMS LINE 74")
-                                self.my_socket.close()
                                 # self.recv_q.put(("QU", "QU"))
                                 break
                                 # sys.exit()
+
 
     def send_msg(self, message):
         """
@@ -85,19 +85,24 @@ class ClientComms:
         :param message: The message to be sent to the server
         :type message: String
         """
-        print("SEND MESSAGE CLIENT COMMS:", message)
-        # Getting the length of the message
-        if type(message) == str:
-            message = message.encode()
 
-        message_length = str(len(message)).zfill(8).encode()
+        if self.running:
+            print("SEND MESSAGE CLIENT COMMS:", message)
+            # Getting the length of the message
+            if type(message) == str:
+                message = message.encode()
 
-        try:
-            self.my_socket.send(message_length + message)
+            message_length = str(len(message)).zfill(8).encode()
 
-        except Exception as e:
-            print("CLIENT COMMS LINE 72" + str(e))
-            self.my_socket.close()
+            try:
+                self.my_socket.send(message_length + message)
+
+            except Exception as e:
+                print("CLIENT COMMS LINE 72" + str(e))
+                self.running = False
+                self.my_socket.close()
+
+
 
     def send_file(self, code, file_path):
         """
@@ -108,21 +113,23 @@ class ClientComms:
         :type file_path: String
         """
 
-        # read the file data
-        with open(file_path, 'rb') as f:
-            file = f.read()
-            f.close()
+        if self.running:
+            # read the file data
+            with open(file_path, 'rb') as f:
+                file = f.read()
+                f.close()
 
-        message = f"{code}{str(len(file))}"
-        message_length = str(len(message)).zfill(8).encode()
+            message = f"{code}{str(len(file))}"
+            message_length = str(len(message)).zfill(8).encode()
 
-        try:
-            self.my_socket.send(message_length + message.encode())
-            self.my_socket.send(file)
+            try:
+                self.my_socket.send(message_length + message.encode())
+                self.my_socket.send(file)
 
-        except Exception as e:
-            print("CLIENT COMMS LINE 97" + str(e))
-            self.my_socket.close()
+            except Exception as e:
+                print("CLIENT COMMS LINE 97" + str(e))
+                self.running = False
+                self.my_socket.close()
 
     def start_client(self):
         self.running = True
@@ -131,13 +138,15 @@ class ClientComms:
         self.running = False
 
     def send_video(self, data):
-        try:
-            size = len(data)
 
-            # if img_counter % 10 == 0:
-            self.my_socket.sendall(struct.pack(">L", size) + data)
-        except:
-            pass
+        if self.running:
+            try:
+                size = len(data)
+
+                # if img_counter % 10 == 0:
+                self.my_socket.sendall(struct.pack(">L", size) + data)
+            except:
+                pass
 
     def get_macAddress(self):
         """ returns  mac address"""

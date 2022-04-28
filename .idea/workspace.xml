@@ -4,8 +4,7 @@
     <list default="true" id="c2dcd42c-ff15-48d6-85bd-c1f1c5a77cea" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ClientComms.py" beforeDir="false" afterPath="$PROJECT_DIR$/ClientComms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ServerComms.py" beforeDir="false" afterPath="$PROJECT_DIR$/ServerComms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ServerGraphics.py" beforeDir="false" afterPath="$PROJECT_DIR$/ServerGraphics.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MainClient.py" beforeDir="false" afterPath="$PROJECT_DIR$/MainClient.py" afterDir="false" />
     </list>
     <list id="2dc151e2-ce3e-4500-bf9e-fdb0b6b7ebbb" name="A little bit of comments added" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -15,12 +14,21 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Setting.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" selection-start-line="2" selection-end-line="2" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MainClient.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="13" column="29" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="29" />
+            <state relative-caret-position="300">
+              <caret line="46" selection-start-line="46" selection-end-line="46" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -29,12 +37,36 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/ServerComms.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="140">
+              <caret line="40" selection-start-line="40" selection-end-line="40" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ClientCamera2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-470">
-              <caret line="35" column="13" lean-forward="true" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="26" />
+            <state relative-caret-position="476">
+              <caret line="64" column="11" lean-forward="true" selection-start-line="64" selection-start-column="11" selection-end-line="64" selection-end-column="11" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/MainServer.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="25">
+              <caret line="11" column="44" lean-forward="true" selection-start-line="11" selection-start-column="44" selection-end-line="11" selection-end-column="44" />
+              <folding>
+                <element signature="e#0#12#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -43,8 +75,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ClientComms.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="499">
-              <caret line="75" column="44" selection-start-line="75" selection-start-column="44" selection-end-line="75" selection-end-column="44" />
+            <state relative-caret-position="612">
+              <caret line="51" selection-start-line="51" selection-end-line="51" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -53,10 +85,13 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Setting.py">
+        <entry file="file://$PROJECT_DIR$/TestingFaceDetection.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="10" selection-start-line="1" selection-start-column="10" selection-end-line="1" selection-end-column="10" />
+            <state relative-caret-position="23">
+              <caret line="29" selection-start-line="29" selection-end-line="29" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -72,8 +107,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>update_frame</find>
-      <find>wx</find>
       <find>_mac_exist</find>
       <find>recv_q</find>
       <find>send</find>
@@ -102,6 +135,8 @@
       <find>camera_panels</find>
       <find>class camerap</find>
       <find>sizer</find>
+      <find>cameraPanl</find>
+      <find>qui`</find>
     </findStrings>
     <replaceStrings>
       <replace>myDB</replace>
@@ -160,11 +195,11 @@
         <option value="$PROJECT_DIR$/MainServer.py" />
         <option value="$PROJECT_DIR$/DB_Class.py" />
         <option value="$PROJECT_DIR$/ServerComms.py" />
-        <option value="$PROJECT_DIR$/ClientCamera2.py" />
-        <option value="$PROJECT_DIR$/MainClient.py" />
-        <option value="$PROJECT_DIR$/ClientComms.py" />
         <option value="$PROJECT_DIR$/Setting.py" />
         <option value="$PROJECT_DIR$/ServerGraphics.py" />
+        <option value="$PROJECT_DIR$/ClientCamera2.py" />
+        <option value="$PROJECT_DIR$/ClientComms.py" />
+        <option value="$PROJECT_DIR$/MainClient.py" />
       </list>
     </option>
   </component>
@@ -185,6 +220,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -196,7 +232,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="ProjectViewState">
@@ -206,7 +241,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="E:/NoamCam" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -228,7 +263,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.ServerGraphics (1)">
+  <component name="RunManager" selected="Python.MainServer">
     <configuration name="ClientCamera2" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="NoamCam" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -341,9 +376,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.ServerGraphics (1)" />
-        <item itemvalue="Python.MainClient" />
         <item itemvalue="Python.MainServer" />
+        <item itemvalue="Python.MainClient" />
+        <item itemvalue="Python.ServerGraphics (1)" />
         <item itemvalue="Python.DB_Class" />
         <item itemvalue="Python.ClientCamera2" />
       </list>
@@ -395,12 +430,6 @@
       <workItem from="1650873725659" duration="980000" />
       <workItem from="1650911269404" duration="1888000" />
       <workItem from="1650988234559" duration="2356000" />
-    </task>
-    <task id="LOCAL‎00003" summary="Couldn't work out face recognition so I deleted the file.&#10;&#10;Made it so whenever it finds a face in a frame it keeps it's picture.">
-      <created>1645091640927</created>
-      <option name="number" value="LOCAL‎00003" />
-      <option name="presentableId" value="LOCAL‎00003" />
-      <updated>1645091640927</updated>
     </task>
     <task id="LOCAL‎00004" summary="Created a python file for the Camera class and started working on it, also created a test file for it (:">
       <created>1645439916108</created>
@@ -702,7 +731,13 @@
       <option name="presentableId" value="LOCAL‎00051" />
       <updated>1651062315792</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL‎00052" summary="Camera connected bug still exists.">
+      <created>1651064198642</created>
+      <option name="number" value="LOCAL‎00052" />
+      <option name="presentableId" value="LOCAL‎00052" />
+      <updated>1651064198642</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -716,14 +751,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49925706" visible="true" weight="0.115911484" />
-      <window_info id="Structure" order="1" sideWeight="0.5007429" side_tool="true" weight="0.115911484" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4984985" visible="true" weight="0.115911484" />
+      <window_info id="Structure" order="1" sideWeight="0.5015015" side_tool="true" visible="true" weight="0.115911484" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32936078" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49578503" visible="true" weight="0.27843988" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49578503" visible="true" weight="0.27843988" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -785,7 +819,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added the DB class" />
     <MESSAGE value="Cleaned the DB class" />
     <MESSAGE value="Just 1 line" />
     <MESSAGE value="Updated the DB class to be the admins db class" />
@@ -810,7 +843,8 @@
     <MESSAGE value="Last version of camera graphics before camera integration.&#10;&#10;TestWX is a test file for testing CV2 integration inside of WXPython&#10;&#10;Changed cv2.VideoCapture(0) to cv2.VideoCapture(cv2.CAP_DSHOW) in order to get rid of annoying black bars on the camera stream." />
     <MESSAGE value="Added main client" />
     <MESSAGE value="Changed setting ip" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed setting ip" />
+    <MESSAGE value="Camera connected bug still exists." />
+    <option name="LAST_COMMIT_MESSAGE" value="Camera connected bug still exists." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/NoamCam$ServerGraphics.coverage" NAME="ServerGraphics Coverage Results" MODIFIED="1649370927285" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -941,7 +975,6 @@ TypeError: t...'</expression-string>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/datasets/Noam/82.png" />
     <entry file="file://$PROJECT_DIR$/datasets/Noam/91.png" />
     <entry file="file://$PROJECT_DIR$/datasets/Noam/83.png" />
     <entry file="file://$PROJECT_DIR$/datasets/Noam/29.png" />
@@ -1001,16 +1034,6 @@ TypeError: t...'</expression-string>
           <caret line="17" column="30" selection-start-line="17" selection-start-column="30" selection-end-line="17" selection-end-column="30" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TestingFaceDetection.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="29" selection-start-line="29" selection-end-line="29" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1131,33 +1154,6 @@ TypeError: t...'</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ServerComms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1836">
-          <caret line="108" column="77" selection-start-line="108" selection-start-column="77" selection-end-line="108" selection-end-column="77" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Setting.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="10" selection-start-line="1" selection-start-column="10" selection-end-line="1" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MainServer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="18" column="36" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.PyCharmCE2019.1/system/python_stubs/-1465614906/wx/_core/GridSizer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -1167,8 +1163,8 @@ TypeError: t...'</expression-string>
     </entry>
     <entry file="file://$PROJECT_DIR$/ServerGraphics.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="226">
-          <caret line="499" column="43" selection-start-line="499" selection-start-column="43" selection-end-line="499" selection-end-column="43" />
+        <state relative-caret-position="465">
+          <caret line="123" column="66" selection-start-line="123" selection-start-column="66" selection-end-line="123" selection-end-column="66" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
             <element signature="e#12532#12534#0" />
@@ -1176,32 +1172,76 @@ TypeError: t...'</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MainClient.py">
+    <entry file="file://$USER_HOME$/.PyCharmCE2019.1/system/python_stubs/-1465614906/cv2/VideoCapture.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="29" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="29" />
+        <state relative-caret-position="213">
+          <caret line="117" column="8" selection-start-line="117" selection-start-column="8" selection-end-line="117" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Setting.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TestingFaceDetection.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="23">
+          <caret line="29" selection-start-line="29" selection-end-line="29" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ClientComms.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="499">
-          <caret line="75" column="44" selection-start-line="75" selection-start-column="44" selection-end-line="75" selection-end-column="44" />
+        <state relative-caret-position="612">
+          <caret line="51" selection-start-line="51" selection-end-line="51" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/MainServer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25">
+          <caret line="11" column="44" lean-forward="true" selection-start-line="11" selection-start-column="44" selection-end-line="11" selection-end-column="44" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/ClientCamera2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-470">
-          <caret line="35" column="13" lean-forward="true" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="26" />
+        <state relative-caret-position="476">
+          <caret line="64" column="11" lean-forward="true" selection-start-line="64" selection-start-column="11" selection-end-line="64" selection-end-column="11" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MainClient.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="46" selection-start-line="46" selection-end-line="46" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ServerComms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="40" selection-start-line="40" selection-end-line="40" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
