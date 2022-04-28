@@ -45,14 +45,17 @@ def handle_graphics_q(graphics_comms, server):
     """Handling the received message"""
     while True:
         message, mac = graphics_comms.get()
+        print("Handle graphics queue", message)
 
         if mac in mac_ip_dict.keys():
             ip = mac_ip_dict[mac]
 
             if message == "start face detection":
+                print("DETECTION ON", ip)
                 message = ServerProtocol.ServerProtocol.build_face_recognition("1")
                 server.send_message(ip, message)
             elif message == "stop face detection":
+                print("DETECTION OFF", ip)
                 message = ServerProtocol.ServerProtocol.build_face_recognition("0")
                 server.send_message(ip, message)
 
@@ -69,6 +72,8 @@ if __name__ == '__main__':
 
     # Create a thread to handle the received message in the background
     threading.Thread(target=handle_receive_message, args=(recv_q, server,)).start()
+
+    threading.Thread(target=handle_graphics_q, args=(graphics_comms, server,)).start()
 
     # Launching the app (ServerGraphics - WXPython)
     app = wx.App(False)

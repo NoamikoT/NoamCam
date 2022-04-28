@@ -12,11 +12,12 @@ from pubsub import pub
 
 
 class ClientCamera():
-    def __init__(self, video_comm, stills_comm):
+    def __init__(self, video_comm, port):
 
         self.video_comm = video_comm
-        self.stills_comm = stills_comm
+        self.stills_comm = ClientComms.ClientComms(port)
         self.running = False
+        # self.path = "T:\public\NoamCamCode\Pic"
 
         self.running_recognition = False
 
@@ -120,10 +121,11 @@ class ClientCamera():
 
             # face = gray[y:y + h, x:x + w]
             # face_resize = cv2.resize(face, (500, 500))
-            cv2.imwrite('% s/% s.png' % (self.path, self.count), frame)
-            self.stills_comm.send_file('% s/% s.png' % (self.path, self.count))
-
-            self.count += 1
+            # cv2.imwrite('% s/% s.png' % (self.path, self.count), frame)
+            cv2.imwrite("pic.png", frame)
+            # self.stills_comm.send_file('% s/% s.png' % (self.path, self.count))
+            self.stills_comm.send_file("pic.png")
+            # self.count += 1
             return frame
 
     def start_detection(self):
@@ -131,16 +133,16 @@ class ClientCamera():
         Calling this function starts face detection
         :return:
         """
-
-        self.detection_active = True
+        print("STARTING DETECTION")
+        self.running_recognition = True
 
     def stop_detection(self):
         """
         Calling this function stops face detection
         :return:
         """
-
-        self.detection_active = False
+        print("STOPPING DETECTION")
+        self.running_recognition = False
 
 if __name__ == '__main__':
 

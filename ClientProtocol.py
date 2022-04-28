@@ -21,7 +21,7 @@ class ClientProtocol:
             if data == "0":
                 unpacked_message = "Stop face recognition"
             elif data == "1":
-                unpacked_message = "Continue face recognition"
+                unpacked_message = "Start face recognition"
 
         # 02 - Sound the siren
         elif code == "02":

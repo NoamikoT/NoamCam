@@ -113,7 +113,7 @@ class CameraPanel(wx.Panel):
 
         self.settings_frame = SettingsFrame(self.position_number)
 
-        self.parent.parent.settings_screens_open.append(self.settings_frame)
+        # self.parent.settings_screens_open.append(self.settings_frame)
 
         self.alert = wx.Button(self, label='Alert', pos=(33, 302))
         self.alert.Bind(wx.EVT_BUTTON, self.alert_call)
@@ -181,7 +181,6 @@ class CameraPanel(wx.Panel):
 
 
     def update_frame(self, video_frame):
-        print("in update frame", self.port)
         self.bmp = wx.BitmapFromBuffer(self.width, self.height, video_frame)
 
         data = cv2.resize(video_frame, (530, 300), interpolation=cv2.INTER_AREA)
@@ -202,10 +201,8 @@ class CameraPanel(wx.Panel):
         is_pressed = self.face.GetValue()
         if is_pressed:
             self.frame.graphics_comms.put(("start face detection", self.mac))
-            print("Face detection is on")
         else:
             self.frame.graphics_comms.put(("stop face detection", self.mac))
-            print("Face detection is off")
 
     def call_zoom_screen(self, e):
         self.parent.Hide()

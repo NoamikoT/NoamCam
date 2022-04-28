@@ -69,6 +69,7 @@ class ClientComms:
                     # Checking the data isn't empty
                     if len(data) > 0:
                         code, data = ClientProtocol.ClientProtocol.unpack(data)
+                        print("PUTTING IN QUEUE", code, data)
                         self.recv_q.put((code, data))
 
     def send_msg(self, message):

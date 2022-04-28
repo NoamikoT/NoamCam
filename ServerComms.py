@@ -132,7 +132,6 @@ class ServerComms:
                                     frame = cv2.imdecode(frame, cv2.IMREAD_COLOR)
 
                                     # TODO: Update view of frame
-                                    print("server comm before pub sub", self.port)
                                     wx.CallAfter(pub.sendMessage, f"update frame-{self.port}", video_frame=frame)
                                     #cv2.imshow('server', frame)
                                     #cv2.waitKey(1)
@@ -180,6 +179,8 @@ class ServerComms:
         """
 
         soc = self._find_socket_by_ip(ip)
+
+        print("send_message", ip, message, soc)
 
         if soc:
             if type(message) == str:
