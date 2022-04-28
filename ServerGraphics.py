@@ -89,13 +89,16 @@ class CameraPanel(wx.Panel):
     """"""
 
     # ----------------------------------------------------------------------
-    def __init__(self, parent, start_x, start_y, position_number, port):
+    def __init__(self, frame, parent, start_x, start_y, position_number, port, mac):
         wx.Panel.__init__(self, parent, size=(530, 330))
 
+        self.frame = frame
         self.parent = parent
         self.start_x = start_x
         self.start_y = start_y
         self.position_number = position_number
+
+        self.mac = mac
 
         self.imgSizer = (530, 300)
         self.image = wx.EmptyImage(self.imgSizer[0], self.imgSizer[1])
@@ -195,10 +198,13 @@ class CameraPanel(wx.Panel):
         # self.parent.parent.sound_object.play_now = True
 
     def toggle_face_detection(self, e):
+        print(self.mac)
         is_pressed = self.face.GetValue()
         if is_pressed:
+            self.frame.graphics_comms.put(("start face detection", self.mac))
             print("Face detection is on")
         else:
+            self.frame.graphics_comms.put(("stop face detection", self.mac))
             print("Face detection is off")
 
     def call_zoom_screen(self, e):
@@ -494,35 +500,33 @@ class MainPanel(wx.Panel):
 
         wx.Panel.__init__(self, parent, size=(1900, 1000), pos=(0, 0))
 
-        self.parent = parent
+        self.frame = parent
         # self.myDB = DB_Class.DB("myDB")
 
         self.camera_panels = []
 
 
-        ports = [[xx[1],xx[3]] for xx in self.parent.camera_details]
+        ports = [[xx[1],xx[3],xx[0]] for xx in self.frame.camera_details]
+
 
         port_for_position = {}
 
 
-
-        for pos,port in ports:
-            port_for_position[pos] = port
+        for pos,port,mac in ports:
+            port_for_position[pos] = [port,mac]
 
         # First row
-        self.camera_panels.append(CameraPanel(self, start_x, start_y, 1, port_for_position[1]))
-        self.camera_panels.append(CameraPanel(self, start_x + 530, start_y, 2, port_for_position[2]))
-        self.camera_panels.append(CameraPanel(self, start_x + 1060, start_y, 3, port_for_position[3]))
-
-        # Second row
-        self.camera_panels.append(CameraPanel(self, start_x, start_y + 330, 4, port_for_position[4]))
-        self.camera_panels.append(CameraPanel(self, start_x + 530, start_y + 330, 5, port_for_position[5]))
-        self.camera_panels.append(CameraPanel(self, start_x + 1060, start_y + 330, 6, port_for_position[6]))
-
-        # Third row
-        self.camera_panels.append(CameraPanel(self, start_x, start_y + 660, 7, port_for_position[7]))
-        self.camera_panels.append(CameraPanel(self, start_x + 530, start_y + 660, 8, port_for_position[8]))
-        self.camera_panels.append(CameraPanel(self, start_x + 1060, start_y + 660, 9, port_for_position[9]))
+        self.camera_panels.append(CameraPanel(self.frame, self, start_x, start_y, 1, port_for_position[1][0], port_for_position[1][1]))
+        self.camera_panels.append(CameraPanel(self.frame, self, start_x + 530, start_y, 2, port_for_position[2][0], port_for_position[2][1]))
+        self.camera_panels.append(CameraPanel(self.frame, self, start_x + 1060, start_y, 3, port_for_position[3][0], port_for_position[3][1]))
+        # Second rowself.frame,
+        self.camera_panels.append(CameraPanel(self.frame, self, start_x, start_y + 330, 4, port_for_position[4][0], port_for_position[4][1]))
+        self.camera_panels.append(CameraPanel(self.frame, self, start_x + 530, start_y + 330, 5, port_for_position[5][0], port_for_position[5][1]))
+        self.camera_panels.append(CameraPanel(self.frame, self, start_x + 1060, start_y + 330, 6, port_for_position[6][0], port_for_position[6][1]))
+        # Third rowself.frame,
+        self.camera_panels.append(CameraPanel(self.frame, self, start_x, start_y + 660, 7, port_for_position[7][0], port_for_position[7][1]))
+        self.camera_panels.append(CameraPanel(self.frame, self, start_x + 530, start_y + 660, 8, port_for_position[8][0], port_for_position[8][1]))
+        self.camera_panels.append(CameraPanel(self.frame, self, start_x + 1060, start_y + 660, 9, port_for_position[9][0], port_for_position[9][1]))
 
         # Log out button
         self.logout_button = wx.Button(self, label='Log out', pos=(1770, 50))
@@ -564,7 +568,7 @@ class MainPanel(wx.Panel):
 
     def settings_button_pressed(self, e):
         print("Settings button pressed")
-        self.parent.show_all_cameras_panel()
+        self.frame.show_all_cameras_panel()
 
     def logout_button_pressed(self, e):
         print("Log out button pressed")
@@ -574,12 +578,13 @@ class MainPanel(wx.Panel):
             panel.close_settings_frame()
 
         self.Destroy()
-        self.parent.Destroy()
+        self.frame.Destroy()
 
 
         # Asking the user to login again
 
-        frame = MainFrame(426, 98)
+        app = wx.App(False)
+        frame = MainFrame(self)
         app.MainLoop()
 
     def onAbout(self, e):
@@ -596,7 +601,7 @@ class MainPanel(wx.Panel):
 class MainFrame(wx.Frame):
 
     # ----------------------------------------------------------------------
-    def __init__(self, server):
+    def __init__(self, server, graphics_comms):
         """Constructor"""
 
         super().__init__(None, size=(1900, 1029), title="Main Screen", style = wx.DEFAULT_FRAME_STYLE & ~wx.MAXIMIZE_BOX ^ wx.RESIZE_BORDER)
@@ -605,6 +610,7 @@ class MainFrame(wx.Frame):
 
         self.server = server
 
+        self.graphics_comms = graphics_comms
         self.start_x = 0
         self.start_y = 0
 

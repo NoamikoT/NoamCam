@@ -76,7 +76,7 @@ class ClientProtocol:
         return packed_message
 
     @staticmethod
-    def build_photo_send(photo_path):
+    def get_photo_code():
         """
         Building a message containing a photo caught by face recognition
         :param photo_path: The path to the photo
@@ -85,11 +85,7 @@ class ClientProtocol:
         :rtype: String
         """
 
-        code = "02"
-
-        packed_message = f"{code}{photo_path}"
-
-        return packed_message
+        return "02"
 
     @staticmethod
     def build_mac_send(mac_address):

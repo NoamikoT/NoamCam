@@ -91,7 +91,7 @@ class ClientComms:
             print("CLIENT COMMS LINE 72" + str(e))
             self.my_socket.close()
 
-    def send_file(self, code, file_path):
+    def send_file(self, file_path):
         """
         The function sends a file to the server
         :param code: The type of file (01 - Frame, 02 - Photo)
@@ -105,7 +105,7 @@ class ClientComms:
             file = f.read()
             f.close()
 
-        message = f"{code}{str(len(file))}"
+        message = f"{ClientProtocol.ClientProtocol.get_photo_code()}{str(len(file))}"
         message_length = str(len(message)).zfill(8).encode()
 
         try:

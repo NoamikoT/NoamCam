@@ -7,6 +7,7 @@ import ServerGraphics
 import wx
 import Setting
 
+mac_ip_dict = {}
 
 def handle_mac_address(ip, mac, server):
     """Handling the mac address of a user"""
@@ -21,6 +22,8 @@ def handle_mac_address(ip, mac, server):
         mac_message = ServerProtocol.ServerProtocol.build_send_port(port)
 
         server.send_message(ip, mac_message)
+
+        mac_ip_dict[mac] = ip
 
     myDB.close()
 
@@ -37,7 +40,27 @@ def handle_receive_message(recv_q, server):
             operation_dic[code](ip, data, server)
 
 
+
+def handle_graphics_q(graphics_comms, server):
+    """Handling the received message"""
+    while True:
+        message, mac = graphics_comms.get()
+
+        if mac in mac_ip_dict.keys():
+            ip = mac_ip_dict[mac]
+
+            if message == "start face detection":
+                message = ServerProtocol.ServerProtocol.build_face_recognition("1")
+                server.send_message(ip, message)
+            elif message == "stop face detection":
+                message = ServerProtocol.ServerProtocol.build_face_recognition("0")
+                server.send_message(ip, message)
+
+
+
 if __name__ == '__main__':
+
+    graphics_comms = queue.Queue()
     # Create a queue to receive the messages
     recv_q = queue.Queue()
 
@@ -49,5 +72,5 @@ if __name__ == '__main__':
 
     # Launching the app (ServerGraphics - WXPython)
     app = wx.App(False)
-    graphics = ServerGraphics.MainFrame(server)
+    graphics = ServerGraphics.MainFrame(server,graphics_comms)
     app.MainLoop()

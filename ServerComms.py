@@ -264,7 +264,6 @@ class ServerComms:
         while True:
 
             frame = self.video_q.get()
-            print("Out of queue", frame)
             # Saving the frame to the video
             VideoWriter.write(frame)
 
