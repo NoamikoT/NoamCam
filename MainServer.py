@@ -10,6 +10,7 @@ import Email
 
 mac_ip_dict = {}
 
+
 def handle_mac_address(ip, mac, server, mail_q):
     """Handling the mac address of a user"""
     myDB = DB_Class.DB("myDB")
@@ -40,6 +41,7 @@ def handle_receive_message(recv_q, server, mail_q):
         if code in operation_dic.keys():
             operation_dic[code](ip, data, server, mail_q)
 
+
 def handle_mail(mail_q):
     myDB = DB_Class.DB("myDB")
     managers_mails = myDB.get_managers_mail()
@@ -49,8 +51,6 @@ def handle_mail(mail_q):
         file = mail_q.get()
         for mail in managers_mails:
             email_obj.send_mail(file, mail)
-
-
 
 
 def handle_graphics_q(graphics_comms, server):
@@ -90,6 +90,7 @@ def handle_graphics_q(graphics_comms, server):
                 message = ServerProtocol.ServerProtocol.build_siren_off(mac)
                 server.send_message(ip, message)
 
+
 if __name__ == '__main__':
 
     graphics_comms = queue.Queue()
@@ -109,5 +110,5 @@ if __name__ == '__main__':
 
     # Launching the app (ServerGraphics - WXPython)
     app = wx.App(False)
-    graphics = ServerGraphics.MainFrame(server,graphics_comms)
+    graphics = ServerGraphics.MainFrame(server, graphics_comms)
     app.MainLoop()

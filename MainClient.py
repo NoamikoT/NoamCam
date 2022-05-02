@@ -3,10 +3,9 @@ import queue
 import Setting
 import threading
 import ClientCamera2
-import Alarm
 
 quit_q = queue.Queue()
-# client_camera = None
+
 
 def open_video_stills_comms(port):
     video_client_comms = ClientComms.ClientComms(port)
@@ -17,9 +16,7 @@ def open_video_stills_comms(port):
     # stills_clinet_comms = ClientComms.ClientComms(port + 1)
 
 
-operation_dic = {}
-operation_dic['06'] = open_video_stills_comms
-
+operation_dic = {'06': open_video_stills_comms}
 
 
 def handle_msgs(rcv_q, quit_q):
@@ -59,20 +56,7 @@ def handle_msgs(rcv_q, quit_q):
             quit_q.put("CLOSE")
 
 
-
-
-
-
-
-
 if __name__ == '__main__':
     rcv_q = queue.Queue()
     main_client = ClientComms.ClientComms(Setting.GENERAL_PORT, recv_q=rcv_q)
-    threading.Thread(target=handle_msgs,args=(rcv_q,quit_q,)).start()
-
-
-
-
-
-
-
+    threading.Thread(target=handle_msgs, args=(rcv_q, quit_q,)).start()

@@ -18,7 +18,7 @@ class ClientComms:
         self.recv_q = recv_q  # The queue where messages get stored to and read
 
         self.running = False
-        self.mac = self.get_macAddress()
+        self.mac = self.get_mac_address()
 
         # Starting the thread that runs the main loop constantly
         threading.Thread(target=self._main_loop, ).start()
@@ -121,9 +121,9 @@ class ClientComms:
             size = len(data)
 
             self.my_socket.sendall(struct.pack(">L", size) + data)
-        except:
+        except Exception:
             pass
 
-    def get_macAddress(self):
+    def get_mac_address(self):
         """ returns  mac address"""
         return ':'.join(['{:02x}'.format((getnode() >> i) & 0xff) for i in range(0, 8 * 6, 8)][::-1])

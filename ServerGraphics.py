@@ -2,7 +2,6 @@ import os
 import re
 import cv2
 import wx
-import Alarm
 import DB_Class
 import sys
 import wx.adv
@@ -10,7 +9,6 @@ import wx.lib.scrolledpanel
 from pubsub import pub
 import ServerComms
 import Setting
-import ServerProtocol
 
 
 class LoginDialog(wx.Dialog):
@@ -27,7 +25,6 @@ class LoginDialog(wx.Dialog):
         icon = wx.Icon()
         icon.CopyFromBitmap(wx.Bitmap("NoamCamLens.ico", wx.BITMAP_TYPE_ANY))
         self.SetIcon(icon)
-
 
         # user info
         user_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -88,8 +85,6 @@ class LoginDialog(wx.Dialog):
         dlg.Destroy()
 
 
-
-
 class CameraPanel(wx.Panel):
     """"""
 
@@ -115,13 +110,6 @@ class CameraPanel(wx.Panel):
         self.SetBackgroundColour("white")
         self.Bind(wx.EVT_PAINT, self.OnPaint)
 
-        # self.button_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        # self.button_sizer.SetDimension(x=0, y=300, width=530, height=30)
-
-        # self.settings_frame = SettingsFrame(self.position_number)
-
-        # self.parent.settings_screens_open.append(self.settings_frame)
-
         self.alert = wx.Button(self, label='Alert', pos=(133, 302))
         self.alert.Bind(wx.EVT_BUTTON, self.alert_call)
 
@@ -131,27 +119,11 @@ class CameraPanel(wx.Panel):
         self.zoom = wx.Button(self, label='Zoom', pos=(383, 302))
         self.zoom.Bind(wx.EVT_BUTTON, self.call_zoom_screen)
 
-        # self.description = wx.Button(self, label=self.place, pos=(33, 302))
-        # self.description.SetForegroundColour((0, 255, 0))
-        # self.description.Disable()
-
         font = wx.Font(10, wx.MODERN, wx.NORMAL, wx.BOLD)
-        lbl = wx.StaticText(self, style=wx.ALIGN_CENTER, pos = (2, 306))
+        lbl = wx.StaticText(self, style=wx.ALIGN_CENTER, pos=(2, 306))
         lbl.SetFont(font)
         lbl.SetLabel(self.place)
         lbl.SetBackgroundColour("gray")
-
-
-
-
-
-        # self.settings = wx.Button(self, label='Settings', pos=(408, 302))
-        # self.settings.Bind(wx.EVT_BUTTON, self.settings_screen)
-
-        # self.button_sizer.AddMany([self.alert, self.face, self.zoom, self.settings])
-
-
-
 
         self.width = 600
         self.height = 300
@@ -160,37 +132,9 @@ class CameraPanel(wx.Panel):
 
         pub.subscribe(self.update_frame, f"update frame-{self.port}")
 
-
-
-        # self.SetSizer(self.button_sizer)
-
         self.Layout()
         self.Show()
 
-
-        #ret, self.data = self.capture.read()
-        # self.frame = imutils.resize(self.frame, width=347, height=197, interpolation = cv2.INTER_AREA)
-        #self.data = cv2.resize(self.data, dsize=(347, 197), interpolation=cv2.INTER_AREA)
-
-
-        # if ret:
-        #     self.width = 347
-        #     self.height = 197
-        #     self.bmp = wx.BitmapFromBuffer(self.width, self.height, self.data)
-        #
-        #     self.timex = wx.Timer(self)
-        #     self.timex.Start(1000. / 24)
-        #     self.Bind(wx.EVT_TIMER, self.redraw)
-        #     self.SetSize(self.imgSizer)
-        #
-        # else:
-        #     print("Error no webcam image")
-        # self.SetSizer(self.vbox)
-        # self.vbox.Fit(self)
-        # self.Show()
-    #
-    #     #self.frame.Layout()
-    #
     def redraw(self, e):
         ret, self.data = self.capture.read()
         if ret:
@@ -199,7 +143,6 @@ class CameraPanel(wx.Panel):
             self.bmp.CopyFromBuffer(self.data)
             self.staticBit.SetBitmap(self.bmp)
         # self.Refresh()
-
 
     def update_frame(self, video_frame):
         self.bmp = wx.Bitmap.FromBuffer(self.width, self.height, video_frame)
@@ -210,8 +153,6 @@ class CameraPanel(wx.Panel):
         self.staticBit.SetBitmap(self.bmp)
 
         self.Refresh()
-
-
 
     def alert_call(self, e):
         if not self.siren:
@@ -224,7 +165,6 @@ class CameraPanel(wx.Panel):
             print("Stopped alert")
             self.alert.SetLabel("Alert")
             self.siren = False
-        # self.parent.parent.sound_object.play_now = True
 
     def toggle_face_detection(self, e):
         print(self.mac)
@@ -242,19 +182,6 @@ class CameraPanel(wx.Panel):
             self.parent.Hide()
             self.frame.show_zoom_panel(self.mac)
             self.frame.zoom_panel.set_details(self.mac, self.port, self.place)
-
-    def settings_screen(self, e):
-        if not self.settings_frame.IsShown():
-            self.settings_frame.Show()
-
-        else:
-            self.settings_frame.Hide()
-
-    def close_settings_frame(self):
-        try:
-            self.settings_frame.Destroy()
-        except Exception:
-            pass
 
     def OnPaint(self, event):
         """set up the device context (DC) for painting"""
@@ -278,7 +205,6 @@ class ZoomPanel(wx.Panel):
         wx.Panel.__init__(self, parent, size=(1900, 1000))
 
         self.parent = parent
-        # self.myDB = DB_Class.DB("myDB")
 
         # Setting the background to white
         self.SetBackgroundColour("white")
@@ -291,14 +217,10 @@ class ZoomPanel(wx.Panel):
         self.width = 1600
         self.height = 900
 
-
         self.imgSizer = (1600, 900)
         self.image = wx.Image(self.imgSizer[0], self.imgSizer[1])
         self.imageBit = wx.Bitmap(self.image)
         self.staticBit = wx.StaticBitmap(self, wx.ID_ANY, self.imageBit)
-
-
-        # self.settings_frame = SettingsFrame(self.position_number)
 
         self.alert = wx.Button(self, label='Alert', pos=(1770, 600))
         self.alert.Bind(wx.EVT_BUTTON, self.alert_call)
@@ -309,32 +231,12 @@ class ZoomPanel(wx.Panel):
         self.zoom = wx.Button(self, label='unZoom', pos=(1770, 700))
         self.zoom.Bind(wx.EVT_BUTTON, self.call_unzoom_screen)
 
-
-
-        # settings = wx.Button(self, label='Settings', pos=(1770, 750))
-        # settings.Bind(wx.EVT_BUTTON, self.settings_screen)
-
-        # Log out button
-        # self.logout_button = wx.Button(self, label='Log out', pos=(1770, 50))
-        # self.logout_button.SetBackgroundColour((245, 66, 66, 255))
-        # self.logout_button.Bind(wx.EVT_BUTTON, self.logout_button_pressed)
-
-
-        # Settings button panel
-        # settings_panel_button = wx.Panel(self, pos=(1778, 468), size=(72, 72))
-        # pic = wx.Bitmap("Settings.bmp", wx.BITMAP_TYPE_ANY)
-        # self.settings_button = wx.BitmapButton(settings_panel_button, -1, pic)
-        # self.Bind(wx.EVT_BUTTON, self.settings_button_pressed, self.settings_button)
     def set_details(self, mac, port, place):
         self.mac = mac
         self.parent.SetLabel(f'Zoom Screen - {mac} - {place}')
         self.port = port
         self.place = place
         pub.subscribe(self.update_zoom_frame, f"update frame-{self.port}")
-
-
-
-
 
     def update_zoom_frame(self, video_frame):
         self.bmp = wx.Bitmap.FromBuffer(self.width, self.height, video_frame)
@@ -352,7 +254,6 @@ class ZoomPanel(wx.Panel):
 
     def alert_call(self, e):
         print("Called alert")
-        # self.parent.sound_object.play_now = True
 
     def toggle_face_detection(self, e):
         is_pressed = self.face.GetValue()
@@ -370,20 +271,6 @@ class ZoomPanel(wx.Panel):
         self.parent.current_zoom = None
         self.parent.hide_zoom_panel()
 
-    def settings_screen(self, e):
-        if not self.settings_frame.IsShown():
-            self.settings_frame.Show()
-
-        else:
-            self.settings_frame.Hide()
-
-    def list_screen(self, e):
-        if not self.list.IsShown():
-            self.settings_frame.Show()
-
-        else:
-            self.settings_frame.Hide()
-
     def OnPaint(self, event):
         """set up the device context (DC) for painting"""
         dc = wx.PaintDC(self)
@@ -393,173 +280,6 @@ class ZoomPanel(wx.Panel):
         dc.SetBrush(wx.Brush("black"))
         dc.DrawRectangle(150, 50, 1600, 900)
 
-    def logout_button_pressed(self, e):
-
-        try:
-            self.settings_frame.Destroy()
-        except Exception:
-            pass
-
-        self.parent.main_panel.logout_button_pressed(e)
-
-
-class ListFrame(wx.Frame):
-
-    def __init__(self, parent, *args, **kw):
-        super(ListFrame, self).__init__(*args, **kw)
-
-        self.parent = parent
-        self.InitUI()
-
-    def InitUI(self):
-
-        panel = wx.Panel(self)
-        hbox = wx.BoxSizer(wx.HORIZONTAL)
-
-        self.listbox = wx.ListBox(panel)
-        hbox.Add(self.listbox, wx.ID_ANY, wx.EXPAND | wx.ALL, 20)
-
-
-
-        # cameras_list = self.myDB.get_cameras()
-
-        mac_list = [parm[0] for parm in self.parent.camera_details]
-
-        for camera in mac_list:
-            self.listbox.Append(camera)
-
-        btnPanel = wx.Panel(panel)
-        vbox = wx.BoxSizer(wx.VERTICAL)
-        # newBtn = wx.Button(btnPanel, wx.ID_ANY, 'New', size=(90, 30))
-        ediBtn = wx.Button(btnPanel, wx.ID_ANY, 'Edit', size=(90, 30))
-        delBtn = wx.Button(btnPanel, wx.ID_ANY, 'Delete', size=(90, 30))
-        # clrBtn = wx.Button(btnPanel, wx.ID_ANY, 'Clear', size=(90, 30))
-
-        self.open_settings_windows = []
-
-        # self.Bind(wx.EVT_BUTTON, self.NewItem, id=newBtn.GetId())
-        self.Bind(wx.EVT_BUTTON, self.OnEdit, id=ediBtn.GetId())
-        self.Bind(wx.EVT_BUTTON, self.OnDelete, id=delBtn.GetId())
-        # self.Bind(wx.EVT_BUTTON, self.OnClear, id=clrBtn.GetId())
-        self.Bind(wx.EVT_LISTBOX_DCLICK, self.OnEdit)
-
-        vbox.Add((-1, 20))
-        # vbox.Add(newBtn)
-        vbox.Add(ediBtn)
-        vbox.Add(delBtn, 0, wx.TOP, 5)
-        # vbox.Add(clrBtn, 0, wx.TOP, 5)
-
-        btnPanel.SetSizer(vbox)
-        hbox.Add(btnPanel, 0.6, wx.EXPAND | wx.RIGHT, 20)
-        panel.SetSizer(hbox)
-
-        # When event closed send to function OnClose
-        self.Bind(wx.EVT_CLOSE, self.OnClose)
-
-        self.SetTitle('wx.ListBox')
-        self.Centre()
-
-        self.Show()
-
-    # def NewItem(self, event):
-    #
-    #     text = wx.GetTextFromUser('Enter a new item', 'Insert dialog')
-    #     if text != '':
-    #         self.listbox.Append(text)
-
-    def OnClose(self, event):
-
-        self.Destroy()
-
-    def OnEdit(self, event):
-
-        sel = self.listbox.GetSelection()
-        text = self.listbox.GetString(sel)
-
-        self.current_settings_frame = SettingsFrame(text)
-        self.current_settings_frame.Show()
-
-        # sel = self.listbox.GetSelection()
-        # text = self.listbox.GetString(sel)
-        # renamed = wx.GetTextFromUser('Rename item', 'Rename dialog', text)
-        #
-        # if renamed != '':
-        #     self.listbox.Delete(sel)
-        #     item_id = self.listbox.Insert(renamed, sel)
-        #     self.listbox.SetSelection(item_id)
-
-    def OnDelete(self, event):
-
-        sel = self.listbox.GetSelection()
-        if sel != -1:
-            self.listbox.Delete(sel)
-
-    # def OnClear(self, event):
-    #     self.listbox.Clear()
-
-#
-# class AllCamerasPanel(wx.Panel):
-#
-#     def __init__(self, parent):
-#
-#         wx.Panel.__init__(self, parent, size=(1900, 1000))
-#
-#         self.parent = parent
-#         # self.myDB = DB_Class.DB("myDB")
-#
-#         self.last_selected = None
-#
-#         # cameras_list = self.myDB.get_cameras()
-#
-#         # Setting the background to white
-#         self.SetBackgroundColour("white")
-#
-#         # Log out button
-#         self.logout_button = wx.Button(self, label='Log out', pos=(1770, 50))
-#         self.logout_button.SetBackgroundColour((245, 66, 66, 255))
-#         self.logout_button.Bind(wx.EVT_BUTTON, self.logout_button_pressed)
-#
-#         # Back button
-#         self.back_button = wx.Button(self, label='Back', pos=(25, 50))
-#         # self.back_button.SetBackgroundColour((245, 66, 66, 255))
-#         self.back_button.Bind(wx.EVT_BUTTON, self.back_button_pressed)
-#
-#         # scrolled panel
-#         self.scrollP = wx.lib.scrolledpanel.ScrolledPanel(self, -1, size=(426, 400), pos=(740, 400), style=wx.SIMPLE_BORDER)
-#         self.scrollP.SetAutoLayout(1)
-#         self.scrollP.SetupScrolling()
-#         self.scrollP.SetBackgroundColour('#FFFFFF')
-#
-#         cameras_id_and_names = []
-#
-#         for camera in cameras_list:
-#             cameras_id_and_names.append((str(camera[4]) + " - " + camera[2]))
-#
-#         self.spSizer = wx.BoxSizer(wx.VERTICAL)
-#         for word in cameras_id_and_names:
-#             text = wx.TextCtrl(self.scrollP, value=word)
-#             text.Bind(wx.EVT_CHILD_FOCUS, self.file_selected)
-#             self.spSizer.Add(text)
-#         self.scrollP.SetSizer(self.spSizer)
-#
-#     def file_selected(self, event):
-#
-#         self.last_selected = event.GetWindow().GetValue()
-#
-#         id = self.last_selected.split(" - ")[0]
-#
-#         self.current_settings_frame = SettingsFrame(id)
-#         self.current_settings_frame.Show()
-#
-#         print(event.GetWindow().GetValue())
-#
-#     def logout_button_pressed(self, e):
-#
-#         self.parent.main_panel.logout_button_pressed(e)
-#
-#     def back_button_pressed(self, e):
-#         self.parent.hide_all_cameras_panel()
-
 
 class MainPanel(wx.Panel):
 
@@ -568,59 +288,29 @@ class MainPanel(wx.Panel):
         wx.Panel.__init__(self, parent, size=(1900, 1000), pos=(0, 0))
 
         self.frame = parent
-        # self.myDB = DB_Class.DB("myDB")
 
         self.camera_panels = []
 
-
-        ports = [[xx[1],xx[3],xx[0],xx[2]] for xx in self.frame.camera_details]
-
-
+        ports = [[xx[1], xx[3], xx[0], xx[2]] for xx in self.frame.camera_details]
         port_for_position = {}
 
-
-        for pos,port,mac,place in ports:
-            port_for_position[pos] = [port,mac,place]
+        for pos, port, mac, place in ports:
+            port_for_position[pos] = [port, mac, place]
 
         # First row
         self.camera_panels.append(CameraPanel(self.frame, self, start_x, start_y, 1, port_for_position[1][0], port_for_position[1][1], port_for_position[1][2]))
         self.camera_panels.append(CameraPanel(self.frame, self, start_x + 540, start_y, 2, port_for_position[2][0], port_for_position[2][1], port_for_position[2][2]))
         self.camera_panels.append(CameraPanel(self.frame, self, start_x + 1070, start_y, 3, port_for_position[3][0], port_for_position[3][1], port_for_position[3][2]))
-        # Second rowself.frame,
+
+        # Second row
         self.camera_panels.append(CameraPanel(self.frame, self, start_x, start_y + 330, 4, port_for_position[4][0], port_for_position[4][1], port_for_position[4][2]))
         self.camera_panels.append(CameraPanel(self.frame, self, start_x + 540, start_y + 330, 5, port_for_position[5][0], port_for_position[5][1], port_for_position[5][2]))
         self.camera_panels.append(CameraPanel(self.frame, self, start_x + 1070, start_y + 330, 6, port_for_position[6][0], port_for_position[6][1], port_for_position[6][2]))
-        # Third rowself.frame,
+
+        # Third row
         self.camera_panels.append(CameraPanel(self.frame, self, start_x, start_y + 660, 7, port_for_position[7][0], port_for_position[7][1], port_for_position[7][2]))
         self.camera_panels.append(CameraPanel(self.frame, self, start_x + 540, start_y + 660, 8, port_for_position[8][0], port_for_position[8][1], port_for_position[8][2]))
         self.camera_panels.append(CameraPanel(self.frame, self, start_x + 1070, start_y + 660, 9, port_for_position[9][0], port_for_position[9][1], port_for_position[9][2]))
-
-        # Log out button
-        # self.logout_button = wx.Button(self, label='Log out', pos=(1770, 50))
-        # self.logout_button.SetBackgroundColour((245, 66, 66, 255))
-        # self.logout_button.Bind(wx.EVT_BUTTON, self.logout_button_pressed)
-
-        # Settings button panel
-        # settings_panel_button = wx.Panel(self, pos=(1778, 468), size=(72, 72))
-        # pic = wx.Bitmap("Settings.bmp", wx.BITMAP_TYPE_ANY)
-        # self.settings_button = wx.BitmapButton(settings_panel_button, -1, pic)
-        # self.Bind(wx.EVT_BUTTON, self.settings_button_pressed, self.settings_button)
-
-        # Info button
-        # self.info_button = wx.Button(self, label='Info', pos=(1770, 910))
-        # self.info_button.Bind(wx.EVT_BUTTON, self.onAbout)
-
-
-        # Presenting the name of the user to the screen
-        # text_panel = wx.Panel(self, pos=(0, 0), size=(1900, 1000))
-        # text_hello_box = wx.BoxSizer(wx.HORIZONTAL)
-        #
-        # font = wx.Font(25, wx.MODERN, wx.NORMAL, wx.BOLD)
-        # lbl = wx.StaticText(self, style=wx.ALIGN_CENTER)
-        # lbl.SetFont(font)
-        # lbl.SetLabel(f'Hello {username}!')
-        #
-        # text_hello_box.Add(lbl, 0, wx.ALIGN_CENTER)
 
         self.sizer_contain_sizer = wx.BoxSizer()
         self.sizer_contain_sizer.SetDimension(0, 0, 1590, 990)
@@ -629,32 +319,10 @@ class MainPanel(wx.Panel):
         self.main_sizer.SetHGap(20)
         self.main_sizer.AddMany(self.camera_panels)
 
-        self.sizer_contain_sizer.Add(self.main_sizer,0)
+        self.sizer_contain_sizer.Add(self.main_sizer, 0)
 
         self.SetSizer(self.sizer_contain_sizer)
         self.Layout()
-
-
-    def settings_button_pressed(self, e):
-        print("Settings button pressed")
-        self.frame.show_all_cameras_panel()
-
-    def logout_button_pressed(self, e):
-        print("Log out button pressed")
-        # self.myDB.update_active(self.parent.username, "OUT")
-
-        for panel in self.camera_panels:
-            panel.close_settings_frame()
-
-        self.Destroy()
-        self.frame.Destroy()
-
-
-        # Asking the user to login again
-
-        app = wx.App(False)
-        frame = MainFrame(self)
-        app.MainLoop()
 
     def onAbout(self, e):
         info = wx.adv.AboutDialogInfo()
@@ -673,7 +341,7 @@ class MainFrame(wx.Frame):
     def __init__(self, server, graphics_comms):
         """Constructor"""
 
-        super().__init__(None, size=(1900, 1029), title="Main Screen", style = wx.DEFAULT_FRAME_STYLE & ~wx.MAXIMIZE_BOX ^ wx.RESIZE_BORDER)
+        super().__init__(None, size=(1900, 1029), title="Main Screen", style=wx.DEFAULT_FRAME_STYLE & ~wx.MAXIMIZE_BOX ^ wx.RESIZE_BORDER)
 
         self.SetSize(1900, 1029)
 
@@ -685,17 +353,9 @@ class MainFrame(wx.Frame):
         self.start_x = 10
         self.start_y = 0
 
-        # self.myDB = DB_Class.DB("myDB")
-
-        self.settings_screens_open = []
-
         myDB = DB_Class.DB("myDB")
-
         self.camera_details = myDB.get_cameras()
-
         myDB.close()
-
-        # self.sound_object = Alarm.AlarmSound()
 
         # Setting the background to white
         self.SetBackgroundColour(wx.WHITE)
@@ -714,10 +374,6 @@ class MainFrame(wx.Frame):
 
         self.create_main_panel()
 
-        # # Locking the size of the frame
-        # self.SetMaxSize(wx.Size(1900, 1000))
-        # self.SetMinSize(wx.Size(1900, 1000))
-
         # Setting the icon of the frame
         icon = wx.Icon()
         icon.CopyFromBitmap(wx.Bitmap("NoamCamLens.ico", wx.BITMAP_TYPE_ANY))
@@ -734,184 +390,18 @@ class MainFrame(wx.Frame):
         self.DestroyChildren()
         self.Destroy()
         os._exit(0)
-        # sys.exit("Pressed exit")
-
-    def hide_all_settings(self):
-        for settings in self.settings_screens_open:
-            settings.Hide()
 
     def create_main_panel(self):
         self.main_panel = MainPanel(self, self.start_x, self.start_y, self.username)
 
-    def show_all_cameras_panel(self):
-        # self.main_panel.Hide()
-        # # Hiding the zoom panel if it's visible
-        # try:
-        #     self.zoom_panel.Hide()
-        # except Exception:
-        #     pass
-        try:
-            if self.all_cameras_panel.IsShown():
-                self.all_cameras_panel.Destroy()
-        except Exception:
-            self.all_cameras_panel = ListFrame(self)
-
-    def hide_all_cameras_panel(self):
-        self.all_cameras_panel.Hide()
-        self.main_panel.Show()
-        self.SetLabel("Main Screen")
-
     def show_zoom_panel(self, position_number):
-        self.hide_all_settings()
         self.main_panel.Hide()
         self.zoom_panel = ZoomPanel(self)
 
     def hide_zoom_panel(self):
-        self.hide_all_settings()
         self.zoom_panel.Hide()
         self.main_panel.Show()
         self.SetLabel("Main Screen")
-
-
-class SettingsFrame(wx.Frame):
-
-    def __init__(self, position_number):
-
-        self.position_number = position_number
-
-        super().__init__(None, size=(500, 500), title="Panel " + str(position_number) + " Settings")
-        wx.Dialog.__init__(self, None, title="Panel " + str(position_number) + " Settings")
-        panel = wx.Panel(self, -1)
-
-        # Setting the background to white
-        self.SetBackgroundColour(wx.LIGHT_GREY)
-
-        icon = wx.Icon()
-        icon.CopyFromBitmap(wx.Bitmap("NoamCamLens.ico", wx.BITMAP_TYPE_ANY))
-        self.SetIcon(icon)
-
-        # self.myDB = DB_Class.DB("myDB")
-
-        # mac info
-        mac_sizer = wx.BoxSizer(wx.HORIZONTAL)
-
-        mac_lbl = wx.StaticText(self, label="MAC Address:")
-        mac_sizer.Add(mac_lbl, 0, wx.ALIGN_LEFT, 5)
-        mac_sizer.AddStretchSpacer(1)
-        self.mac = wx.TextCtrl(self)
-        mac_sizer.Add(self.mac, 0, wx.ALIGN_LEFT, 5)
-        mac_sizer.AddSpacer(133)
-
-        # position info
-        position_sizer = wx.BoxSizer(wx.HORIZONTAL)
-
-        position_lbl = wx.StaticText(self, label="Camera position:")
-        position_sizer.Add(position_lbl, 0, wx.ALIGN_LEFT, 5)
-        position_sizer.AddStretchSpacer(1)
-        self.position = wx.TextCtrl(self)
-        self.position.SetValue(str(position_number))
-        position_sizer.Add(self.position, 0, wx.ALIGN_LEFT, 5)
-        position_sizer.AddSpacer(133)
-
-        # place info
-        place_sizer = wx.BoxSizer(wx.HORIZONTAL)
-
-        place_lbl = wx.StaticText(self, label="Place:")
-        place_sizer.Add(place_lbl, 0, wx.ALIGN_LEFT, 5)
-        place_sizer.AddStretchSpacer(1)
-        self.place = wx.TextCtrl(self)
-        place_sizer.Add(self.place, 0,  wx.ALIGN_LEFT, 5)
-        place_sizer.AddSpacer(133)
-
-        # status info
-        status_sizer = wx.BoxSizer(wx.HORIZONTAL)
-
-        status_lbl = wx.StaticText(self, label="Status (ON\OFF):")
-        status_sizer.Add(status_lbl, 0, wx.ALIGN_LEFT, 5)
-        status_sizer.AddStretchSpacer(1)
-        self.status = wx.TextCtrl(self)
-        status_sizer.Add(self.status, 0, wx.ALIGN_LEFT, 5)
-        status_sizer.AddSpacer(133)
-
-        # ID info
-        id_sizer = wx.BoxSizer(wx.HORIZONTAL)
-
-        id_lbl = wx.StaticText(self, label="id: ")
-        id_sizer.Add(id_lbl, 0, wx.ALIGN_LEFT, 5)
-
-        main_sizer = wx.BoxSizer(wx.VERTICAL)
-        main_sizer.Add(mac_sizer, 0, wx.ALL | wx.EXPAND, 5)
-        main_sizer.Add(position_sizer, 0, wx.ALL | wx.EXPAND, 5)
-        main_sizer.Add(place_sizer, 1, wx.ALL | wx.EXPAND, 5)
-        main_sizer.Add(status_sizer, 1, wx.ALL | wx.EXPAND, 5)
-        main_sizer.Add(id_sizer, 1, wx.ALL | wx.EXPAND, 5)
-
-        btn = wx.Button(self, label="Save")
-        btn.Bind(wx.EVT_BUTTON, self.save_settings)
-        main_sizer.Add(btn, 0, wx.ALL | wx.CENTER, 5)
-
-        self.SetSizer(main_sizer)
-
-        self.Bind(wx.EVT_CLOSE, self._when_closed)
-
-    def _when_closed(self, event):
-        self.Hide()
-
-    def save_settings(self, event):
-        mac_address = self.mac.GetValue()
-        position = self.position.GetValue()
-        place = self.place.GetValue()
-        status = self.status.GetValue()
-
-        # Checking if the mac address is valid
-        if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", mac_address.lower()):
-            pass
-            # if not self.myDB.position_taken(position):
-            #     try:
-            #         position = int(position)
-            #     except Exception as e:
-            #         print("Position must be a number")
-            #
-            #     else:
-            #         if 1 <= position <= 9:
-            #
-            #             if place.isalpha():
-            #
-            #                 if status.lower() == "on" or status.lower() == "off":
-            #
-            #                     mac_address = mac_address.higher()
-            #
-            #                     # self.myDB.update_mac(self.id)
-            #                     self.myDB.update_position(mac_address, position)
-            #                     self.myDB.update_place(mac_address, place)
-            #                     self.myDB.update_status(mac_address, status)
-            #
-            #                     self.display_message("Settings saved successfully")
-            #
-            #                     self.Hide()
-            #
-            #                 else:
-            #                     self.display_message("Status must be ON or OFF")
-            #
-            #             else:
-            #                 self.display_message("Place must be English letters")
-            #
-            #         else:
-            #             self.display_message("Position must be between 1 and 9")
-            #
-            # else:
-            #     self.display_message("Position taken")
-
-        else:
-            self.display_message("Invalid MAC address")
-
-
-        print("The new saved settings are:" + mac_address + " " + str(position) + " " + place + " " + status)
-
-    def display_message(self, message):
-        dlg = wx.MessageDialog(None, message, "Message", wx.OK | wx.ICON_INFORMATION)
-        dlg.ShowModal()
-        dlg.Destroy()
 
 
 if __name__ == "__main__":

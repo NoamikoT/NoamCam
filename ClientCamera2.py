@@ -4,7 +4,6 @@ import threading
 import cv2
 import Setting
 import ClientComms
-import queue
 from pubsub import pub
 import Alarm
 
@@ -54,7 +53,7 @@ class ClientCamera:
 
             self.encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 50]
 
-            # Load the cascade
+            # Loading the cascade
             # The cascade xml file is a set of input data that allows to detect faces in pictures
             self.face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
@@ -161,15 +160,3 @@ class ClientCamera:
         if self.play_on:
             self.siren_obj.stop_alarm()
             self.play_on = False
-
-
-if __name__ == '__main__':
-
-    rcv_q = queue.Queue()
-    client_video = ClientComms.ClientComms(Setting.VIDEO_PORT)
-    # client_stills = ClientComms.ClientComms(Setting.STILLS_PORT)
-    # client_command = ClientComms.ClientComms(Setting.GENERAL_PORT, rcv_q)
-
-    client_camera = ClientCamera(client_video, None)
-
-    client_camera.start_camera()

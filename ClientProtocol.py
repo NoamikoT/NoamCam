@@ -88,8 +88,6 @@ class ClientProtocol:
     def get_photo_code():
         """
         Building a message containing a photo caught by face recognition
-        :param photo_path: The path to the photo
-        :type photo_path: String
         :return: The packed message ready to send
         :rtype: String
         """
@@ -100,8 +98,8 @@ class ClientProtocol:
     def build_mac_send(mac_address):
         """
         Building a message containing a photo caught by face recognition
-        :param photo_path: The path to the photo
-        :type photo_path: String
+        :param mac_address: The MAC address of the client
+        :type mac_address: String
         :return: The packed message ready to send
         :rtype: String
         """

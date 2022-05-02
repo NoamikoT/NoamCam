@@ -1,6 +1,4 @@
-import re
 import sqlite3
-import time
 
 
 class DB:
@@ -221,7 +219,7 @@ class DB:
 
     def update_active(self, username, new_active):
         """
-        The function gets a key which is a username and a new active state (IN\OUT) to change the current active state of the key if found (ADMINS_TAB)
+        The function gets a key which is a username and a new active state (IN/OUT) to change the current active state of the key if found (ADMINS_TAB)
         :param username: A username
         :type username: String
         :param new_active: A state
@@ -394,6 +392,8 @@ class DB:
         :type place: String
         :param status: The status of the camera
         :type status: String
+        :param port: The port of the camera
+        :type port: Integer
         :return: Whether the camera was added successfully or not
         :rtype: Boolean
         """
@@ -433,9 +433,6 @@ class DB:
         ret_value = False
 
         if self.mac_exist(mac_address):
-
-            # Removing the ID from the taken_ids list so that it can be used again
-            list.remove(self.get_id_by_mac(mac_address))
 
             # Deleting the camera from the table
             sql = f"DELETE FROM {self.CAMERAS_TAB} WHERE MAC='{mac_address}'"
@@ -522,8 +519,8 @@ class DB:
     def get_mac_by_port(self, port):
         """
         Returns the port of the camera by the camera's MAC address(CAMERA_TAB)
-        :param mac_address: The MAC address of the camera
-        :type mac_address: String
+        :param port: The port of the camera
+        :type port: String
         :return: Returns the port corresponding to the MAC address
         :rtype: String inside a tuple inside a list [(2012)]
         """
@@ -535,7 +532,7 @@ class DB:
 
             ret_value = self.cursor.fetchall()[0][0]
 
-        except:
+        except Exception:
             pass
 
         return ret_value
@@ -632,6 +629,7 @@ class DB:
 
     def close(self):
         self.conn.close()
+
 
 if __name__ == "__main__":
 

@@ -3,6 +3,7 @@ import cv2
 import threading
 import queue
 
+# THIS FILE IS NOT IN USE AT THE MOMENT
 
 class ClientCamera:
 
