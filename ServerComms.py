@@ -14,10 +14,9 @@ from datetime import datetime
 from pubsub import pub
 
 
-
 class ServerComms:
 
-    def __init__(self, port, recv_q=None):
+    def __init__(self, port, recv_q=None, mail_q = None):
 
         self.server_socket = socket.socket()  # Initializing the server's socket
 
@@ -28,9 +27,10 @@ class ServerComms:
 
         self.port = port  # The server's port
         self.recv_q = recv_q  # The queue where messages get stored to and read
+        self.mail_q = mail_q
+        self.count = 1
 
         self.video_q = queue.Queue()
-        self.stills_q = queue.Queue()
 
         self.payload_size = struct.calcsize(">L")
         self.path = None
@@ -38,13 +38,11 @@ class ServerComms:
         # Starting the thread that runs the main loop constantly
         threading.Thread(target=self._main_loop, ).start()
 
-
         if self.port != Setting.GENERAL_PORT:
-
-            threading.Thread(target=self.handle_video_rec, ).start()
-
-            threading.Thread(target=self.handle_stills, ).start()
-
+            if self.port % 2 == 0:
+                threading.Thread(target=self.handle_video_rec, ).start()
+            # else:
+            #     threading.Thread(target=self.handle_stills, ).start()
 
     def _main_loop(self):
         """
@@ -68,12 +66,11 @@ class ServerComms:
                     self.open_clients[client] = address[0]
 
                     if self.port != Setting.GENERAL_PORT:
-
                         self.path = self.get_path()
-                        print(self.get_path(),"ServerComms.py:73")
+                        print(self.path, "ServerComms.py:73")
 
                 else:
-                    if self.port == Setting.GENERAL_PORT:
+                    if self.port == Setting.GENERAL_PORT or self.port % 2 != 0:
 
                         # Getting messages from a client
                         try:
@@ -91,16 +88,18 @@ class ServerComms:
                             if len(data) > 0:
                                 code, message = ServerProtocol.ServerProtocol.unpack(data)
                                 # 01/02 means media file
-                                if code in ["01", "02"]:
+                                if code in ["02"]:  # Stills protocol
                                     file_len = int(data[2:])
                                     self._recv_file(current_socket, code, file_len)
+
                                 else:
                                     self.recv_q.put((self.open_clients[current_socket], code, message))
 
                             else:
                                 self.disconnect(current_socket)
 
-                    else:
+                    else:    # Video port
+
                         data = b""
                         try:
                             while len(data) < self.payload_size:
@@ -111,34 +110,28 @@ class ServerComms:
                             self.disconnect(current_socket)
 
                         else:
+                            # receive image row data form client socket
+                            packed_msg_size = data[:self.payload_size]
+                            data = data[self.payload_size:]
+                            msg_size = struct.unpack(">L", packed_msg_size)[0]
+                            try:
+                                while len(data) < msg_size:
+                                    data += current_socket.recv(4096)
+                            except Exception as e:
+                                print("Line 94:", str(e))
+                                self.disconnect(current_socket)
+                            else:
+                                frame_data = data[:msg_size]
+                                data = data[msg_size:]
+                                # unpack image using pickle
+                                frame = pickle.loads(frame_data, fix_imports=True, encoding="bytes")
+                                frame = cv2.imdecode(frame, cv2.IMREAD_COLOR)
 
-                            if self.port%2 == 0:        # Making sure it's the video port
-
-                                # receive image row data form client socket
-                                packed_msg_size = data[:self.payload_size]
-                                data = data[self.payload_size:]
-                                msg_size = struct.unpack(">L", packed_msg_size)[0]
-                                try:
-                                    while len(data) < msg_size:
-                                        data += current_socket.recv(4096)
-                                except Exception as e:
-                                    print("Line 94:", str(e))
-                                    self.disconnect(current_socket)
-                                else:
-                                    frame_data = data[:msg_size]
-                                    data = data[msg_size:]
-                                    # unpack image using pickle
-                                    frame = pickle.loads(frame_data, fix_imports=True, encoding="bytes")
-                                    frame = cv2.imdecode(frame, cv2.IMREAD_COLOR)
-
-                                    # TODO: Update view of frame
-                                    wx.CallAfter(pub.sendMessage, f"update frame-{self.port}", video_frame=frame)
-                                    #cv2.imshow('server', frame)
-                                    #cv2.waitKey(1)
-                                    self.video_q.put(frame)
-
-                            else:       # Stills port
-                                self.stills_q.put(data)
+                                # TODO: Update view of frame
+                                wx.CallAfter(pub.sendMessage, f"update frame-{self.port}", video_frame=frame)
+                                # cv2.imshow('server', frame)
+                                # cv2.waitKey(1)
+                                self.video_q.put(frame)
 
     def _recv_file(self, soc, code, file_len):
         """
@@ -162,12 +155,21 @@ class ServerComms:
             else:
                 msg.extend(soc.recv(size))
                 break
-        file_name = f"Pic{str(self.file_num)}.png"
-        self.file_num += 1
-        with open(file_name, "wb") as f:
-            f.write(msg)
 
-        self.recv_q.put((self.open_clients[soc], code, file_name))
+        if self.port == Setting.GENERAL_PORT:
+            file_name = f"Pic{str(self.file_num)}.png"
+            self.file_num += 1
+            with open(file_name, "wb") as f:
+                f.write(msg)
+
+            self.recv_q.put((self.open_clients[soc], code, file_name))
+        else:
+            print("Got pic")
+            with open(f"{self.path}\\pic_{self.count}.png", "wb") as f:
+                f.write(msg)
+            self.mail_q.put(f"{self.path}\\pic_{self.count}.png")
+
+            self.count += 1
 
     def send_message(self, ip, message):
         """
@@ -220,20 +222,17 @@ class ServerComms:
             soc.close()
             del self.open_clients[soc]
 
-
-
     def get_path(self):
 
+        port = self.port
         if self.port % 2 == 0:  # Making sure it's the video port
             dir_name = "Video"
         else:
             dir_name = "Stills"
+            port -= 1
 
         myDB = DB_Class.DB("myDB")
-
-
-        mac = myDB.get_mac_by_port(self.port)
-
+        mac = myDB.get_mac_by_port(port)
         myDB.close()
 
         mac = mac.replace(":", "_")
@@ -247,8 +246,6 @@ class ServerComms:
         print(path)
         return path
 
-
-
     def handle_video_rec(self):
         print("HANDLEVIDEO")
         # Creating the video file to which the stream is being recorded
@@ -259,8 +256,7 @@ class ServerComms:
         while self.path is None:
             pass
 
-        VideoWriter = cv2.VideoWriter(f"{self.path}\\{hour}.avi", fourcc, 5.0, (530, 300))
-
+        VideoWriter = cv2.VideoWriter(f"{self.path}\\{hour}.avi", fourcc, 5.0, (600, 300))
 
         while True:
 
@@ -268,17 +264,18 @@ class ServerComms:
             # Saving the frame to the video
             VideoWriter.write(frame)
 
-    def handle_stills(self):
+    # def handle_stills(self):
+    #
+    #     count = 1
+    #
+    #     while True:
+    #         pic = self.stills_q.get()
+    #         print("Got pic")
+    #         with open(f"{self.path}\\pic_{count}.png", "wb") as f:
+    #             f.write(pic)
+    #
+    #         count += 1
 
-        count = 1
-
-        while True:
-            pic = self.stills_q.get()
-
-            with open(f"{self.path}\\pic_{count}", "wb") as f:
-                f.write(pic)
-
-            count+=1
 
 if __name__ == '__main__':
     server = ServerComms(Setting.VIDEO_PORT)

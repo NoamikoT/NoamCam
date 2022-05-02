@@ -3,6 +3,7 @@ import queue
 import Setting
 import threading
 import ClientCamera2
+import Alarm
 
 quit_q = queue.Queue()
 # client_camera = None
@@ -39,7 +40,20 @@ def handle_msgs(rcv_q, quit_q):
                     client_camera.stop_detection()
                 elif data == "Start face recognition":
                     client_camera.start_detection()
+        elif code == "07":      # Zoom protocol
+            print("IN ZOOM")
+            client_camera.start_zoom()
+        elif code == "08":      # Unzoom protocol
+            print("IN UNZOOM")
+            client_camera.stop_zoom()
 
+        elif code == "02":
+            print("ALERTING")
+            client_camera.set_siren_on()
+
+        elif code == "09":
+            print("STOP ALERTING")
+            client_camera.set_siren_off()
 
         elif code == "QU":
             quit_q.put("CLOSE")

@@ -1,24 +1,25 @@
 import pickle
-import struct
 import sys
 import threading
 import cv2
-import os
 import Setting
 import ClientComms
-import imutils
 import queue
 from pubsub import pub
+import Alarm
 
 
-class ClientCamera():
+class ClientCamera:
     def __init__(self, video_comm, port):
 
         self.video_comm = video_comm
         self.stills_comm = ClientComms.ClientComms(port)
         self.running = False
-        # self.path = "T:\public\NoamCamCode\Pic"
+        self.zoom = False
+        self.siren_obj = Alarm.AlarmSound()
 
+        self.siren = False
+        self.play_on = False
         self.running_recognition = False
 
         self.encode_param = None
@@ -57,9 +58,6 @@ class ClientCamera():
             # The cascade xml file is a set of input data that allows to detect faces in pictures
             self.face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
-            # datasets = 'datasets'
-            # sub_data = 'Noam'
-
             threading.Thread(target=self._operate_camera, ).start()
 
     def _operate_camera(self):
@@ -72,25 +70,23 @@ class ClientCamera():
                 # Read the frame
                 ret, frame = self.cap.read()
                 print(ret)
-                if ret or frame!=None:
-                    frame = cv2.resize(frame, dsize=(530, 300), interpolation=cv2.INTER_AREA)
-                    # frame = cv2.flip(frame, 180)
+                if ret or frame is not None:
+                    if self.zoom:
+                        frame = cv2.resize(frame, dsize=(1600, 900), interpolation=cv2.INTER_AREA)
+                    else:
+                        frame = cv2.resize(frame, dsize=(600, 300), interpolation=cv2.INTER_AREA)
                     result, image = cv2.imencode('.jpg', frame, self.encode_param)
                     data = pickle.dumps(image, 0)
 
-                    if count%5 == 0:
+                    if count % 5 == 0:
                         if self.running_recognition:
-
                             frame = self._face_detection(frame)
                             result, image = cv2.imencode('.jpg', frame, self.encode_param)
                             data = pickle.dumps(image, 0)
 
                         self.video_comm.send_video(data)
                         count = 0
-                    count+=1
-
-                    # if img_counter % 10 == 0:
-                    # img_counter += 1
+                    count += 1
 
                     if cv2.waitKey(1) & 0xFF == ord('q'):
                         break
@@ -98,7 +94,6 @@ class ClientCamera():
                     self.close_camera()
                     self.cap = cv2.VideoCapture(cv2.CAP_DSHOW)
                     print("Resetted the camera")
-
 
     def _face_detection(self, frame):
         """
@@ -119,14 +114,33 @@ class ClientCamera():
         for (x, y, w, h) in faces:
             cv2.rectangle(frame, (x, y), (x + w, y + h), (50, 50, 250), 2)
 
-            # face = gray[y:y + h, x:x + w]
-            # face_resize = cv2.resize(face, (500, 500))
-            # cv2.imwrite('% s/% s.png' % (self.path, self.count), frame)
-            cv2.imwrite("pic.png", frame)
-            # self.stills_comm.send_file('% s/% s.png' % (self.path, self.count))
-            self.stills_comm.send_file("pic.png")
-            # self.count += 1
+            face = gray[y:y + h, x:x + w]
+            face_resize = cv2.resize(face, (500, 500))
+            cv2.imwrite(f"{Setting.PIC_PATH}pic.png", face_resize)
+            self.stills_comm.send_file(f"{Setting.PIC_PATH}pic.png")
+            if self.siren and not self.play_on:
+                self.siren_obj.play_alarm()
+                self.play_on = True
             return frame
+        if self.play_on:
+            self.siren_obj.stop_alarm()
+            self.play_on = False
+        return frame
+
+    def start_zoom(self):
+        self.zoom = True
+
+    def stop_zoom(self):
+        self.zoom = False
+
+    def set_siren_on(self):
+        self.siren = True
+
+    def set_siren_off(self):
+        self.siren = False
+        if self.play_on:
+            self.siren_obj.stop_alarm()
+            self.play_on = False
 
     def start_detection(self):
         """
@@ -143,6 +157,11 @@ class ClientCamera():
         """
         print("STOPPING DETECTION")
         self.running_recognition = False
+
+        if self.play_on:
+            self.siren_obj.stop_alarm()
+            self.play_on = False
+
 
 if __name__ == '__main__':
 

@@ -27,6 +27,9 @@ class ClientProtocol:
         elif code == "02":
             unpacked_message = "Sound siren"
 
+        elif code == "09":
+            unpacked_message = "Sound off"
+
         # 03 - Stream status on\off
         elif code == "03":
             if data == "0":
@@ -40,6 +43,12 @@ class ClientProtocol:
 
         elif code == "06":
             unpacked_message = int(data)
+
+        elif code == "07":
+            unpacked_message = "Zoom"
+
+        elif code == "08":
+            unpacked_message = "Unzoom"
 
         return code, unpacked_message
 
@@ -102,4 +111,3 @@ class ClientProtocol:
         packed_message = f"{code}{mac_address}"
 
         return packed_message
-

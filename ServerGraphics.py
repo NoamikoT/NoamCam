@@ -10,6 +10,7 @@ import wx.lib.scrolledpanel
 from pubsub import pub
 import ServerComms
 import Setting
+import ServerProtocol
 
 
 class LoginDialog(wx.Dialog):
@@ -53,8 +54,12 @@ class LoginDialog(wx.Dialog):
         btn.Bind(wx.EVT_BUTTON, self.on_login)
         main_sizer.Add(btn, 0, wx.ALL | wx.CENTER, 5)
 
+        # self.Bind(wx.EVT_CLOSE, self.handle_exit)
+
         self.SetSizer(main_sizer)
 
+    def handle_exit(self, event):
+        os._exit(0)
 
     # ----------------------------------------------------------------------
     def on_login(self, event):
@@ -89,8 +94,8 @@ class CameraPanel(wx.Panel):
     """"""
 
     # ----------------------------------------------------------------------
-    def __init__(self, frame, parent, start_x, start_y, position_number, port, mac):
-        wx.Panel.__init__(self, parent, size=(530, 330))
+    def __init__(self, frame, parent, start_x, start_y, position_number, port, mac, place):
+        wx.Panel.__init__(self, parent, size=(600, 330))
 
         self.frame = frame
         self.parent = parent
@@ -99,10 +104,12 @@ class CameraPanel(wx.Panel):
         self.position_number = position_number
 
         self.mac = mac
+        self.place = place
+        self.siren = False
 
-        self.imgSizer = (530, 300)
-        self.image = wx.EmptyImage(self.imgSizer[0], self.imgSizer[1])
-        self.imageBit = wx.BitmapFromImage(self.image)
+        self.imgSizer = (600, 300)
+        self.image = wx.Image(self.imgSizer[0], self.imgSizer[1])
+        self.imageBit = wx.Bitmap(self.image)
         self.staticBit = wx.StaticBitmap(self, wx.ID_ANY, self.imageBit)
 
         self.SetBackgroundColour("white")
@@ -111,28 +118,42 @@ class CameraPanel(wx.Panel):
         # self.button_sizer = wx.BoxSizer(wx.HORIZONTAL)
         # self.button_sizer.SetDimension(x=0, y=300, width=530, height=30)
 
-        self.settings_frame = SettingsFrame(self.position_number)
+        # self.settings_frame = SettingsFrame(self.position_number)
 
         # self.parent.settings_screens_open.append(self.settings_frame)
 
-        self.alert = wx.Button(self, label='Alert', pos=(33, 302))
+        self.alert = wx.Button(self, label='Alert', pos=(133, 302))
         self.alert.Bind(wx.EVT_BUTTON, self.alert_call)
 
-        self.face = wx.ToggleButton(self, label='Face', pos=(158, 302))
+        self.face = wx.ToggleButton(self, label='Face', pos=(258, 302))
         self.face.Bind(wx.EVT_TOGGLEBUTTON, self.toggle_face_detection)
 
-        self.zoom = wx.Button(self, label='Zoom', pos=(283, 302))
+        self.zoom = wx.Button(self, label='Zoom', pos=(383, 302))
         self.zoom.Bind(wx.EVT_BUTTON, self.call_zoom_screen)
 
-        self.settings = wx.Button(self, label='Settings', pos=(408, 302))
-        self.settings.Bind(wx.EVT_BUTTON, self.settings_screen)
+        # self.description = wx.Button(self, label=self.place, pos=(33, 302))
+        # self.description.SetForegroundColour((0, 255, 0))
+        # self.description.Disable()
+
+        font = wx.Font(10, wx.MODERN, wx.NORMAL, wx.BOLD)
+        lbl = wx.StaticText(self, style=wx.ALIGN_CENTER, pos = (2, 306))
+        lbl.SetFont(font)
+        lbl.SetLabel(self.place)
+        lbl.SetBackgroundColour("gray")
+
+
+
+
+
+        # self.settings = wx.Button(self, label='Settings', pos=(408, 302))
+        # self.settings.Bind(wx.EVT_BUTTON, self.settings_screen)
 
         # self.button_sizer.AddMany([self.alert, self.face, self.zoom, self.settings])
 
 
 
 
-        self.width = 530
+        self.width = 600
         self.height = 300
 
         self.port = port
@@ -173,7 +194,7 @@ class CameraPanel(wx.Panel):
     def redraw(self, e):
         ret, self.data = self.capture.read()
         if ret:
-            self.data = cv2.resize(self.data, (530, 300), interpolation=cv2.INTER_AREA)
+            self.data = cv2.resize(self.data, (600, 300), interpolation=cv2.INTER_AREA)
             self.data = cv2.cvtColor(self.data, cv2.COLOR_BGR2RGB)
             self.bmp.CopyFromBuffer(self.data)
             self.staticBit.SetBitmap(self.bmp)
@@ -181,9 +202,9 @@ class CameraPanel(wx.Panel):
 
 
     def update_frame(self, video_frame):
-        self.bmp = wx.BitmapFromBuffer(self.width, self.height, video_frame)
+        self.bmp = wx.Bitmap.FromBuffer(self.width, self.height, video_frame)
 
-        data = cv2.resize(video_frame, (530, 300), interpolation=cv2.INTER_AREA)
+        data = cv2.resize(video_frame, (600, 300), interpolation=cv2.INTER_AREA)
         data = cv2.cvtColor(data, cv2.COLOR_BGR2RGB)
         self.bmp.CopyFromBuffer(data)
         self.staticBit.SetBitmap(self.bmp)
@@ -193,7 +214,16 @@ class CameraPanel(wx.Panel):
 
 
     def alert_call(self, e):
-        print("Called alert")
+        if not self.siren:
+            self.frame.graphics_comms.put(("ALERT ON", self.mac))
+            print("Called alert")
+            self.alert.SetLabel("Stop Alert")
+            self.siren = True
+        else:
+            self.frame.graphics_comms.put(("ALERT OFF", self.mac))
+            print("Stopped alert")
+            self.alert.SetLabel("Alert")
+            self.siren = False
         # self.parent.parent.sound_object.play_now = True
 
     def toggle_face_detection(self, e):
@@ -205,8 +235,13 @@ class CameraPanel(wx.Panel):
             self.frame.graphics_comms.put(("stop face detection", self.mac))
 
     def call_zoom_screen(self, e):
-        self.parent.Hide()
-        self.parent.parent.show_zoom_panel(self.position_number)
+        print(self.frame.current_zoom)
+        if not self.frame.current_zoom:
+            self.frame.graphics_comms.put(("Zoom", self.mac))
+            self.frame.current_zoom = self.mac
+            self.parent.Hide()
+            self.frame.show_zoom_panel(self.mac)
+            self.frame.zoom_panel.set_details(self.mac, self.port, self.place)
 
     def settings_screen(self, e):
         if not self.settings_frame.IsShown():
@@ -228,17 +263,17 @@ class CameraPanel(wx.Panel):
         # Black filled rectangle
         dc.SetPen(wx.Pen("black"))
         dc.SetBrush(wx.Brush("black"))
-        dc.DrawRectangle(0, 0, 530, 300)
+        dc.DrawRectangle(0, 0, 600, 300)
 
         # Red filled rectangle
-        dc.SetPen(wx.Pen("red"))
-        dc.SetBrush(wx.Brush("red"))
-        dc.DrawRectangle(0, 300, 530, 30)
+        dc.SetPen(wx.Pen("gray"))
+        dc.SetBrush(wx.Brush("gray"))
+        dc.DrawRectangle(0, 300, 600, 30)
 
 
 class ZoomPanel(wx.Panel):
 
-    def __init__(self, parent, position_number):
+    def __init__(self, parent, port=None, mac=None, place=None):
 
         wx.Panel.__init__(self, parent, size=(1900, 1000))
 
@@ -248,11 +283,22 @@ class ZoomPanel(wx.Panel):
         # Setting the background to white
         self.SetBackgroundColour("white")
 
-        self.Bind(wx.EVT_PAINT, self.OnPaint)
+        # self.Bind(wx.EVT_PAINT, self.OnPaint)
 
-        self.position_number = position_number
+        self.port = port
+        self.mac = mac
+        self.place = place
+        self.width = 1600
+        self.height = 900
 
-        self.settings_frame = SettingsFrame(self.position_number)
+
+        self.imgSizer = (1600, 900)
+        self.image = wx.Image(self.imgSizer[0], self.imgSizer[1])
+        self.imageBit = wx.Bitmap(self.image)
+        self.staticBit = wx.StaticBitmap(self, wx.ID_ANY, self.imageBit)
+
+
+        # self.settings_frame = SettingsFrame(self.position_number)
 
         self.alert = wx.Button(self, label='Alert', pos=(1770, 600))
         self.alert.Bind(wx.EVT_BUTTON, self.alert_call)
@@ -261,22 +307,44 @@ class ZoomPanel(wx.Panel):
         self.face.Bind(wx.EVT_TOGGLEBUTTON, self.toggle_face_detection)
 
         self.zoom = wx.Button(self, label='unZoom', pos=(1770, 700))
-        self.zoom.Bind(wx.EVT_BUTTON, self.call_zoom_screen)
+        self.zoom.Bind(wx.EVT_BUTTON, self.call_unzoom_screen)
 
-        settings = wx.Button(self, label='Settings', pos=(1770, 750))
-        settings.Bind(wx.EVT_BUTTON, self.settings_screen)
+
+
+        # settings = wx.Button(self, label='Settings', pos=(1770, 750))
+        # settings.Bind(wx.EVT_BUTTON, self.settings_screen)
 
         # Log out button
-        self.logout_button = wx.Button(self, label='Log out', pos=(1770, 50))
-        self.logout_button.SetBackgroundColour((245, 66, 66, 255))
-        self.logout_button.Bind(wx.EVT_BUTTON, self.logout_button_pressed)
+        # self.logout_button = wx.Button(self, label='Log out', pos=(1770, 50))
+        # self.logout_button.SetBackgroundColour((245, 66, 66, 255))
+        # self.logout_button.Bind(wx.EVT_BUTTON, self.logout_button_pressed)
 
 
         # Settings button panel
-        settings_panel_button = wx.Panel(self, pos=(1778, 468), size=(72, 72))
-        pic = wx.Bitmap("Settings.bmp", wx.BITMAP_TYPE_ANY)
-        self.settings_button = wx.BitmapButton(settings_panel_button, -1, pic)
-        self.Bind(wx.EVT_BUTTON, self.settings_button_pressed, self.settings_button)
+        # settings_panel_button = wx.Panel(self, pos=(1778, 468), size=(72, 72))
+        # pic = wx.Bitmap("Settings.bmp", wx.BITMAP_TYPE_ANY)
+        # self.settings_button = wx.BitmapButton(settings_panel_button, -1, pic)
+        # self.Bind(wx.EVT_BUTTON, self.settings_button_pressed, self.settings_button)
+    def set_details(self, mac, port, place):
+        self.mac = mac
+        self.parent.SetLabel(f'Zoom Screen - {mac} - {place}')
+        self.port = port
+        self.place = place
+        pub.subscribe(self.update_zoom_frame, f"update frame-{self.port}")
+
+
+
+
+
+    def update_zoom_frame(self, video_frame):
+        self.bmp = wx.Bitmap.FromBuffer(self.width, self.height, video_frame)
+
+        data = cv2.resize(video_frame, (self.width, self.height), interpolation=cv2.INTER_AREA)
+        data = cv2.cvtColor(data, cv2.COLOR_BGR2RGB)
+        self.bmp.CopyFromBuffer(data)
+        self.staticBit.SetBitmap(self.bmp)
+
+        self.Refresh()
 
     def settings_button_pressed(self, e):
         print("Settings button pressed")
@@ -293,11 +361,13 @@ class ZoomPanel(wx.Panel):
         else:
             print("Face detection is off")
 
-    def call_zoom_screen(self, e):
-        try:
-            self.settings_frame.Destroy()
-        except Exception:
-            pass
+    def call_unzoom_screen(self, e):
+        # try:
+        #     self.settings_frame.Destroy()
+        # except Exception:
+        #     pass
+        self.parent.graphics_comms.put(("Unzoom", self.mac))
+        self.parent.current_zoom = None
         self.parent.hide_zoom_panel()
 
     def settings_screen(self, e):
@@ -503,42 +573,42 @@ class MainPanel(wx.Panel):
         self.camera_panels = []
 
 
-        ports = [[xx[1],xx[3],xx[0]] for xx in self.frame.camera_details]
+        ports = [[xx[1],xx[3],xx[0],xx[2]] for xx in self.frame.camera_details]
 
 
         port_for_position = {}
 
 
-        for pos,port,mac in ports:
-            port_for_position[pos] = [port,mac]
+        for pos,port,mac,place in ports:
+            port_for_position[pos] = [port,mac,place]
 
         # First row
-        self.camera_panels.append(CameraPanel(self.frame, self, start_x, start_y, 1, port_for_position[1][0], port_for_position[1][1]))
-        self.camera_panels.append(CameraPanel(self.frame, self, start_x + 530, start_y, 2, port_for_position[2][0], port_for_position[2][1]))
-        self.camera_panels.append(CameraPanel(self.frame, self, start_x + 1060, start_y, 3, port_for_position[3][0], port_for_position[3][1]))
+        self.camera_panels.append(CameraPanel(self.frame, self, start_x, start_y, 1, port_for_position[1][0], port_for_position[1][1], port_for_position[1][2]))
+        self.camera_panels.append(CameraPanel(self.frame, self, start_x + 540, start_y, 2, port_for_position[2][0], port_for_position[2][1], port_for_position[2][2]))
+        self.camera_panels.append(CameraPanel(self.frame, self, start_x + 1070, start_y, 3, port_for_position[3][0], port_for_position[3][1], port_for_position[3][2]))
         # Second rowself.frame,
-        self.camera_panels.append(CameraPanel(self.frame, self, start_x, start_y + 330, 4, port_for_position[4][0], port_for_position[4][1]))
-        self.camera_panels.append(CameraPanel(self.frame, self, start_x + 530, start_y + 330, 5, port_for_position[5][0], port_for_position[5][1]))
-        self.camera_panels.append(CameraPanel(self.frame, self, start_x + 1060, start_y + 330, 6, port_for_position[6][0], port_for_position[6][1]))
+        self.camera_panels.append(CameraPanel(self.frame, self, start_x, start_y + 330, 4, port_for_position[4][0], port_for_position[4][1], port_for_position[4][2]))
+        self.camera_panels.append(CameraPanel(self.frame, self, start_x + 540, start_y + 330, 5, port_for_position[5][0], port_for_position[5][1], port_for_position[5][2]))
+        self.camera_panels.append(CameraPanel(self.frame, self, start_x + 1070, start_y + 330, 6, port_for_position[6][0], port_for_position[6][1], port_for_position[6][2]))
         # Third rowself.frame,
-        self.camera_panels.append(CameraPanel(self.frame, self, start_x, start_y + 660, 7, port_for_position[7][0], port_for_position[7][1]))
-        self.camera_panels.append(CameraPanel(self.frame, self, start_x + 530, start_y + 660, 8, port_for_position[8][0], port_for_position[8][1]))
-        self.camera_panels.append(CameraPanel(self.frame, self, start_x + 1060, start_y + 660, 9, port_for_position[9][0], port_for_position[9][1]))
+        self.camera_panels.append(CameraPanel(self.frame, self, start_x, start_y + 660, 7, port_for_position[7][0], port_for_position[7][1], port_for_position[7][2]))
+        self.camera_panels.append(CameraPanel(self.frame, self, start_x + 540, start_y + 660, 8, port_for_position[8][0], port_for_position[8][1], port_for_position[8][2]))
+        self.camera_panels.append(CameraPanel(self.frame, self, start_x + 1070, start_y + 660, 9, port_for_position[9][0], port_for_position[9][1], port_for_position[9][2]))
 
         # Log out button
-        self.logout_button = wx.Button(self, label='Log out', pos=(1770, 50))
-        self.logout_button.SetBackgroundColour((245, 66, 66, 255))
-        self.logout_button.Bind(wx.EVT_BUTTON, self.logout_button_pressed)
+        # self.logout_button = wx.Button(self, label='Log out', pos=(1770, 50))
+        # self.logout_button.SetBackgroundColour((245, 66, 66, 255))
+        # self.logout_button.Bind(wx.EVT_BUTTON, self.logout_button_pressed)
 
         # Settings button panel
-        settings_panel_button = wx.Panel(self, pos=(1778, 468), size=(72, 72))
-        pic = wx.Bitmap("Settings.bmp", wx.BITMAP_TYPE_ANY)
-        self.settings_button = wx.BitmapButton(settings_panel_button, -1, pic)
-        self.Bind(wx.EVT_BUTTON, self.settings_button_pressed, self.settings_button)
+        # settings_panel_button = wx.Panel(self, pos=(1778, 468), size=(72, 72))
+        # pic = wx.Bitmap("Settings.bmp", wx.BITMAP_TYPE_ANY)
+        # self.settings_button = wx.BitmapButton(settings_panel_button, -1, pic)
+        # self.Bind(wx.EVT_BUTTON, self.settings_button_pressed, self.settings_button)
 
         # Info button
-        self.info_button = wx.Button(self, label='Info', pos=(1770, 910))
-        self.info_button.Bind(wx.EVT_BUTTON, self.onAbout)
+        # self.info_button = wx.Button(self, label='Info', pos=(1770, 910))
+        # self.info_button.Bind(wx.EVT_BUTTON, self.onAbout)
 
 
         # Presenting the name of the user to the screen
@@ -556,12 +626,14 @@ class MainPanel(wx.Panel):
         self.sizer_contain_sizer.SetDimension(0, 0, 1590, 990)
 
         self.main_sizer = wx.GridSizer(3, 3, 0, 0)
+        self.main_sizer.SetHGap(20)
         self.main_sizer.AddMany(self.camera_panels)
 
         self.sizer_contain_sizer.Add(self.main_sizer,0)
 
         self.SetSizer(self.sizer_contain_sizer)
         self.Layout()
+
 
     def settings_button_pressed(self, e):
         print("Settings button pressed")
@@ -607,8 +679,10 @@ class MainFrame(wx.Frame):
 
         self.server = server
 
+        self.current_zoom = None
+
         self.graphics_comms = graphics_comms
-        self.start_x = 0
+        self.start_x = 10
         self.start_y = 0
 
         # self.myDB = DB_Class.DB("myDB")
@@ -649,12 +723,18 @@ class MainFrame(wx.Frame):
         icon.CopyFromBitmap(wx.Bitmap("NoamCamLens.ico", wx.BITMAP_TYPE_ANY))
         self.SetIcon(icon)
 
-        self.Bind(wx.EVT_CLOSE, sys.exit)
+        self.Bind(wx.EVT_CLOSE, self.handle_exit)
 
         # Showing and centring the frame in the screen
         self.Show()
         self.Centre()
 
+    def handle_exit(self, event):
+        self.Hide()
+        self.DestroyChildren()
+        self.Destroy()
+        os._exit(0)
+        # sys.exit("Pressed exit")
 
     def hide_all_settings(self):
         for settings in self.settings_screens_open:
@@ -684,8 +764,7 @@ class MainFrame(wx.Frame):
     def show_zoom_panel(self, position_number):
         self.hide_all_settings()
         self.main_panel.Hide()
-        self.zoom_panel = ZoomPanel(self, position_number)
-        self.SetLabel("Zoom Screen")
+        self.zoom_panel = ZoomPanel(self)
 
     def hide_zoom_panel(self):
         self.hide_all_settings()

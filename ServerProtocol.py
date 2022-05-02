@@ -48,7 +48,7 @@ class ServerProtocol:
         return packed_message
 
     @staticmethod
-    def build_siren():
+    def build_siren_on(mac):
 
         """
         Building a message saying to activate the siren
@@ -56,7 +56,20 @@ class ServerProtocol:
         :rtype: String
         """
 
-        code = "02"
+        code = f"02{mac}"
+
+        return code
+
+    @staticmethod
+    def build_siren_off(mac):
+
+        """
+        Building a message saying to activate the siren
+        :return: The packed message ready to send
+        :rtype: String
+        """
+
+        code = f"09{mac}"
 
         return code
 
@@ -105,4 +118,32 @@ class ServerProtocol:
 
         return packed_message
 
+    @staticmethod
+    def build_zoom(mac):
 
+        """
+        Building a message telling the computer to turn off
+        :return: The packed message ready to send
+        :rtype: String
+        """
+
+        code = "07"
+
+        packed_message = f"{code}{mac}"
+
+        return packed_message
+
+    @staticmethod
+    def build_unzoom(mac):
+
+        """
+        Building a message telling the computer to turn off
+        :return: The packed message ready to send
+        :rtype: String
+        """
+
+        code = "08"
+
+        packed_message = f"{code}{mac}"
+
+        return packed_message

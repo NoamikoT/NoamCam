@@ -341,6 +341,16 @@ class DB:
 
         return ret_value
 
+    def get_managers_mail(self):
+        sql = f"SELECT email FROM {self.ADMINS_TAB} WHERE active='IN'"
+        self.cursor.execute(sql)
+
+        mails = self.cursor.fetchall()
+
+        ret_mails = [x[0] for x in mails]
+
+        return ret_mails
+
     """ --------------------------------- CAMERAS_TAB ---------------------------------
     The following functions are for the cameras table (CAMERAS_TAB)
     """
@@ -678,10 +688,12 @@ if __name__ == "__main__":
     # myDB.add_camera("FE:GG:SA:GF", 9, "Room")
     # myDB.add_camera("FE:GG:SA:AS", 7, "Kitchen")
     # myDB.add_camera("HE:GS:SA:GE", 1, "Kids Room")
-
-    save_c = (myDB.get_cameras())
-    x = [xx[0] for xx in save_c]
-    print(x)
-
-    y = [[xx[1],xx[3]] for xx in save_c]
-    print(y)
+    #
+    # save_c = (myDB.get_cameras())
+    # x = [xx[0] for xx in save_c]
+    # print(x)
+    #
+    # y = [[xx[1],xx[3]] for xx in save_c]
+    # print(y)
+    print("NOOOWWW")
+    print(myDB.get_managers_mail())

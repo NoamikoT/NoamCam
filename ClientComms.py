@@ -1,17 +1,10 @@
 import socket
 import sys
 import threading
-
-import wx
-
 import Setting
-import pickle
 import struct
 import ClientProtocol
-from pubsub import pub
 from uuid import getnode
-
-
 
 
 class ClientComms:
@@ -95,8 +88,6 @@ class ClientComms:
     def send_file(self, file_path):
         """
         The function sends a file to the server
-        :param code: The type of file (01 - Frame, 02 - Photo)
-        :type code; String
         :param file_path: The path to the file that needs to be sent
         :type file_path: String
         """
@@ -107,11 +98,13 @@ class ClientComms:
             f.close()
 
         message = f"{ClientProtocol.ClientProtocol.get_photo_code()}{str(len(file))}"
+        print("FILE LEN IN CLIENT", len(file))
         message_length = str(len(message)).zfill(8).encode()
 
         try:
             self.my_socket.send(message_length + message.encode())
             self.my_socket.send(file)
+            print("COMMS IMAGE", message)
 
         except Exception as e:
             print("CLIENT COMMS LINE 97" + str(e))
@@ -127,7 +120,6 @@ class ClientComms:
         try:
             size = len(data)
 
-            # if img_counter % 10 == 0:
             self.my_socket.sendall(struct.pack(">L", size) + data)
         except:
             pass

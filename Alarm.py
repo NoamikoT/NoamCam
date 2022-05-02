@@ -1,23 +1,29 @@
-import winsound
-import threading
-import time
+from pygame import mixer
 
 
 class AlarmSound():
     """A class for sounding an alarm"""
 
     def __init__(self):
-        self.play_now = False
+        mixer.init()
+        mixer.music.load("Siren.mp3")
 
-        self.alarm_thread = threading.Thread(target=self.play_alert, ).start()
+    def play_alarm(self):
+        mixer.music.play(loops=-1)
 
-    def play_alert(self):
+    def stop_alarm(self):
+        mixer.music.stop()
 
-        while True:
-            if self.play_now == True:
-                winsound.PlaySound('Sound.wav', winsound.SND_FILENAME)
-                self.play_now = False
-            time.sleep(3)
+if __name__ == '__main__':
+    x = AlarmSound()
 
-    def play_beep(self):
-        winsound.Beep(500, 4000)
+    x.play_alarm()
+
+    input("G")
+    x.stop_alarm()
+
+    # mixer.init()
+    # mixer.music.load("Siren.mp3")
+    # mixer.music.play(loops=-1)
+    # input("G")
+    # mixer.music.stop()
