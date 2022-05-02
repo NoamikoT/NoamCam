@@ -2,23 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c2dcd42c-ff15-48d6-85bd-c1f1c5a77cea" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Alarm.py" beforeDir="false" afterPath="$PROJECT_DIR$/Alarm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ClientCamera.py" beforeDir="false" afterPath="$PROJECT_DIR$/ClientCamera.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ClientCamera2.py" beforeDir="false" afterPath="$PROJECT_DIR$/ClientCamera2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ClientComms.py" beforeDir="false" afterPath="$PROJECT_DIR$/ClientComms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ClientLogic.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ClientProtocol.py" beforeDir="false" afterPath="$PROJECT_DIR$/ClientProtocol.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DB_Class.py" beforeDir="false" afterPath="$PROJECT_DIR$/DB_Class.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Email.py" beforeDir="false" afterPath="$PROJECT_DIR$/Email.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MainClient.py" beforeDir="false" afterPath="$PROJECT_DIR$/MainClient.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MainServer.py" beforeDir="false" afterPath="$PROJECT_DIR$/MainServer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ServerComms.py" beforeDir="false" afterPath="$PROJECT_DIR$/ServerComms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ServerGraphics.py" beforeDir="false" afterPath="$PROJECT_DIR$/ServerGraphics.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ServerLogic.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ServerProtocol.py" beforeDir="false" afterPath="$PROJECT_DIR$/ServerProtocol.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Things TODO.txt" afterDir="false" />
     </list>
     <list id="2dc151e2-ce3e-4500-bf9e-fdb0b6b7ebbb" name="A little bit of comments added" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -352,19 +336,7 @@
       <workItem from="1650873725659" duration="980000" />
       <workItem from="1650911269404" duration="1888000" />
       <workItem from="1650988234559" duration="2356000" />
-      <workItem from="1651521808161" duration="2790000" />
-    </task>
-    <task id="LOCAL‎00008" summary="A little bit of comments added">
-      <created>1645534312872</created>
-      <option name="number" value="LOCAL‎00008" />
-      <option name="presentableId" value="LOCAL‎00008" />
-      <updated>1645534312872</updated>
-    </task>
-    <task id="LOCAL‎00009" summary="A little bit of comments added">
-      <created>1645617604282</created>
-      <option name="number" value="LOCAL‎00009" />
-      <option name="presentableId" value="LOCAL‎00009" />
-      <updated>1645617604282</updated>
+      <workItem from="1651521808161" duration="3118000" />
     </task>
     <task id="LOCAL‎00010" summary="Created Server and ClientLogic">
       <created>1645623559639</created>
@@ -661,7 +633,21 @@
       <option name="project" value="LOCAL" />
       <updated>1651523050066</updated>
     </task>
-    <option name="localTasksCounter" value="57" />
+    <task id="LOCAL-00057" summary="Corrected files according to most conventions, and removed unused classes and functions in ServerGraphics.py">
+      <created>1651524692010</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1651524692010</updated>
+    </task>
+    <task id="LOCAL-00058" summary="Added the siren sound to GitHub">
+      <created>1651524740557</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1651524740557</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="TodoView">
@@ -736,8 +722,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Changed fullName to full_name, and changed a little of the main function where I test the DB functions" />
-    <MESSAGE value="Added the function to be able to check if the email already exists in the database, and applied some conventions suggestions" />
     <MESSAGE value="Applied some conventions suggestions, and created the server graphics class" />
     <MESSAGE value="Updated the DB class" />
     <MESSAGE value="Updated the DB class and made it 2 tables instead of 1, the admins table and the cameras table, the admins table is probably finished, the cameras table needs some more functions (:" />
@@ -761,16 +745,18 @@
     <MESSAGE value="Recording working, stream freezes..." />
     <MESSAGE value="Saving" />
     <MESSAGE value="Changed mkdir to makedirs since it works better." />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed mkdir to makedirs since it works better." />
+    <MESSAGE value="Corrected files according to most conventions, and removed unused classes and functions in ServerGraphics.py" />
+    <MESSAGE value="Added the siren sound to GitHub" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added the siren sound to GitHub" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/NoamCam$ServerGraphics.coverage" NAME="ServerGraphics Coverage Results" MODIFIED="1649370927285" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoamCam$ClientComms.coverage" NAME="ClientComms Coverage Results" MODIFIED="1648492458107" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoamCam$ServerGraphics__1_.coverage" NAME="ServerGraphics (1) Coverage Results" MODIFIED="1650873243291" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoamCam$DB_Class.coverage" NAME="DB_Class Coverage Results" MODIFIED="1651521925991" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/NoamCam$MainServer.coverage" NAME="MainServer Coverage Results" MODIFIED="1651522783525" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/NoamCam$MainServer.coverage" NAME="MainServer Coverage Results" MODIFIED="1651524760666" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoamCam$ClientProtocol.coverage" NAME="ClientProtocol Coverage Results" MODIFIED="1650020007598" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/NoamCam$MainClient.coverage" NAME="MainClient Coverage Results" MODIFIED="1651522787307" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/NoamCam$MainClient.coverage" NAME="MainClient Coverage Results" MODIFIED="1651524765170" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="setValue">
