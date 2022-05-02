@@ -242,7 +242,7 @@ class ServerComms:
         path = f"{os.getcwd()}\\Server\\{dir_name}\\{mac}_{date}"
 
         if not os.path.exists(path):
-            os.mkdir(path)
+            os.makedirs(path)
         print(path)
         return path
 
