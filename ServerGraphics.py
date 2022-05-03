@@ -5,6 +5,7 @@ import wx
 import DB_Class
 import sys
 import wx.adv
+import wx.grid
 import wx.lib.scrolledpanel
 from pubsub import pub
 import ServerComms
@@ -326,7 +327,7 @@ class MainPanel(wx.Panel):
 
     def onAbout(self, e):
         info = wx.adv.AboutDialogInfo()
-        info.SetName('Noam Camera')
+        info.SetName('Noam Cam')
         info.SetVersion('0.22B')
         info.SetDescription('A program for controlling the Noam Camera system')
         info.SetCopyright('(C) 2020 Noam')
@@ -372,6 +373,8 @@ class MainFrame(wx.Frame):
         # Saving the username
         self.username = dlg.username
 
+        self.create_main_settings_panel()
+
         self.create_main_panel()
 
         # Setting the icon of the frame
@@ -393,6 +396,11 @@ class MainFrame(wx.Frame):
 
     def create_main_panel(self):
         self.main_panel = MainPanel(self, self.start_x, self.start_y, self.username)
+        self.main_panel.Hide()
+
+    def create_main_settings_panel(self):
+        self.SetLabel("Main Settings Screen")
+        self.main_settings_panel = MainSettingsPanel(self)
 
     def show_zoom_panel(self, position_number):
         self.main_panel.Hide()
@@ -402,6 +410,203 @@ class MainFrame(wx.Frame):
         self.zoom_panel.Hide()
         self.main_panel.Show()
         self.SetLabel("Main Screen")
+
+    def camera_settings_pressed(self, event):
+        self.main_settings_panel.Hide()
+        self.SetLabel("Camera Settings Panel")
+        self.camera_settings_panel = CameraSettingsPanel(self)
+        self.camera_settings_panel.Show()
+
+    def admin_settings_pressed(self, event):
+        self.main_settings_panel.Hide()
+        self.SetLabel("Admin Settings Panel")
+        self.admin_settings_panel = AdminSettingsPanel(self)
+        self.admin_settings_panel.Show()
+
+
+class MainSettingsPanel(wx.Panel):
+    def __init__(self, parent):
+
+        wx.Panel.__init__(self, parent, size=(1900, 1000), pos=(0, 0))
+
+        self.parent = parent
+
+        font = wx.Font(35, wx.MODERN, wx.NORMAL, wx.BOLD)
+
+        self.camera_settings_button = wx.Button(self, label='Camera Settings', pos=(470, 302), size=(430, 70))
+        self.camera_settings_button.Bind(wx.EVT_BUTTON, self.camera_settings_pressed)
+
+        self.admin_settings_button = wx.Button(self, label='Admins Settings', pos=(1000, 302), size=(430, 70))
+        self.admin_settings_button.Bind(wx.EVT_BUTTON, self.admin_settings_pressed)
+
+        self.start_main_button = wx.Button(self, label='Start Main Program', pos=(692, 600), size=(515, 70))
+        self.start_main_button.Bind(wx.EVT_BUTTON, self.start_main)
+
+        # SET FONT FOR LABEL
+        self.camera_settings_button.SetFont(font)
+        self.admin_settings_button.SetFont(font)
+        self.start_main_button.SetFont(font)
+        self.Centre()
+
+    def camera_settings_pressed(self, event):
+        self.parent.camera_settings_pressed(event)
+
+    def admin_settings_pressed(self, event):
+        self.parent.admin_settings_pressed(event)
+
+    def start_main(self, event):
+        self.parent.SetLabel("Main Screen")
+        self.parent.main_panel.Show()
+        self.Destroy()
+
+
+class CameraSettingsPanel(wx.Panel):
+    def __init__(self, parent):
+
+        wx.Panel.__init__(self, parent, size=(1900, 1000), pos=(0, 0))
+
+        self.parent = parent
+
+        # Create a wxGrid object
+        self.camera_grid = wx.grid.Grid(self, -1, size=(583, 393), pos=(658, 303))
+
+        # Then we call CreateGrid to set the dimensions of the grid
+        # (100 rows and 10 columns in this example)
+        self.camera_grid.CreateGrid(9, 2)
+
+        self.camera_grid.SetColLabelValue(0, "MAC")
+        self.camera_grid.SetColLabelValue(1, "Place")
+
+
+        for row in range(9):
+            for column in range(2):
+                self.camera_grid.SetCellFont(row, column, wx.Font(18, wx.SWISS, wx.NORMAL, wx.NORMAL))
+
+        for row in range(9):
+            self.camera_grid.SetRowSize(row, 40)
+
+        # Setting all of the column sizes to 220
+        for column in range(2):
+            self.camera_grid.SetColSize(column, 250)
+
+        # And set grid cell contents as strings
+        self.camera_grid.SetCellValue(0, 0, 'wxGrid is good')
+
+        self.back_button = wx.Button(self, label='Back', pos=(1300, 470))
+        self.back_button.Bind(wx.EVT_BUTTON, self.back_button_pressed)
+
+        self.submit_button = wx.Button(self, label='Submit', pos=(1300, 520))
+        self.submit_button.Bind(wx.EVT_BUTTON, self.submit_button_pressed)
+
+        self.Centre()
+
+    def back_button_pressed(self, event):
+        self.Hide()
+        self.parent.SetLabel("Main Settings Screen")
+        self.parent.main_settings_panel.Show()
+
+    def submit_button_pressed(self, event):
+        for row in range(9):
+            for column in range(2):
+                # print(row, column)
+                current_cell = self.camera_grid.GetCellValue(row, column)
+                if column == 0:        # MAC
+                    if self.check_mac_validity(current_cell):
+                        pass
+                    else:
+                        self.display_message(f"MAC Address on row {row+1} is invalid!")
+                        break
+                else:               # Place
+                    if self.check_place_validity(current_cell):
+                        pass
+                    else:
+                        self.display_message(f"Place on row {row+1} is invalid!")
+                        break
+
+    def display_message(self, message):
+        dlg = wx.MessageDialog(None, message, "Message", wx.OK | wx.ICON_INFORMATION)
+        dlg.ShowModal()
+        dlg.Destroy()
+
+    def check_mac_validity(self, mac):
+        """
+        Checking if the MAC Address is valid
+        :param mac:
+        :return:
+        """
+        if type(mac) == str:
+            return (re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", mac.lower()) or mac == "")
+        else:
+            return False
+
+    def check_place_validity(self, place):
+        """
+        Checking if the place is a string and only English characters and numbers
+        :param place:
+        :return:
+        """
+        if type(place) == str:
+            return (place.isalnum() or place == "")
+        else:
+            return False
+
+
+class AdminSettingsPanel(wx.Panel):
+    def __init__(self, parent):
+
+        wx.Panel.__init__(self, parent, size=(1900, 1000), pos=(0, 0))
+
+        self.parent = parent
+        # Create a wxGrid object
+        self.camera_grid = wx.grid.Grid(self, -1, size=(833, 393), pos=(533, 303))
+
+        # Then we call CreateGrid to set the dimensions of the grid
+        # (100 rows and 10 columns in this example)
+        # TODO: Change row count according to the amount of admins in the database
+        self.camera_grid.CreateGrid(8, 3)
+
+        self.camera_grid.SetColLabelValue(0, "Username")
+        self.camera_grid.SetColLabelValue(1, "Full Name")
+        self.camera_grid.SetColLabelValue(2, "Email")
+
+        for row in range(8):
+            for column in range(3):
+                self.camera_grid.SetCellFont(row, column, wx.Font(18, wx.SWISS, wx.NORMAL, wx.NORMAL))
+
+        for row in range(8):
+            self.camera_grid.SetRowSize(row, 40)
+
+        # Setting all of the column sizes to 220
+        for column in range(2):
+            self.camera_grid.SetColSize(column, 200)
+
+        self.camera_grid.SetColSize(2, 350)
+
+        # And set grid cell contents as strings
+        self.camera_grid.SetCellValue(0, 0, 'wxGrid is good')
+
+        self.back_button = wx.Button(self, label='Back', pos=(1400, 470))
+        self.back_button.Bind(wx.EVT_BUTTON, self.back_button_pressed)
+
+        self.submit_button = wx.Button(self, label='Submit', pos=(1400, 520))
+        self.submit_button.Bind(wx.EVT_BUTTON, self.submit_button_pressed)
+
+        self.Centre()
+
+    def back_button_pressed(self, event):
+        self.Hide()
+        self.parent.SetLabel("Main Settings Screen")
+        self.parent.main_settings_panel.Show()
+
+    def submit_button_pressed(self, event):
+        for row in range(9):
+            for column in range(2):
+                pass
+
+    def display_message(self, message):
+        dlg = wx.MessageDialog(None, message, "Message", wx.OK | wx.ICON_INFORMATION)
+        dlg.ShowModal()
+        dlg.Destroy()
 
 
 if __name__ == "__main__":
