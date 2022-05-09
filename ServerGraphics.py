@@ -375,8 +375,6 @@ class MainFrame(wx.Frame):
 
         self.create_main_settings_panel()
 
-        self.create_main_panel()
-
         # Setting the icon of the frame
         icon = wx.Icon()
         icon.CopyFromBitmap(wx.Bitmap("NoamCamLens.ico", wx.BITMAP_TYPE_ANY))
@@ -468,6 +466,11 @@ class MainSettingsPanel(wx.Panel):
 
     def start_main(self, event):
         self.parent.SetLabel("Main Screen")
+        myDB = DB_Class.DB("myDB")
+        self.parent.camera_details = myDB.get_cameras()
+        print(self.parent.camera_details)
+        myDB.close()
+        self.parent.create_main_panel()
         self.parent.main_panel.Show()
         self.Destroy()
 
@@ -485,6 +488,7 @@ class CameraSettingsPanel(wx.Panel):
 
         # Create a wxGrid object
         self.camera_grid = wx.grid.Grid(self, -1, size=(583, 393), pos=(658, 303))
+        self.currentlySelectedCell = (0, 0)
 
         # Then we call CreateGrid to set the dimensions of the grid
         # (100 rows and 10 columns in this example)
@@ -514,6 +518,9 @@ class CameraSettingsPanel(wx.Panel):
 
         self.submit_button = wx.Button(self, label='Submit', pos=(1300, 520))
         self.submit_button.Bind(wx.EVT_BUTTON, self.submit_button_pressed)
+
+        self.clear_button = wx.Button(self, label='Clear', pos=(1300, 570))
+        self.clear_button.Bind(wx.EVT_BUTTON, self.clear_button_pressed)
 
         self.Centre()
 
@@ -550,6 +557,44 @@ class CameraSettingsPanel(wx.Panel):
         if valid:
             self.update_db()
             self.back_button_pressed()
+
+    def clear_button_pressed(self, event):
+        self.onGetSelection()
+
+    def onGetSelection(self):
+        """
+        Get whatever cells are currently selected
+        """
+        cells = self.camera_grid.GetSelectedCells()
+        if not cells:
+            if self.camera_grid.GetSelectionBlockTopLeft():
+                top_left = self.camera_grid.GetSelectionBlockTopLeft()[0]
+                bottom_right = self.camera_grid.GetSelectionBlockBottomRight()[0]
+                self.clearSelectedCells(top_left, bottom_right)
+            else:
+                print(self.currentlySelectedCell)
+        else:
+            print(cells)
+
+    def clearSelectedCells(self, top_left, bottom_right):
+        """
+        Based on code from http://ginstrom.com/scribbles/2008/09/07/getting-the-selected-cells-from-a-wxpython-grid/
+        """
+        cells = []
+
+        rows_start = top_left[0]
+        rows_end = bottom_right[0]
+        cols_start = top_left[1]
+        cols_end = bottom_right[1]
+        rows = range(rows_start, rows_end + 1)
+        cols = range(cols_start, cols_end + 1)
+        cells.extend([(row, col)
+                      for row in rows
+                      for col in cols])
+
+        for cell in cells:
+            row, col = cell
+            self.camera_grid.SetCellValue(row, col, "")
 
     def update_db(self):
         myDB = DB_Class.DB("myDB")
