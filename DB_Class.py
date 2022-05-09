@@ -628,6 +628,56 @@ class DB:
 
         return ret_value
 
+    def update_mac_by_position(self, position, new_mac_address):
+        """
+        The function gets a key which is a position and a new MAC address to change the current MAC address of the key if found (CAMERAS_TAB)
+        :param position: A position
+        :type position: Integer
+        :param new_mac_address: A MAC address
+        :type new_mac_address: String
+        :return: Whether the position was found and the MAC addresswas updated or not
+        """
+
+        ret_value = False
+
+        # if self.mac_exist(position):
+        # if not self.position_taken(new_mac_address):
+        #     if 1 <= new_mac_address <= 9:
+
+        sql = f"UPDATE {self.CAMERAS_TAB} SET MAC='{new_mac_address}' WHERE position='{position}'"
+        self.cursor.execute(sql)
+        # So the DB will update instantly
+        self.conn.commit()
+
+        ret_value = True
+
+        return ret_value
+
+    def update_place_by_position(self, position, new_place):
+        """
+        The function gets a key which is a position and a new MAC address to change the current MAC address of the key if found (CAMERAS_TAB)
+        :param position: A position
+        :type position: Integer
+        :param new_mac_address: A MAC address
+        :type new_mac_address: String
+        :return: Whether the position was found and the MAC addresswas updated or not
+        """
+
+        ret_value = False
+
+        # if self.mac_exist(position):
+        # if not self.position_taken(new_mac_address):
+        #     if 1 <= new_mac_address <= 9:
+
+        sql = f"UPDATE {self.CAMERAS_TAB} SET place='{new_place}' WHERE position='{position}'"
+        self.cursor.execute(sql)
+        # So the DB will update instantly
+        self.conn.commit()
+
+        ret_value = True
+
+        return ret_value
+
     def get_cameras(self):
         """
         The function returns a list with all the contents of CAMERAS_TAB

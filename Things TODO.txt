@@ -1,3 +1,1 @@
-1. When starting the server, make sure the server doesn't start saving the photos from scratch again, but from where it was left off.
-
-2. Server's recording stops when the camera zooms.
+1. Server's recording stops when the camera zooms.

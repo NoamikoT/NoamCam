@@ -548,10 +548,20 @@ class CameraSettingsPanel(wx.Panel):
                         break
 
         if valid:
+            self.update_db()
             self.back_button_pressed()
 
+    def update_db(self):
+        myDB = DB_Class.DB("myDB")
+
+        for row in range(9):
+            myDB.update_mac_by_position(row+1, self.camera_grid.GetCellValue(row, 0))
+            myDB.update_place_by_position(row+1, self.camera_grid.GetCellValue(row, 1))
+
+        myDB.close()
+
     def display_message(self, message):
-        dlg = wx.MessageDialog(None, message, "Message", wx.OK | wx.ICON_INFORMATION)
+        dlg = wx.MessageDialog(None, message, "Message", wx.OK | wx.ICON_ERROR)
         dlg.ShowModal()
         dlg.Destroy()
 
@@ -590,12 +600,17 @@ class AdminSettingsPanel(wx.Panel):
         self.admin_details = myDB.get_admins()
         myDB.close()
 
+        self.username_list = []
+
+        for admin in range(len(self.admin_details)):
+            self.username_list.append(self.admin_details[admin][0])
+
         # Create a wxGrid object
         self.camera_grid = wx.grid.Grid(self, -1, size=(833, 393), pos=(533, 303))
 
         # Then we call CreateGrid to set the dimensions of the grid
         # (100 rows and 10 columns in this example)
-        # TODO: Change row count according to the amount of admins in the database
+        # Changing row count according to the amount of admins in the database
         self.camera_grid.CreateGrid(len(self.admin_details), 3)
 
         self.camera_grid.SetColLabelValue(0, "Username")
@@ -645,12 +660,13 @@ class AdminSettingsPanel(wx.Panel):
                 current_cell = self.camera_grid.GetCellValue(row, column)
 
                 if column == 0:        # Username column
-                    # if self.check_username_validity(current_cell):
-                    pass
-                    # else:
-                    #     self.display_message(f"Username on row {row+1} is invalid!")
-                    #     valid = False
-                    #     break
+                    result = self.check_username_validity(current_cell)
+                    if result == "Valid":
+                        pass
+                    else:
+                        self.display_message(f"Username on row {row+1}: {result}")
+                        valid = False
+                        break
 
                 elif column == 1:               # Full name column
                     if self.check_full_name_validity(current_cell):
@@ -671,6 +687,23 @@ class AdminSettingsPanel(wx.Panel):
         if valid:
             self.back_button_pressed()
 
+    def check_username_validity(self, username):
+        if username != "":
+            # if username not in self.username_list:
+            if username.isalnum():
+                if len(username) >= 4:
+                    if len(username) <= 20:
+                        return "Valid"
+                    else:
+                        return "Username can be at most 20 characters long"
+                else:
+                    return "Username must be at least 4 characters long"
+            else:
+                return "Username can only contain English characters and Numeric characters"
+            # else:
+            #     return "Username taken"
+        return "Username can't be empty"
+
     def check_full_name_validity(self, full_name):
         if full_name != "":
             name_list = full_name.split(" ")
@@ -684,7 +717,7 @@ class AdminSettingsPanel(wx.Panel):
         return re.fullmatch(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', email)
 
     def display_message(self, message):
-        dlg = wx.MessageDialog(None, message, "Message", wx.OK | wx.ICON_INFORMATION)
+        dlg = wx.MessageDialog(None, message, "Message", wx.OK | wx.ICON_ERROR)
         dlg.ShowModal()
         dlg.Destroy()
 
