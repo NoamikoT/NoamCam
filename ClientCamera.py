@@ -4,11 +4,11 @@ import threading
 import cv2
 import Setting
 import ClientComms
-import queue
 from pubsub import pub
 import Alarm
 
 # THIS FILE IS NOT IN USE AT THE MOMENT
+
 
 class ClientCamera:
     def __init__(self, video_comm, port):

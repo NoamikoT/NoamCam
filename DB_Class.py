@@ -349,6 +349,17 @@ class DB:
 
         return ret_mails
 
+    def get_admins(self):
+        """
+        The function returns a list with all the contents of the admins table
+        :return: A list with all the contents of CAMERAS_TAB
+        """
+
+        sql = f"SELECT username,full_name,email FROM {self.ADMINS_TAB}"
+        self.cursor.execute(sql)
+        return self.cursor.fetchall()
+
+
     """ --------------------------------- CAMERAS_TAB ---------------------------------
     The following functions are for the cameras table (CAMERAS_TAB)
     """

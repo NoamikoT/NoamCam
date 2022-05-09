@@ -431,6 +431,15 @@ class MainSettingsPanel(wx.Panel):
 
         self.parent = parent
 
+        # TODO: Add logo
+        # open image from disk
+        # bmp = wx.Bitmap("NoamCamLogo.png", wx.BITMAP_TYPE_ANY)
+        # # create image button using BitMapButton constructor
+        # button = wx.BitmapButton(self, id=wx.ID_ANY, bitmap=bmp, size=(bmp.GetWidth() + 10, bmp.GetHeight() + 10))
+
+        # button.Bind(wx.EVT_BUTTON, self.camera_settings_pressed)
+        # button.SetPosition((10, 10))
+
         font = wx.Font(35, wx.MODERN, wx.NORMAL, wx.BOLD)
 
         self.camera_settings_button = wx.Button(self, label='Camera Settings', pos=(470, 302), size=(430, 70))
@@ -447,6 +456,9 @@ class MainSettingsPanel(wx.Panel):
         self.admin_settings_button.SetFont(font)
         self.start_main_button.SetFont(font)
         self.Centre()
+
+    def test_logo_button(self, event):
+        print("test")
 
     def camera_settings_pressed(self, event):
         self.parent.camera_settings_pressed(event)
@@ -467,12 +479,21 @@ class CameraSettingsPanel(wx.Panel):
 
         self.parent = parent
 
+        myDB = DB_Class.DB("myDB")
+        self.camera_details = myDB.get_cameras()
+        myDB.close()
+
         # Create a wxGrid object
         self.camera_grid = wx.grid.Grid(self, -1, size=(583, 393), pos=(658, 303))
 
         # Then we call CreateGrid to set the dimensions of the grid
         # (100 rows and 10 columns in this example)
         self.camera_grid.CreateGrid(9, 2)
+
+        # Placing the grid cells with the camera details
+        for camera in self.camera_details:
+            self.camera_grid.SetCellValue(camera[1]-1, 0, camera[0])
+            self.camera_grid.SetCellValue(camera[1]-1, 1, camera[2])
 
         self.camera_grid.SetColLabelValue(0, "MAC")
         self.camera_grid.SetColLabelValue(1, "Place")
@@ -488,9 +509,6 @@ class CameraSettingsPanel(wx.Panel):
         for column in range(2):
             self.camera_grid.SetColSize(column, 250)
 
-        # And set grid cell contents as strings
-        self.camera_grid.SetCellValue(0, 0, 'wxGrid is good')
-
         self.back_button = wx.Button(self, label='Back', pos=(1300, 470))
         self.back_button.Bind(wx.EVT_BUTTON, self.back_button_pressed)
 
@@ -499,28 +517,38 @@ class CameraSettingsPanel(wx.Panel):
 
         self.Centre()
 
-    def back_button_pressed(self, event):
+    def back_button_pressed(self, event=None):
         self.Hide()
         self.parent.SetLabel("Main Settings Screen")
         self.parent.main_settings_panel.Show()
 
     def submit_button_pressed(self, event):
+        valid = True
         for row in range(9):
+            if not valid:
+                break
             for column in range(2):
+                if not valid:
+                    break
                 # print(row, column)
                 current_cell = self.camera_grid.GetCellValue(row, column)
-                if column == 0:        # MAC
+                if column == 0:        # MAC column
                     if self.check_mac_validity(current_cell):
                         pass
                     else:
                         self.display_message(f"MAC Address on row {row+1} is invalid!")
+                        valid = False
                         break
-                else:               # Place
+                else:               # Place column
                     if self.check_place_validity(current_cell):
                         pass
                     else:
                         self.display_message(f"Place on row {row+1} is invalid!")
+                        valid = False
                         break
+
+        if valid:
+            self.back_button_pressed()
 
     def display_message(self, message):
         dlg = wx.MessageDialog(None, message, "Message", wx.OK | wx.ICON_INFORMATION)
@@ -540,12 +568,13 @@ class CameraSettingsPanel(wx.Panel):
 
     def check_place_validity(self, place):
         """
-        Checking if the place is a string and only English characters and numbers
+        Checking if the place is a string and only English characters, spaces and numbers
         :param place:
         :return:
         """
         if type(place) == str:
-            return place.isalnum() or place == ""
+            res = all(chr.isalnum() or chr == "" or chr.isspace() for chr in place)
+            return res
         else:
             return False
 
@@ -556,23 +585,33 @@ class AdminSettingsPanel(wx.Panel):
         wx.Panel.__init__(self, parent, size=(1900, 1000), pos=(0, 0))
 
         self.parent = parent
+
+        myDB = DB_Class.DB("myDB")
+        self.admin_details = myDB.get_admins()
+        myDB.close()
+
         # Create a wxGrid object
         self.camera_grid = wx.grid.Grid(self, -1, size=(833, 393), pos=(533, 303))
 
         # Then we call CreateGrid to set the dimensions of the grid
         # (100 rows and 10 columns in this example)
         # TODO: Change row count according to the amount of admins in the database
-        self.camera_grid.CreateGrid(8, 3)
+        self.camera_grid.CreateGrid(len(self.admin_details), 3)
 
         self.camera_grid.SetColLabelValue(0, "Username")
         self.camera_grid.SetColLabelValue(1, "Full Name")
         self.camera_grid.SetColLabelValue(2, "Email")
 
-        for row in range(8):
+        for admin in range(len(self.admin_details)):
+            self.camera_grid.SetCellValue(admin, 0, self.admin_details[admin][0])
+            self.camera_grid.SetCellValue(admin, 1, self.admin_details[admin][1])
+            self.camera_grid.SetCellValue(admin, 2, self.admin_details[admin][2])
+
+        for row in range(len(self.admin_details)):
             for column in range(3):
                 self.camera_grid.SetCellFont(row, column, wx.Font(18, wx.SWISS, wx.NORMAL, wx.NORMAL))
 
-        for row in range(8):
+        for row in range(len(self.admin_details)):
             self.camera_grid.SetRowSize(row, 40)
 
         # Setting all of the column sizes to 220
@@ -580,9 +619,6 @@ class AdminSettingsPanel(wx.Panel):
             self.camera_grid.SetColSize(column, 200)
 
         self.camera_grid.SetColSize(2, 350)
-
-        # And set grid cell contents as strings
-        self.camera_grid.SetCellValue(0, 0, 'wxGrid is good')
 
         self.back_button = wx.Button(self, label='Back', pos=(1400, 470))
         self.back_button.Bind(wx.EVT_BUTTON, self.back_button_pressed)
@@ -592,15 +628,53 @@ class AdminSettingsPanel(wx.Panel):
 
         self.Centre()
 
-    def back_button_pressed(self, event):
+    def back_button_pressed(self, event=None):
         self.Hide()
         self.parent.SetLabel("Main Settings Screen")
         self.parent.main_settings_panel.Show()
 
     def submit_button_pressed(self, event):
-        for row in range(9):
-            for column in range(2):
-                pass
+        valid = True
+        for row in range(len(self.admin_details)):
+            if not valid:
+                break
+            for column in range(3):
+                if not valid:
+                    break
+
+                current_cell = self.camera_grid.GetCellValue(row, column)
+
+                if column == 0:        # Username column
+                    # if self.check_username_validity(current_cell):
+                    pass
+                    # else:
+                    #     self.display_message(f"MAC Address on row {row+1} is invalid!")
+                    #     valid = False
+                    #     break
+
+                elif column == 1:               # Full name column
+                    # if self.check_full_name_validity(current_cell):
+                    pass
+                    # else:
+                    #     self.display_message(f"Place on row {row+1} is invalid!")
+                    #     valid = False
+                    #     break
+
+                elif column == 2:               # Email column
+                    if self.check_email_validity(current_cell):
+                        pass
+                    else:
+                        self.display_message(f"Email on row {row+1} is invalid!")
+                        valid = False
+                        break
+
+        if valid:
+            self.back_button_pressed()
+
+
+    def check_email_validity(self, email):
+        print(re.fullmatch(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', email))
+        return re.fullmatch(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', email)
 
     def display_message(self, message):
         dlg = wx.MessageDialog(None, message, "Message", wx.OK | wx.ICON_INFORMATION)
