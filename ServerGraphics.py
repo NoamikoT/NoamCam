@@ -33,7 +33,8 @@ class LoginDialog(wx.Dialog):
 
         user_lbl = wx.StaticText(self, label="Username:")
         user_sizer.Add(user_lbl, 0, wx.ALL | wx.CENTER, 5)
-        self.user = wx.TextCtrl(self)
+        self.user = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
+        self.user.Bind(wx.EVT_TEXT_ENTER, self.on_login)
         user_sizer.Add(self.user, 0, wx.ALL, 5)
 
         # pass info
@@ -52,6 +53,7 @@ class LoginDialog(wx.Dialog):
         btn = wx.Button(self, label="Login")
         btn.Bind(wx.EVT_BUTTON, self.on_login)
         main_sizer.Add(btn, 0, wx.ALL | wx.CENTER, 5)
+
 
         # self.Bind(wx.EVT_CLOSE, self.handle_exit)
 
@@ -351,6 +353,12 @@ class MainFrame(wx.Frame):
 
         self.SetSize(1900, 1029)
 
+        self.statusBar = self.CreateStatusBar(style=wx.BORDER_NONE)
+        self.statusBar.SetStatusStyles([wx.SB_FLAT])
+
+        self.statusBar.SetBackgroundColour('gray')
+        self.statusBar.SetStatusText("NoamCam - Developed by Noam Tirosh V1.0 05.2022")
+
         self.server = server
 
         self.current_zoom = None
@@ -378,6 +386,9 @@ class MainFrame(wx.Frame):
         # Saving the username
         self.username = dlg.username
 
+        self.titlePanel = TitlePanel(self)
+        #self.titlePanel.Hide()
+
         self.create_main_settings_panel()
 
         # Setting the icon of the frame
@@ -402,6 +413,7 @@ class MainFrame(wx.Frame):
         self.main_panel.Hide()
 
     def create_main_settings_panel(self):
+        self.titlePanel.set_title("Setting Panel")
         self.SetLabel("Main Settings Screen")
         self.main_settings_panel = MainSettingsPanel(self)
 
@@ -416,20 +428,45 @@ class MainFrame(wx.Frame):
 
     def camera_settings_pressed(self, event):
         self.main_settings_panel.Hide()
+        self.titlePanel.set_title("Camera Setting Panel")
         self.SetLabel("Camera Settings Panel")
         self.camera_settings_panel = CameraSettingsPanel(self)
         self.camera_settings_panel.Show()
 
     def admin_settings_pressed(self, event):
         self.main_settings_panel.Hide()
+        self.titlePanel.set_title("Admin Setting Panel")
         self.SetLabel("Admin Settings Panel")
         self.admin_settings_panel = AdminSettingsPanel(self)
         self.admin_settings_panel.Show()
 
+
+class TitlePanel(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent, size=(1900, 200), pos=(0, 0))
+        self.SetBackgroundColour("DARK SLATE GRAY")
+        font = wx.Font(40, wx.MODERN, wx.NORMAL, wx.BOLD)
+        self.lbl = wx.StaticText(self, style=wx.ALIGN_CENTER_HORIZONTAL) #, pos=(2, 306))
+        self.lbl.SetFont(font)
+        png = wx.Image("Dog.png", wx.BITMAP_TYPE_ANY).ConvertToBitmap()
+        bitmap = wx.Bitmap(png)
+        image = wx.ImageFromBitmap(bitmap)
+        image = image.Scale(50, 50, wx.IMAGE_QUALITY_HIGH)
+        result = wx.Bitmap(image)
+        control = wx.StaticBitmap(self, -1, result)
+        control.SetPosition((10, 10))
+
+    def set_title(self, title):
+        self.lbl.SetLabel(title)
+        print(self.lbl.GetSize())
+        self.lbl.SetPosition((1900/2-(self.lbl.GetSize()[0])/2,20))
+        self.Layout()
+
+
 class MainSettingsPanel(wx.Panel):
     def __init__(self, parent):
 
-        wx.Panel.__init__(self, parent, size=(1900, 1000), pos=(0, 0))
+        wx.Panel.__init__(self, parent, size=(1900, 800), pos=(0, 200))
 
         self.parent = parent
 
@@ -463,6 +500,7 @@ class MainSettingsPanel(wx.Panel):
         print("test")
 
     def camera_settings_pressed(self, event):
+
         self.parent.camera_settings_pressed(event)
 
     def admin_settings_pressed(self, event):
@@ -481,7 +519,7 @@ class MainSettingsPanel(wx.Panel):
 class CameraSettingsPanel(wx.Panel):
     def __init__(self, parent):
 
-        wx.Panel.__init__(self, parent, size=(1900, 1000), pos=(0, 0))
+        wx.Panel.__init__(self, parent, size=(1900, 800), pos=(0, 200))
 
         self.parent = parent
 
@@ -640,7 +678,7 @@ class CameraSettingsPanel(wx.Panel):
 class AdminSettingsPanel(wx.Panel):
     def __init__(self, parent):
 
-        wx.Panel.__init__(self, parent, size=(1900, 1000), pos=(0, 0))
+        wx.Panel.__init__(self, parent, size=(1900, 800), pos=(0, 200))
 
         self.parent = parent
 
@@ -690,6 +728,9 @@ class AdminSettingsPanel(wx.Panel):
         self.submit_button = wx.Button(self, label='Submit', pos=(1400, 520))
         self.submit_button.Bind(wx.EVT_BUTTON, self.submit_button_pressed)
 
+        self.change_password_button = wx.Button(self, label='Change Password', pos=(1400, 570))
+        self.change_password_button.Bind(wx.EVT_BUTTON, self.change_password_pressed)
+
         self.Centre()
 
     def back_button_pressed(self, event=None):
@@ -737,6 +778,10 @@ class AdminSettingsPanel(wx.Panel):
             self.update_db()
             self.back_button_pressed()
 
+    def change_password_pressed(self, event):
+        dlg = ChangePasswordDialog(self)
+        dlg.ShowModal()
+
     def update_db(self):
         myDB = DB_Class.DB("myDB")
 
@@ -778,6 +823,87 @@ class AdminSettingsPanel(wx.Panel):
 
     def display_message(self, message):
         dlg = wx.MessageDialog(None, message, "Message", wx.OK | wx.ICON_ERROR)
+        dlg.ShowModal()
+        dlg.Destroy()
+
+
+class ChangePasswordDialog(wx.Dialog):
+    """
+    Class to define login dialog
+    """
+
+    # ----------------------------------------------------------------------
+    def __init__(self, parent):
+        """Constructor"""
+        wx.Dialog.__init__(self, parent, title="Change Password Screen")
+
+        self.parent = parent
+        icon = wx.Icon()
+        icon.CopyFromBitmap(wx.Bitmap("NoamCamLens.ico", wx.BITMAP_TYPE_ANY))
+        self.SetIcon(icon)
+
+        # user info
+        new_password_sizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        new_password_lbl = wx.StaticText(self, label="Enter new password:")
+        new_password_sizer.Add(new_password_lbl, 0, wx.ALL | wx.CENTER, 5)
+        self.new_password = wx.TextCtrl(self, style=wx.TE_PASSWORD | wx.TE_PROCESS_ENTER)
+        self.new_password.Bind(wx.EVT_TEXT_ENTER, self.check_password_validity)
+        new_password_sizer.Add(self.new_password, 0, wx.ALL, 5)
+
+        # pass info
+        confirm_new_password_sizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        confirm_new_password_lbl = wx.StaticText(self, label="Confirm new password:")
+        confirm_new_password_sizer.Add(confirm_new_password_lbl, 0, wx.ALL | wx.CENTER, 5)
+        self.confirm_new_password = wx.TextCtrl(self, style=wx.TE_PASSWORD | wx.TE_PROCESS_ENTER)
+        self.confirm_new_password.Bind(wx.EVT_TEXT_ENTER, self.check_password_validity)
+        confirm_new_password_sizer.Add(self.confirm_new_password, 0, wx.ALL, 5)
+
+        main_sizer = wx.BoxSizer(wx.VERTICAL)
+        main_sizer.Add(new_password_sizer, 0, wx.ALL, 5)
+        main_sizer.Add(confirm_new_password_sizer, 0, wx.ALL, 5)
+
+        btn = wx.Button(self, label="Login")
+        btn.Bind(wx.EVT_BUTTON, self.check_password_validity)
+        main_sizer.Add(btn, 0, wx.ALL | wx.CENTER, 5)
+
+        # self.Bind(wx.EVT_CLOSE, self.handle_exit)
+
+        self.SetSizer(main_sizer)
+
+    def handle_exit(self, event):
+        self.Destroy()
+
+    # ----------------------------------------------------------------------
+    def check_password_validity(self, event):
+        """
+        Checks the credentials and login
+        """
+
+        new_password = self.new_password.GetValue()
+        confirm_new_password = self.confirm_new_password.GetValue()
+
+        if new_password == confirm_new_password:
+            if len(new_password) >= 8:
+                if len(new_password) <= 20:
+                    if new_password.isalnum():
+                        myDB = DB_Class.DB("myDB")
+                        myDB.update_password(self.parent.parent.username, new_password)
+                        myDB.close()
+                        self.Destroy()
+                    else:
+                        self.display_message("The password can only contain English characters and Numeric characters (No spaces)")
+                else:
+                    self.display_message("The password max size is 20 characters")
+            else:
+                self.display_message("The password min size is 8 characters")
+        else:
+            self.display_message("Passwords do not match")
+
+
+    def display_message(self, message):
+        dlg = wx.MessageDialog(None, message, "Message", wx.OK | wx.ICON_INFORMATION)
         dlg.ShowModal()
         dlg.Destroy()
 
