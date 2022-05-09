@@ -13,12 +13,3 @@ class AlarmSound:
 
     def stop_alarm(self):
         mixer.music.stop()
-
-
-if __name__ == '__main__':
-    x = AlarmSound()
-
-    x.play_alarm()
-
-    input("G")
-    x.stop_alarm()

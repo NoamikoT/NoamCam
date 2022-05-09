@@ -16,7 +16,7 @@ from pubsub import pub
 
 class ServerComms:
 
-    def __init__(self, port, recv_q=None, mail_q = None):
+    def __init__(self, port, recv_q=None, mail_q=None):
 
         self.server_socket = socket.socket()  # Initializing the server's socket
 
@@ -41,6 +41,8 @@ class ServerComms:
         if self.port != Setting.GENERAL_PORT:
             if self.port % 2 == 0:
                 threading.Thread(target=self.handle_video_rec, ).start()
+            # else:
+            #     threading.Thread(target=self.handle_stills, ).start()
 
     def _main_loop(self):
         """
@@ -121,13 +123,14 @@ class ServerComms:
                             else:
                                 frame_data = data[:msg_size]
                                 data = data[msg_size:]
-
                                 # unpack image using pickle
                                 frame = pickle.loads(frame_data, fix_imports=True, encoding="bytes")
                                 frame = cv2.imdecode(frame, cv2.IMREAD_COLOR)
 
                                 # TODO: Update view of frame
                                 wx.CallAfter(pub.sendMessage, f"update frame-{self.port}", video_frame=frame)
+                                # cv2.imshow('server', frame)
+                                # cv2.waitKey(1)
                                 self.video_q.put(frame)
 
     def _recv_file(self, soc, code, file_len):
@@ -239,7 +242,7 @@ class ServerComms:
         path = f"{os.getcwd()}\\Server\\{dir_name}\\{mac}_{date}"
 
         if not os.path.exists(path):
-            os.makedirs(path)
+            os.mkdir(path)
         print(path)
         return path
 
@@ -260,7 +263,3 @@ class ServerComms:
             frame = self.video_q.get()
             # Saving the frame to the video
             VideoWriter.write(frame)
-
-
-if __name__ == '__main__':
-    server = ServerComms(Setting.VIDEO_PORT)

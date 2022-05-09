@@ -8,6 +8,7 @@ import wx
 import Setting
 import Email
 
+
 mac_ip_dict = {}
 
 

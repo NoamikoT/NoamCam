@@ -532,7 +532,7 @@ class DB:
 
             ret_value = self.cursor.fetchall()[0][0]
 
-        except Exception:
+        except Exception as e:
             pass
 
         return ret_value

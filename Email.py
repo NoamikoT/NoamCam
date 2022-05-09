@@ -12,11 +12,15 @@ class EmailClass:
         self.sender_address = sender
         self.sender_pass = sender_pas
         self.message = MIMEMultipart()
+        # self.files = files
+        # self.receiver_address = receiver_address
 
     def _build_base_message(self, to_address):
 
+        sender_address = 'PythonCameraAlert@gmail.com'
+
         # Set up the MIME
-        self.message['From'] = self.sender_address
+        self.message['From'] = sender_address
         self.message['To'] = to_address
         self.message['Subject'] = '!!! ALERT !!! INTRUDER FOUND'
 
@@ -44,10 +48,11 @@ Security Team.'''
         self.message = MIMEMultipart()
         self._build_base_message(to_address)
         self._build_attachment(image_path)
-        # Create SMTP session for sending the mail
-        session = smtplib.SMTP('smtp.gmail.com', 587)   # Use gmail with port
-        session.starttls()  # Enable security
-        session.login(self.sender_address, self.sender_pass)    # Login with mail_id and password
+        # #Create SMTP session for sending the mail
+        session = smtplib.SMTP('smtp.gmail.com', 587)       # Use gmail with port
+        session.starttls()      # Enable security
+        session.login(self.sender_address, self.sender_pass)        # Login with mail_id and password
+        # text = message.as_string()
         session.sendmail(self.sender_address, to_address, self.message.as_string())
         session.quit()
         print('Mail Sent')

@@ -29,3 +29,14 @@ H
 SaveOldServerGraphics.py,5\e\5e09bfa2ad0e99babcb896f8e86eb96035851e27
 A
 ServerProtocol.py,e\c\ec918bb6e23e50f3190c8fe82e528da076c3fc76
+=
+MainClient.py,b\8\b8f645c5914b3e5c0477eb4c81ed7b73f58666f5
+@
+ClientCamera2.py,5\7\57034067252733841961e04800104fbdd33887ea
+:
+
+Setting.py,9\5\95b1a65fa3502a6f19bccadb9c780754bd41c1b8
+A
+ServerGraphics.py,0\4\04c22317cbc877beb736f9fef71f210d8fd3059b
+=
+MainServer.py,9\a\9a5d8192f213d6c2b7b128d834d03788034b140c

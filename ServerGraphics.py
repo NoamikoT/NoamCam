@@ -477,7 +477,6 @@ class CameraSettingsPanel(wx.Panel):
         self.camera_grid.SetColLabelValue(0, "MAC")
         self.camera_grid.SetColLabelValue(1, "Place")
 
-
         for row in range(9):
             for column in range(2):
                 self.camera_grid.SetCellFont(row, column, wx.Font(18, wx.SWISS, wx.NORMAL, wx.NORMAL))
@@ -546,7 +545,7 @@ class CameraSettingsPanel(wx.Panel):
         :return:
         """
         if type(place) == str:
-            return (place.isalnum() or place == "")
+            return place.isalnum() or place == ""
         else:
             return False
 

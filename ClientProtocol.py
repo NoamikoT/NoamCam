@@ -98,7 +98,7 @@ class ClientProtocol:
     def build_mac_send(mac_address):
         """
         Building a message containing a photo caught by face recognition
-        :param mac_address: The MAC address of the client
+        :param mac_address: The mac address of the client
         :type mac_address: String
         :return: The packed message ready to send
         :rtype: String

@@ -121,7 +121,7 @@ class ClientComms:
             size = len(data)
 
             self.my_socket.sendall(struct.pack(">L", size) + data)
-        except Exception:
+        except Exception as e:
             pass
 
     def get_mac_address(self):

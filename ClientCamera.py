@@ -1,156 +1,164 @@
-import os
-import cv2
+import pickle
+import sys
 import threading
+import cv2
+import Setting
+import ClientComms
 import queue
+from pubsub import pub
+import Alarm
 
 # THIS FILE IS NOT IN USE AT THE MOMENT
 
 class ClientCamera:
+    def __init__(self, video_comm, port):
 
-    def __init__(self, frame_q, face_q):
-        """
-        Constructor
-        """
+        self.video_comm = video_comm
+        self.stills_comm = ClientComms.ClientComms(port)
+        self.running = False
+        self.zoom = False
+        self.siren_obj = Alarm.AlarmSound()
 
-        self.frame_q = frame_q
-        self.face_q = face_q
+        self.siren = False
+        self.play_on = False
+        self.running_recognition = False
+
+        self.encode_param = None
         self.cap = None
-        self.face_cascade = None
-        self.path = None
-        self.count = 0
-        self.camera_active = False
-        self.detection_active = False
 
-        self._init_camera()
+        pub.subscribe(self.close_camera, "CLOSE CAMERA")
 
-        threading.Thread(target=self._operate_camera, ).start()
+        threading.Thread(target=self._init_camera, ).start()
+
+    def start_camera(self):
+        self.running = True
+
+    def stop_camera(self):
+        self.running = False
+
+    def close_camera(self):
+        print("Closed the camera")
+        self.cap.release()
 
     def _init_camera(self):
         """
         Starting the camera
         """
 
-        # Capturing video from the webcam
-        self.cap = cv2.VideoCapture(0)
+        try:
+            # Capturing video from the webcam
+            self.cap = cv2.VideoCapture(cv2.CAP_DSHOW)
+        except Exception as e:
+            print("Couldn't connect to camera")
+            sys.exit("Check camera")
+        else:
 
-        # Load the cascade
-        # The cascade xml file is a set of input data that allows to detect faces in pictures
-        self.face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+            self.encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 50]
 
-        datasets = 'datasets'
-        sub_data = 'Noam'
+            # Load the cascade
+            # The cascade xml file is a set of input data that allows to detect faces in pictures
+            self.face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
-        self.path = os.path.join(datasets, sub_data)
-        if not os.path.isdir(self.path):
-            os.mkdir(self.path)
-
-    def start_camera(self):
-        """
-        Starting the camera
-        """
-
-        self.camera_active = True
-
-    def stop_camera(self):
-        """
-        Stopping the camera
-        """
-
-        self.camera_active = False
-
-        # Release the VideoCapture object
-        self.cap.release()
+            threading.Thread(target=self._operate_camera, ).start()
 
     def _operate_camera(self):
         """
         The function handles the camera, takes frames and pushes them into the queue, calls face detection if needed
         """
-
         while True:
-            while self.camera_active:
+            count = 0
+            while self.running:
                 # Read the frame
-                _, img = self.cap.read()
+                ret, frame = self.cap.read()
+                print(ret)
+                if ret or frame is not None:
+                    if self.zoom:
+                        frame = cv2.resize(frame, dsize=(1600, 900), interpolation=cv2.INTER_AREA)
+                    else:
+                        frame = cv2.resize(frame, dsize=(600, 300), interpolation=cv2.INTER_AREA)
+                    result, image = cv2.imencode('.jpg', frame, self.encode_param)
+                    data = pickle.dumps(image, 0)
 
-                if self.detection_active:
-                    img = self._face_detection(img)
+                    if count % 5 == 0:
+                        if self.running_recognition:
+                            frame = self._face_detection(frame)
+                            result, image = cv2.imencode('.jpg', frame, self.encode_param)
+                            data = pickle.dumps(image, 0)
 
-                self.frame_q.put(img)
+                        self.video_comm.send_video(data)
+                        count = 0
+                    count += 1
 
-    def _face_detection(self, img):
+                    if cv2.waitKey(1) & 0xFF == ord('q'):
+                        break
+                else:
+                    self.close_camera()
+                    self.cap = cv2.VideoCapture(cv2.CAP_DSHOW)
+                    print("Resetted the camera")
+
+    def _face_detection(self, frame):
         """
         The function gets an image (a frame) and detects human faces in it
-        :param img: The frame to check for faces
-        :type img: Numpy object
+        :param frame: The frame to check for faces
+        :type frame: Numpy object
         :return: The image with a square around the face
         :rtype: Numpy object
         """
 
         # Converting to gray scale (The face detection only works with pictures in gray scale
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         # Detecting faces in the frame
         faces = self.face_cascade.detectMultiScale(gray, 1.1, 4)
 
         # Drawing a rectangle around detected faces, and capturing a picture of the face
         for (x, y, w, h) in faces:
-            cv2.rectangle(img, (x, y), (x + w, y + h), (50, 50, 250), 2)
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (50, 50, 250), 2)
 
-            # face = gray[y:y + h, x:x + w]
-            # face_resize = cv2.resize(face, (500, 500))
-            cv2.imwrite('% s/% s.png' % (self.path, self.count), img)
-            self.face_q.put('% s/% s.png' % (self.path, self.count))
+            face = gray[y:y + h, x:x + w]
+            face_resize = cv2.resize(face, (500, 500))
+            cv2.imwrite(f"{Setting.PIC_PATH}pic.png", face_resize)
+            self.stills_comm.send_file(f"{Setting.PIC_PATH}pic.png")
+            if self.siren and not self.play_on:
+                self.siren_obj.play_alarm()
+                self.play_on = True
+            return frame
+        if self.play_on:
+            self.siren_obj.stop_alarm()
+            self.play_on = False
+        return frame
 
-            self.count += 1
-            return img
+    def start_zoom(self):
+        self.zoom = True
+
+    def stop_zoom(self):
+        self.zoom = False
+
+    def set_siren_on(self):
+        self.siren = True
+
+    def set_siren_off(self):
+        self.siren = False
+        if self.play_on:
+            self.siren_obj.stop_alarm()
+            self.play_on = False
 
     def start_detection(self):
         """
         Calling this function starts face detection
         :return:
         """
-
-        self.detection_active = True
+        print("STARTING DETECTION")
+        self.running_recognition = True
 
     def stop_detection(self):
         """
         Calling this function stops face detection
         :return:
         """
+        print("STOPPING DETECTION")
+        self.running_recognition = False
 
-        self.detection_active = False
-
-
-# Testing the ClientCamera Class
-if __name__ == '__main__':
-
-    frame_q = queue.Queue()
-
-    face_q = queue.Queue()
-
-    new_camera = ClientCamera(frame_q, face_q)
-
-    new_camera.start_camera()
-
-    while True:
-        img = frame_q.get()
-
-        if img is not None:
-            # Displaying the frame
-            cv2.imshow('img', img)
-
-        # If the ESC key is pressed, the program stops
-        k = cv2.waitKey(30) & 0xff
-        if k == 27:
-            print("ESC")
-            new_camera.stop_camera()
-            break
-
-        # Keys to start and stop face detection
-
-        # Ascii 8 = Backspace
-        elif k == 8:
-            new_camera.start_detection()
-
-        # Ascii 10 = Enter
-        elif k == 13:
-            new_camera.stop_detection()
+        if self.play_on:
+            self.siren_obj.stop_alarm()
+            self.play_on = False
