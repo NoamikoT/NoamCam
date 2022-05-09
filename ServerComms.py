@@ -1,17 +1,21 @@
 import os
 import pickle
 import socket
+import subprocess
 import threading
 import select
 import struct
+
+import pause
 import wx
 import cv2
 import DB_Class
 import Setting
 import queue
 import ServerProtocol
-from datetime import datetime
+import datetime
 from pubsub import pub
+
 
 
 class ServerComms:
@@ -24,6 +28,8 @@ class ServerComms:
 
         self.open_clients = {}  # A dictionary socket -> ip
         self.file_num = 0
+
+        self.VideoWriter = None
 
         self.port = port  # The server's port
         self.recv_q = recv_q  # The queue where messages get stored to and read
@@ -41,6 +47,7 @@ class ServerComms:
         if self.port != Setting.GENERAL_PORT:
             if self.port % 2 == 0:
                 threading.Thread(target=self.handle_video_rec, ).start()
+                threading.Thread(target=self._handle_rec_files, ).start()
             # else:
             #     threading.Thread(target=self.handle_stills, ).start()
 
@@ -236,9 +243,7 @@ class ServerComms:
 
         mac = mac.replace(":", "_")
 
-        date = datetime.today().strftime('%Y_%m_%d')
-
-        path = f"{os.getcwd()}\\Server\\{dir_name}\\{mac}_{date}"
+        path = f"{os.getcwd()}\\Server\\{dir_name}\\{mac}"
 
         if not os.path.exists(path):
             os.makedirs(path)
@@ -248,15 +253,57 @@ class ServerComms:
         # Creating the video file to which the stream is being recorded
         fourcc = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')
 
-        hour = datetime.today().strftime('%H_%M_%S')
+        date_str = datetime.datetime.today().strftime('%Y_%m_%d')
+
+        hour = datetime.datetime.today().strftime('%H_%M_%S')
 
         while self.path is None:
             pass
 
-        VideoWriter = cv2.VideoWriter(f"{self.path}\\{hour}.avi", fourcc, 5.0, (600, 300))
+        self.VideoWriter = cv2.VideoWriter(f"{self.path}\\{date_str}_{hour}.avi", fourcc, 5.0, (600, 300))
 
         while True:
-
             frame = self.video_q.get()
+            frame = cv2.resize(frame, dsize=(600, 300), interpolation=cv2.INTER_AREA)
             # Saving the frame to the video
-            VideoWriter.write(frame)
+            try:
+                self.VideoWriter.write(frame)
+            except:
+                pass
+
+
+    def _handle_rec_files(self):
+        fourcc = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')
+        date = datetime.datetime.today()
+        last_date = date.strftime('%Y_%m_%d')
+        command_path = r"T:\public\NoamCam\ffmpeg\ffmpeg\bin\\"
+        # os.chdir(command_path)
+
+        while True:
+            pause.until(datetime.datetime(date.year, date.month, date.day, 23, 59, 50))
+
+            date += datetime.timedelta(days=1)
+            date_str = date.strftime('%Y_%m_%d')
+
+            # Closing and opening a new file
+            if not self.VideoWriter is None:
+                self.VideoWriter.release()
+
+                self.VideoWriter = cv2.VideoWriter(f"{self.path}\\{date_str}_00_00_00.avi", fourcc, 5.0, (600, 300))
+
+                # Handle connecting all of the days files
+
+                files = ""
+                for file in os.listdir(self.path):
+                    if file.startswith(last_date) and file.endswith(".avi"):
+                        files += (f"{self.path}\\{file}" + "|")
+
+                files = files[:-1]
+
+                command = f'{command_path}ffmpeg -i \"concat:{files}\" -c copy {self.path}\\{last_date}.avi'
+                subprocess.call(command, shell=True)
+
+                last_date = date_str
+
+                for file in files:
+                    os.remove(file)

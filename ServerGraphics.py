@@ -1,6 +1,7 @@
 import os
 import re
 import cv2
+import glr as glr
 import wx
 import DB_Class
 import sys
@@ -268,7 +269,11 @@ class ZoomPanel(wx.Panel):
         #     self.settings_frame.Destroy()
         # except Exception:
         #     pass
+
         self.parent.graphics_comms.put(("Unzoom", self.mac))
+        self.width = 600
+        self.height = 300
+
         self.parent.current_zoom = None
         self.parent.hide_zoom_panel()
 
@@ -420,7 +425,6 @@ class MainFrame(wx.Frame):
         self.SetLabel("Admin Settings Panel")
         self.admin_settings_panel = AdminSettingsPanel(self)
         self.admin_settings_panel.Show()
-
 
 class MainSettingsPanel(wx.Panel):
     def __init__(self, parent):
