@@ -45,13 +45,14 @@ def handle_receive_message(recv_q, server, mail_q):
 
 def handle_mail(mail_q):
     myDB = DB_Class.DB("myDB")
-    managers_mails = myDB.get_managers_mail()
+    managers_mails = myDB.get_managers_mails()
+    managers_names = myDB.get_managers_names()
     myDB.close()
     email_obj = Email.EmailClass('PythonCameraAlert@gmail.com', 'ALERTWASFOUND')
     while True:
         file = mail_q.get()
-        for mail in managers_mails:
-            email_obj.send_mail(file, mail)
+        for manager in range(len(managers_mails)):
+            email_obj.send_mail(file, managers_mails[manager], managers_names[manager])
 
 
 def handle_graphics_q(graphics_comms, server):

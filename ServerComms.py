@@ -67,7 +67,6 @@ class ServerComms:
 
                     if self.port != Setting.GENERAL_PORT:
                         self.path = self.get_path()
-                        print(self.path, "ServerComms.py:73")
 
                 else:
                     if self.port == Setting.GENERAL_PORT or self.port % 2 != 0:
@@ -243,11 +242,9 @@ class ServerComms:
 
         if not os.path.exists(path):
             os.makedirs(path)
-        print(path)
         return path
 
     def handle_video_rec(self):
-        print("HANDLEVIDEO")
         # Creating the video file to which the stream is being recorded
         fourcc = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')
 

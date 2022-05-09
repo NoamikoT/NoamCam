@@ -339,7 +339,7 @@ class DB:
 
         return ret_value
 
-    def get_managers_mail(self):
+    def get_managers_mails(self):
         sql = f"SELECT email FROM {self.ADMINS_TAB} WHERE active='IN'"
         self.cursor.execute(sql)
 
@@ -348,6 +348,16 @@ class DB:
         ret_mails = [x[0] for x in mails]
 
         return ret_mails
+
+    def get_managers_names(self):
+        sql = f"SELECT full_name FROM {self.ADMINS_TAB} WHERE active='IN'"
+        self.cursor.execute(sql)
+
+        names = self.cursor.fetchall()
+
+        ret_names = [x[0] for x in names]
+
+        return ret_names
 
     def get_admins(self):
         """

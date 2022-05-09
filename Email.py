@@ -24,9 +24,9 @@ class EmailClass:
         self.message['To'] = to_address
         self.message['Subject'] = '!!! ALERT !!! INTRUDER FOUND'
 
-    def _build_attachment(self, file_path):
+    def _build_attachment(self, file_path, full_name):
 
-        mail_content = '''Hello Manager,
+        mail_content = f'''Hello Manager {full_name},
 This is a message to inform you that one of our cameras has caught a suspicious activity.
 Please check the camera and take appropriate action.
 
@@ -44,10 +44,10 @@ Security Team.'''
         part['Content-Disposition'] = 'attachment; filename="%s"' % basename(file_path)
         self.message.attach(part)
 
-    def send_mail(self, image_path, to_address):
+    def send_mail(self, image_path, to_address, full_name):
         self.message = MIMEMultipart()
         self._build_base_message(to_address)
-        self._build_attachment(image_path)
+        self._build_attachment(image_path, full_name)
         # #Create SMTP session for sending the mail
         session = smtplib.SMTP('smtp.gmail.com', 587)       # Use gmail with port
         session.starttls()      # Enable security
