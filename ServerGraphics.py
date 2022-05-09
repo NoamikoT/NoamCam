@@ -648,17 +648,17 @@ class AdminSettingsPanel(wx.Panel):
                     # if self.check_username_validity(current_cell):
                     pass
                     # else:
-                    #     self.display_message(f"MAC Address on row {row+1} is invalid!")
+                    #     self.display_message(f"Username on row {row+1} is invalid!")
                     #     valid = False
                     #     break
 
                 elif column == 1:               # Full name column
-                    # if self.check_full_name_validity(current_cell):
-                    pass
-                    # else:
-                    #     self.display_message(f"Place on row {row+1} is invalid!")
-                    #     valid = False
-                    #     break
+                    if self.check_full_name_validity(current_cell):
+                        pass
+                    else:
+                        self.display_message(f"Full name on row {row+1} is invalid!")
+                        valid = False
+                        break
 
                 elif column == 2:               # Email column
                     if self.check_email_validity(current_cell):
@@ -671,9 +671,16 @@ class AdminSettingsPanel(wx.Panel):
         if valid:
             self.back_button_pressed()
 
+    def check_full_name_validity(self, full_name):
+        if full_name != "":
+            name_list = full_name.split(" ")
+            if len(name_list) == 2:
+                if name_list[0].isalpha() and name_list[1].isalpha():
+                    return True
+
+        return False
 
     def check_email_validity(self, email):
-        print(re.fullmatch(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', email))
         return re.fullmatch(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', email)
 
     def display_message(self, message):

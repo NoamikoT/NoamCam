@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c2dcd42c-ff15-48d6-85bd-c1f1c5a77cea" name="Default Changelist" comment="Added files that existed already to GitHub.">
+    <list default="true" id="c2dcd42c-ff15-48d6-85bd-c1f1c5a77cea" name="Default Changelist" comment="Settings in graphics now gets the data from the table and puts them in, still needs to update tables on submit.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ClientCamera.py" beforeDir="false" afterPath="$PROJECT_DIR$/ClientCamera.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DB_Class.py" beforeDir="false" afterPath="$PROJECT_DIR$/DB_Class.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ServerGraphics.py" beforeDir="false" afterPath="$PROJECT_DIR$/ServerGraphics.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myDB" beforeDir="false" afterPath="$PROJECT_DIR$/myDB" afterDir="false" />
     </list>
     <list id="2dc151e2-ce3e-4500-bf9e-fdb0b6b7ebbb" name="A little bit of comments added" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -358,14 +355,7 @@
       <workItem from="1651658435082" duration="274000" />
       <workItem from="1652052525390" duration="1188000" />
       <workItem from="1652054511496" duration="519000" />
-      <workItem from="1652055040890" duration="5370000" />
-    </task>
-    <task id="LOCAL-00012" summary="Expended some of the client and server comms and cameras. (:">
-      <created>1646738773654</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1646738773654</updated>
+      <workItem from="1652055040890" duration="5942000" />
     </task>
     <task id="LOCAL‎00013" summary="Expended some of the client and server communications.">
       <created>1646827650167</created>
@@ -669,7 +659,14 @@
       <option name="project" value="LOCAL" />
       <updated>1652060795531</updated>
     </task>
-    <option name="localTasksCounter" value="61" />
+    <task id="LOCAL-00061" summary="Settings in graphics now gets the data from the table and puts them in, still needs to update tables on submit.">
+      <created>1652063930485</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1652063930485</updated>
+    </task>
+    <option name="localTasksCounter" value="62" />
     <servers />
   </component>
   <component name="TodoView">
@@ -744,7 +741,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Updated the DB class" />
     <MESSAGE value="Updated the DB class and made it 2 tables instead of 1, the admins table and the cameras table, the admins table is probably finished, the cameras table needs some more functions (:" />
     <MESSAGE value="Added more function to deal with the Camera aspect of the DB, the functions lets you:&#10;- Check if the position of the camera is already taken.&#10;- Update the place of the camera.&#10;- Update the position of the camera." />
     <MESSAGE value="Made some changes according to conventions." />
@@ -769,7 +765,8 @@
     <MESSAGE value="Added the settings screen between the log in screen and the main screen." />
     <MESSAGE value="Changed files according to some python conventions, and removed and moved files not used\needed." />
     <MESSAGE value="Added files that existed already to GitHub." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added files that existed already to GitHub." />
+    <MESSAGE value="Settings in graphics now gets the data from the table and puts them in, still needs to update tables on submit." />
+    <option name="LAST_COMMIT_MESSAGE" value="Settings in graphics now gets the data from the table and puts them in, still needs to update tables on submit." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/NoamCam$ServerGraphics.coverage" NAME="ServerGraphics Coverage Results" MODIFIED="1649370927285" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -779,7 +776,7 @@
     <SUITE FILE_PATH="coverage/NoamCam$ServerGraphics__1_.coverage" NAME="ServerGraphics (1) Coverage Results" MODIFIED="1650873243291" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoamCam$MainServer.coverage" NAME="MainServer Coverage Results" MODIFIED="1651057399073" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoamCam$ClientProtocol.coverage" NAME="ClientProtocol Coverage Results" MODIFIED="1650020007598" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/NoamCamCode$MainServer.coverage" NAME="MainServer Coverage Results" MODIFIED="1652063715815" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/NoamCamCode$MainServer.coverage" NAME="MainServer Coverage Results" MODIFIED="1652064193360" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoamCam$MainClient.coverage" NAME="MainClient Coverage Results" MODIFIED="1651057405431" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="debuggerHistoryManager">
