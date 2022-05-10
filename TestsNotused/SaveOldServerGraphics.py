@@ -1,4 +1,3 @@
-import win32gui
 import wx
 import DB_Class
 

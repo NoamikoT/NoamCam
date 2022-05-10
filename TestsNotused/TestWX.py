@@ -1,4 +1,3 @@
-import imutils
 import wx
 import cv2
 
@@ -20,7 +19,6 @@ class viewWindow(wx.Frame):
         self.capture = cv2.VideoCapture(cv2.CAP_DSHOW)
 
         ret, self.frame = self.capture.read()
-        # self.frame = imutils.resize(self.frame, width=347, height=197, interpolation = cv2.INTER_AREA)
         self.frame = cv2.resize(self.frame, dsize=(347, 197), interpolation=cv2.INTER_AREA)
 
         # resized = cv2.resize(img, dim, interpolation=cv2.INTER_AREA)

@@ -1,5 +1,5 @@
 class ServerProtocol:
-
+    """A class unpacking and packing messages according to the protocol"""
     @staticmethod
     def unpack(message):
 
@@ -24,7 +24,7 @@ class ServerProtocol:
             elif data == "1":
                 unpacked_message = "Camera is connected"
 
-        # MAC Code
+        # 05 - MAC
         elif code == "05":
             unpacked_message = data
 
@@ -64,7 +64,7 @@ class ServerProtocol:
     def build_siren_off(mac):
 
         """
-        Building a message saying to activate the siren
+        Building a message saying to deactivate the siren
         :return: The packed message ready to send
         :rtype: String
         """
@@ -107,7 +107,7 @@ class ServerProtocol:
     def build_send_port(port):
 
         """
-        Building a message telling the computer to turn off
+        Building a message with the port
         :return: The packed message ready to send
         :rtype: String
         """
@@ -122,7 +122,7 @@ class ServerProtocol:
     def build_zoom(mac):
 
         """
-        Building a message telling the computer to turn off
+        Building a message telling the client that zoom is enabled
         :return: The packed message ready to send
         :rtype: String
         """
@@ -137,7 +137,7 @@ class ServerProtocol:
     def build_unzoom(mac):
 
         """
-        Building a message telling the computer to turn off
+        Building a message telling the client that zoom is disabled
         :return: The packed message ready to send
         :rtype: String
         """

@@ -1,5 +1,5 @@
 class ClientProtocol:
-
+    """A class unpacking and packing messages according to the protocol"""
     @staticmethod
     def unpack(message):
         """
@@ -10,8 +10,10 @@ class ClientProtocol:
         :rtype: String
         """
 
+        # The code is the first 2 characters of the message
         code = message[:2]
 
+        # The data is everything after the code of the message
         data = message[2:]
 
         unpacked_message = data
@@ -27,6 +29,7 @@ class ClientProtocol:
         elif code == "02":
             unpacked_message = "Sound siren"
 
+        # 09 - Stop the siren
         elif code == "09":
             unpacked_message = "Sound off"
 
@@ -41,12 +44,15 @@ class ClientProtocol:
         elif code == "04":
             unpacked_message = "Shut off computer"
 
+        # 06 - Port message
         elif code == "06":
             unpacked_message = int(data)
 
+        # 07 - Request to zoom
         elif code == "07":
             unpacked_message = "Zoom"
 
+        # 08 - Request to unzoom
         elif code == "08":
             unpacked_message = "Unzoom"
 
@@ -97,7 +103,7 @@ class ClientProtocol:
     @staticmethod
     def build_mac_send(mac_address):
         """
-        Building a message containing a photo caught by face recognition
+        Building a message containing the MAC Address of the client
         :param mac_address: The mac address of the client
         :type mac_address: String
         :return: The packed message ready to send

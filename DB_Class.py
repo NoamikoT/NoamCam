@@ -340,6 +340,12 @@ class DB:
         return ret_value
 
     def get_managers_mails(self):
+        """
+        The function returns a list of all of the active mails in the (ADMINS_TAB)
+        :return: A list with all of the emails in (ADMINS_TAB)
+        :rtype: List
+        """
+
         sql = f"SELECT email FROM {self.ADMINS_TAB} WHERE active='IN'"
         self.cursor.execute(sql)
 
@@ -350,6 +356,12 @@ class DB:
         return ret_mails
 
     def get_managers_names(self):
+        """
+        The function returns a list of all of the active names in the (ADMINS_TAB)
+        :return: A list with all of the names in (ADMINS_TAB)
+        :rtype: List
+        """
+
         sql = f"SELECT full_name FROM {self.ADMINS_TAB} WHERE active='IN'"
         self.cursor.execute(sql)
 
@@ -362,7 +374,7 @@ class DB:
     def get_admins(self):
         """
         The function returns a list with all the contents of the admins table
-        :return: A list with all the contents of CAMERAS_TAB
+        :return: A list with all the contents of ADMINS_TAB
         """
 
         sql = f"SELECT username,full_name,email FROM {self.ADMINS_TAB}"
@@ -467,7 +479,7 @@ class DB:
 
     def get_position_by_mac(self, mac_address):
         """
-        Returns the position of the camera by the camera's MAC address(CAMERA_TAB)
+        Returns the position of the camera by the camera's MAC address (CAMERA_TAB)
         :param mac_address: The MAC address of the camera
         :type mac_address: String
         :return: Returns the position corresponding to the MAC address
@@ -485,7 +497,7 @@ class DB:
 
     def get_place_by_mac(self, mac_address):
         """
-        Returns the place of the camera by the camera's MAC address(CAMERA_TAB)
+        Returns the place of the camera by the camera's MAC address (CAMERAS_TAB)
         :param mac_address: The MAC address of the camera
         :type mac_address: String
         :return: Returns the place corresponding to the MAC address
@@ -503,7 +515,7 @@ class DB:
 
     def get_status_by_mac(self, mac_address):
         """
-        Returns the status of the camera by the camera's MAC address(CAMERA_TAB)
+        Returns the status of the camera by the camera's MAC address (CAMERAS_TAB)
         :param mac_address: The MAC address of the camera
         :type mac_address: String
         :return: Returns the status corresponding to the MAC address
@@ -521,7 +533,7 @@ class DB:
 
     def get_port_by_mac(self, mac_address):
         """
-        Returns the port of the camera by the camera's MAC address(CAMERA_TAB)
+        Returns the port of the camera by the camera's MAC address (CAMERAS_TAB)
         :param mac_address: The MAC address of the camera
         :type mac_address: String
         :return: Returns the port corresponding to the MAC address
@@ -539,10 +551,10 @@ class DB:
 
     def get_mac_by_port(self, port):
         """
-        Returns the port of the camera by the camera's MAC address(CAMERA_TAB)
+        Returns the MAC address of the camera by the camera's port (CAMERAS_TAB)
         :param port: The port of the camera
         :type port: String
-        :return: Returns the port corresponding to the MAC address
+        :return: Returns the MAC address corresponding to the port
         :rtype: String inside a tuple inside a list [(2012)]
         """
 
@@ -645,7 +657,7 @@ class DB:
         :type position: Integer
         :param new_mac_address: A MAC address
         :type new_mac_address: String
-        :return: Whether the position was found and the MAC addresswas updated or not
+        :return: Whether the position was found and the MAC address was updated or not
         """
 
         ret_value = False
@@ -668,9 +680,9 @@ class DB:
         The function gets a key which is a position and a new MAC address to change the current MAC address of the key if found (CAMERAS_TAB)
         :param position: A position
         :type position: Integer
-        :param new_mac_address: A MAC address
-        :type new_mac_address: String
-        :return: Whether the position was found and the MAC addresswas updated or not
+        :param new_place: A place
+        :type new_place: String
+        :return: Whether the position was found and the MAC address was updated or not
         """
 
         ret_value = False

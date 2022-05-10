@@ -17,22 +17,29 @@ import datetime
 from pubsub import pub
 
 
-
 class ServerComms:
+    """A class for communicating from the server to the clients"""
 
     def __init__(self, port, recv_q=None, mail_q=None):
 
-        self.server_socket = socket.socket()  # Initializing the server's socket
+        # Initializing the server's socket
+        self.server_socket = socket.socket()
 
         self.myDB = DB_Class.DB("myDB")
 
-        self.open_clients = {}  # A dictionary socket -> ip
+        # A dictionary socket -> ip
+        self.open_clients = {}
+
         self.file_num = 0
 
+        # The object used to record the stream
         self.VideoWriter = None
 
-        self.port = port  # The server's port
-        self.recv_q = recv_q  # The queue where messages get stored to and read
+        # The server's port
+        self.port = port
+        # The queue where messages get stored to and read
+        self.recv_q = recv_q
+        # The queue used to put the pictures in to be ready to sent to the managers
         self.mail_q = mail_q
         self.count = 1
 
@@ -44,6 +51,7 @@ class ServerComms:
         # Starting the thread that runs the main loop constantly
         threading.Thread(target=self._main_loop, ).start()
 
+        # If the port is the Video port, recording
         if self.port != Setting.GENERAL_PORT:
             if self.port % 2 == 0:
                 threading.Thread(target=self.handle_video_rec, ).start()
@@ -229,6 +237,10 @@ class ServerComms:
             del self.open_clients[soc]
 
     def get_path(self):
+        """
+        The function gets the appropriate path and returns it
+        :return: The correct path
+        """
 
         port = self.port
         if self.port % 2 == 0:  # Making sure it's the video port
@@ -250,6 +262,10 @@ class ServerComms:
         return path
 
     def handle_video_rec(self):
+        """
+        The function handles the recording
+        """
+
         # Creating the video file to which the stream is being recorded
         fourcc = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')
 
@@ -273,6 +289,11 @@ class ServerComms:
 
 
     def _handle_rec_files(self):
+        """
+        The function handles the recording files (Connecting them and deleting old)
+        :return:
+        """
+
         fourcc = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')
         date = datetime.datetime.today()
         last_date = date.strftime('%Y_%m_%d')

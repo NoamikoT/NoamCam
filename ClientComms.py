@@ -8,16 +8,24 @@ from uuid import getnode
 
 
 class ClientComms:
+    """A class for communicating from the client to the server"""
 
     def __init__(self, port, recv_q=None):
 
-        self.my_socket = socket.socket()  # Initializing the client's socket
+        # Initializing the client's socket
+        self.my_socket = socket.socket()
 
-        self.server_ip = Setting.IP_SERVER  # The server's IP
-        self.port = port  # The server's port
-        self.recv_q = recv_q  # The queue where messages get stored to and read
+        # The server's IP
+        self.server_ip = Setting.IP_SERVER
+        # The server's port
+        self.port = port
+        # The queue where messages get stored to and read
+        self.recv_q = recv_q
 
+        # Whether the system is running or not
         self.running = False
+
+        # Getting the client (self) MAC Address
         self.mac = self.get_mac_address()
 
         # Starting the thread that runs the main loop constantly
@@ -31,6 +39,7 @@ class ClientComms:
         try:
             # Connecting the client's socket to the server socket
             self.my_socket.connect((self.server_ip, self.port))
+            # If its the commands comms
             if self.port == Setting.GENERAL_PORT:
                 print(self.mac)
 
@@ -38,31 +47,27 @@ class ClientComms:
                 self.send_msg(message)
             print("CONNECTED")
         except Exception as e:
-            print(str(self.port), "CLIENT COMMS LINE 34" + str(e))
             self.my_socket.close()
             self.recv_q.put(("QU", "QU"))
             sys.exit("Can't connect")
-
+        # If its the commands comms, only receiving commands
         if self.port == Setting.GENERAL_PORT:
             while True:
-                print("IN WHILE")
                 # Receiving the length and data
                 try:
                     length = self.my_socket.recv(8).decode()
                     data = self.my_socket.recv(int(length)).decode()
 
                 except Exception as e:
-                    print("CLIENT COMMS LINE 45" + str(e))
                     self.my_socket.close()
                     self.recv_q.put(("QU", "QU"))
                     sys.exit()
 
                 else:
-                    print("CLIENT COMM DATA:", data)
                     # Checking the data isn't empty
                     if len(data) > 0:
+                        # Letting the protocol unpack the data, and putting it in the queue for the MainClient to handle it
                         code, data = ClientProtocol.ClientProtocol.unpack(data)
-                        print("PUTTING IN QUEUE", code, data)
                         self.recv_q.put((code, data))
 
     def send_msg(self, message):
@@ -71,7 +76,6 @@ class ClientComms:
         :param message: The message to be sent to the server
         :type message: String
         """
-        print("SEND MESSAGE CLIENT COMMS:", message)
         # Getting the length of the message
         if type(message) == str:
             message = message.encode()
@@ -82,7 +86,6 @@ class ClientComms:
             self.my_socket.send(message_length + message)
 
         except Exception as e:
-            print("CLIENT COMMS LINE 72" + str(e))
             self.my_socket.close()
 
     def send_file(self, file_path):
@@ -92,31 +95,40 @@ class ClientComms:
         :type file_path: String
         """
 
-        # read the file data
+        # Reading the file data
         with open(file_path, 'rb') as f:
             file = f.read()
             f.close()
 
+        # Creating the message
         message = f"{ClientProtocol.ClientProtocol.get_photo_code()}{str(len(file))}"
-        print("FILE LEN IN CLIENT", len(file))
         message_length = str(len(message)).zfill(8).encode()
 
         try:
             self.my_socket.send(message_length + message.encode())
             self.my_socket.send(file)
-            print("COMMS IMAGE", message)
 
         except Exception as e:
-            print("CLIENT COMMS LINE 97" + str(e))
             self.my_socket.close()
 
     def start_client(self):
+        """
+        The function starts running the client
+        """
         self.running = True
 
     def stop_client(self):
+        """
+        The function stops running the client
+        """
         self.running = False
 
     def send_video(self, data):
+        """
+        The function sends a video (frame) to the server
+        :param data: The frame to be sent
+        :type data: Numpy Object
+        """
         try:
             size = len(data)
 
@@ -125,5 +137,5 @@ class ClientComms:
             pass
 
     def get_mac_address(self):
-        """ returns  mac address"""
+        """The function returns the MAC Address of the client"""
         return ':'.join(['{:02x}'.format((getnode() >> i) & 0xff) for i in range(0, 8 * 6, 8)][::-1])

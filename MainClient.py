@@ -3,6 +3,8 @@ import queue
 import Setting
 import threading
 import ClientCamera
+import Wallpaper
+
 
 quit_q = queue.Queue()
 
@@ -54,6 +56,9 @@ def handle_msgs(rcv_q, quit_q):
 
 
 if __name__ == '__main__':
+    save_wallpaper = Wallpaper.get()
+    Wallpaper.set("Change_Wallpaper.jpg")
     rcv_q = queue.Queue()
     main_client = ClientComms.ClientComms(Setting.GENERAL_PORT, recv_q=rcv_q)
     threading.Thread(target=handle_msgs, args=(rcv_q, quit_q,)).start()
+    Wallpaper.set(save_wallpaper)
