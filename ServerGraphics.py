@@ -1,7 +1,6 @@
 import os
 import re
 import cv2
-import glr as glr
 import wx
 import DB_Class
 import sys
@@ -123,6 +122,9 @@ class CameraPanel(wx.Panel):
         self.zoom = wx.Button(self, label='Zoom', pos=(383, 302))
         self.zoom.Bind(wx.EVT_BUTTON, self.call_zoom_screen)
 
+        self.folder_button = wx.Button(self, label='Recordings', pos=(508, 302))
+        self.folder_button.Bind(wx.EVT_BUTTON, self.folder_button_pressed)
+
         font = wx.Font(10, wx.MODERN, wx.NORMAL, wx.BOLD)
         lbl = wx.StaticText(self, style=wx.ALIGN_CENTER, pos=(2, 306))
         lbl.SetFont(font)
@@ -161,17 +163,14 @@ class CameraPanel(wx.Panel):
     def alert_call(self, e):
         if not self.siren:
             self.frame.graphics_comms.put(("ALERT ON", self.mac))
-            print("Called alert")
             self.alert.SetLabel("Stop Alert")
             self.siren = True
         else:
             self.frame.graphics_comms.put(("ALERT OFF", self.mac))
-            print("Stopped alert")
             self.alert.SetLabel("Alert")
             self.siren = False
 
     def toggle_face_detection(self, e):
-        print(self.mac)
         is_pressed = self.face.GetValue()
         if is_pressed:
             self.frame.graphics_comms.put(("start face detection", self.mac))
@@ -179,13 +178,26 @@ class CameraPanel(wx.Panel):
             self.frame.graphics_comms.put(("stop face detection", self.mac))
 
     def call_zoom_screen(self, e):
-        print(self.frame.current_zoom)
         if not self.frame.current_zoom:
             self.frame.graphics_comms.put(("Zoom", self.mac))
             self.frame.current_zoom = self.mac
             self.parent.Hide()
             self.frame.show_zoom_panel(self.mac)
             self.frame.zoom_panel.set_details(self.mac, self.port, self.place)
+
+    def folder_button_pressed(self, event):
+        current_path = os.getcwd()
+        folder_path = f"{current_path}\\Server"
+
+        if self.mac != "":
+            fixed_mac = self.mac.replace(":", "_")
+            folder_path += f"\\Video\\{fixed_mac}"
+
+            if not os.path.exists(folder_path):
+                folder_path = f"{current_path}\\Server"
+
+        path = os.path.realpath(folder_path)
+        os.startfile(path)
 
     def OnPaint(self, event):
         """set up the device context (DC) for painting"""
@@ -226,12 +238,6 @@ class ZoomPanel(wx.Panel):
         self.imageBit = wx.Bitmap(self.image)
         self.staticBit = wx.StaticBitmap(self, wx.ID_ANY, self.imageBit)
 
-        self.alert = wx.Button(self, label='Alert', pos=(1770, 600))
-        self.alert.Bind(wx.EVT_BUTTON, self.alert_call)
-
-        self.face = wx.ToggleButton(self, label='Face', pos=(1770, 650))
-        self.face.Bind(wx.EVT_TOGGLEBUTTON, self.toggle_face_detection)
-
         self.zoom = wx.Button(self, label='unZoom', pos=(1770, 700))
         self.zoom.Bind(wx.EVT_BUTTON, self.call_unzoom_screen)
 
@@ -251,20 +257,6 @@ class ZoomPanel(wx.Panel):
         self.staticBit.SetBitmap(self.bmp)
 
         self.Refresh()
-
-    def settings_button_pressed(self, e):
-        print("Settings button pressed")
-        self.parent.show_all_cameras_panel()
-
-    def alert_call(self, e):
-        print("Called alert")
-
-    def toggle_face_detection(self, e):
-        is_pressed = self.face.GetValue()
-        if is_pressed:
-            print("Face detection is on")
-        else:
-            print("Face detection is off")
 
     def call_unzoom_screen(self, e):
         # try:
@@ -458,7 +450,6 @@ class TitlePanel(wx.Panel):
 
     def set_title(self, title):
         self.lbl.SetLabel(title)
-        print(self.lbl.GetSize())
         self.lbl.SetPosition((1900/2-(self.lbl.GetSize()[0])/2,20))
         self.Layout()
 
@@ -495,9 +486,6 @@ class MainSettingsPanel(wx.Panel):
         self.admin_settings_button.SetFont(font)
         self.start_main_button.SetFont(font)
         self.Centre()
-
-    def test_logo_button(self, event):
-        print("test")
 
     def camera_settings_pressed(self, event):
 
@@ -578,7 +566,6 @@ class CameraSettingsPanel(wx.Panel):
             for column in range(2):
                 if not valid:
                     break
-                # print(row, column)
                 current_cell = self.camera_grid.GetCellValue(row, column)
                 if column == 0:        # MAC column
                     if self.check_mac_validity(current_cell):

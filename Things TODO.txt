@@ -1,1 +1,0 @@
-1. Server's recording stops when the camera zooms.
