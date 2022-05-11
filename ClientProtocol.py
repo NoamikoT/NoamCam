@@ -59,22 +59,6 @@ class ClientProtocol:
         return code, unpacked_message
 
     @staticmethod
-    def build_cam_status(status):
-        """
-        The function builds a message with the status of the camera connected to the PC
-        :param status: The status of the camera connected to the PC (0 - not connected, 1 - connected)
-        :type status: String
-        :return: The packed message ready to send
-        :rtype: String
-        """
-
-        code = "03"
-
-        packed_message = f"{code}{status}"
-
-        return packed_message
-
-    @staticmethod
     def build_frame_send(frame_path):
         """
         Building a message containing a path to a frame of the video
@@ -98,6 +82,22 @@ class ClientProtocol:
         """
 
         return "02"
+
+    @staticmethod
+    def build_cam_status(status):
+        """
+        The function builds a message with the status of the camera connected to the PC
+        :param status: The status of the camera connected to the PC (0 - not connected, 1 - connected)
+        :type status: String
+        :return: The packed message ready to send
+        :rtype: String
+        """
+
+        code = "03"
+
+        packed_message = f"{code}{status}"
+
+        return packed_message
 
     @staticmethod
     def build_mac_send(mac_address):
