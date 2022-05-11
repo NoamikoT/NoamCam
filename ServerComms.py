@@ -25,8 +25,6 @@ class ServerComms:
         # Initializing the server's socket
         self.server_socket = socket.socket()
 
-        self.myDB = DB_Class.DB("myDB")
-
         # A dictionary socket -> ip
         self.open_clients = {}
 

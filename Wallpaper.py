@@ -54,11 +54,6 @@ class Wallpaper:
         else:
             return False
 
-    # Copy
-    @staticmethod
-    def copy(copyTo=getcwd(), fileName='wallpaper.jpg'):
-        return copyfile(Wallpaper.get(), path.join(path.abspath(copyTo), fileName))
-
 
 if __name__ == '__main__':
     save_wallpaper = Wallpaper.get()

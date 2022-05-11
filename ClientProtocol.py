@@ -77,7 +77,7 @@ class ClientProtocol:
     @staticmethod
     def build_frame_send(frame_path):
         """
-        Building a message containing a frame of the video
+        Building a message containing a path to a frame of the video
         :param frame_path: The path to the frame
         :type frame_path: String
         :return: The packed message ready to send
@@ -93,7 +93,6 @@ class ClientProtocol:
     @staticmethod
     def get_photo_code():
         """
-        Building a message containing a photo caught by face recognition
         :return: The packed message ready to send
         :rtype: String
         """
