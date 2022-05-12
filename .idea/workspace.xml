@@ -4,41 +4,86 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c2dcd42c-ff15-48d6-85bd-c1f1c5a77cea" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="c2dcd42c-ff15-48d6-85bd-c1f1c5a77cea" name="Default Changelist" comment="Removed ffmpeg because it's too big.">
+      <change afterPath="$PROJECT_DIR$/ClientFiles/Client/Pic/pic.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_10.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_11.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_12.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_13.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_14.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_15.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_17.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_18.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_19.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_20.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_21.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_22.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_23.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_24.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_25.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_26.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_27.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_28.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_29.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_30.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_31.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_32.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_33.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_34.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_35.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_36.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_37.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_38.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_39.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_40.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_41.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_42.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_43.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_44.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_45.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_46.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_47.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_48.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_49.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_50.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_51.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_52.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_53.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_54.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_55.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_56.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_57.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_58.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_59.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_60.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_61.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_62.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_63.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_64.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_65.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_66.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_67.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_68.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_69.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_70.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_71.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_72.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_8.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServerFiles/Server/Stills/e8_4f_50_07_d6_ab/pic_9.png" afterDir="false" />
     </list>
     <list id="2dc151e2-ce3e-4500-bf9e-fdb0b6b7ebbb" name="A little bit of comments added" comment="" />
-    <ignored path="$PROJECT_DIR$/venv/" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/ServerGraphics.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="400">
-              <caret line="359" column="85" selection-start-line="359" selection-start-column="85" selection-end-line="359" selection-end-column="85" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DB_Class.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="48">
-              <caret line="207" column="34" selection-start-line="207" selection-start-column="34" selection-end-line="207" selection-end-column="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -196,35 +241,51 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable"
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="T:\public\NoamCamCodeCurrent\ninthofmay" />
       <recent name="E:\NoamCam\FaceCompare" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\NoamCamCode\ServerFiles" />
+      <recent name="E:\NoamCamCode" />
       <recent name="E:\NoamCamCode\Tests (Not used)" />
       <recent name="T:\public\NoamCamCode\Client" />
       <recent name="F:\NoamCam" />
     </key>
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
-  <component name="RunManager" selected="Python.MainClient">
+  <component name="RunManager" selected="Python.MainClient (1)">
+    <configuration name="MainClient (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="NoamCam" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/ClientFiles" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ClientFiles/MainClient.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="MainClient" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="NoamCam" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -239,6 +300,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/MainClient.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="MainServer (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="NoamCam" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/ServerFiles" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ServerFiles/MainServer.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -269,48 +352,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="TestJoin (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="NoamCam" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/TestsNotused" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/TestsNotused/TestJoin.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="TestJoin" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="NoamCam" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Tests (Not used)" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Tests (Not used)/TestJoin.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="TestTime" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="NoamCam" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -323,6 +364,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/TestsNotused/TestTime.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
@@ -334,15 +376,15 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.MainServer (1)" />
+        <item itemvalue="Python.MainClient (1)" />
         <item itemvalue="Python.MainServer" />
         <item itemvalue="Python.MainClient" />
         <item itemvalue="Python.TestTime" />
-        <item itemvalue="Python.TestJoin (1)" />
-        <item itemvalue="Python.TestJoin" />
       </list>
     </recent_temporary>
   </component>
-  <component name="SpellCheckerSettings" BundledDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="false" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -394,18 +436,6 @@
       <workItem from="1652052525390" duration="1188000" />
       <workItem from="1652054511496" duration="519000" />
       <workItem from="1652055040890" duration="5942000" />
-    </task>
-    <task id="LOCAL‎00019" summary="Created Client Protocol and built important functions, need to finish the unpacked() function in both.">
-      <created>1648040798741</created>
-      <option name="number" value="LOCAL‎00019" />
-      <option name="presentableId" value="LOCAL‎00019" />
-      <updated>1648040798741</updated>
-    </task>
-    <task id="LOCAL‎00020" summary="Expended server and client protocol">
-      <created>1648041489065</created>
-      <option name="number" value="LOCAL‎00020" />
-      <option name="presentableId" value="LOCAL‎00020" />
-      <updated>1648041489065</updated>
     </task>
     <task id="LOCAL‎00021" summary="Expended server protocol">
       <created>1648478432338</created>
@@ -704,7 +734,21 @@
       <option name="presentableId" value="LOCAL‎00067" />
       <updated>1652102565569</updated>
     </task>
-    <option name="localTasksCounter" value="68" />
+    <task id="LOCAL-00068" summary="Organized the files to server and client files, and added comments on graphics, added ffmpeg to directory.">
+      <created>1652378705069</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1652378705069</updated>
+    </task>
+    <task id="LOCAL-00069" summary="Removed ffmpeg because it's too big.">
+      <created>1652379325801</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1652379325801</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="TodoView">
@@ -759,14 +803,7 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="RECENTLY_FILTERED_USER_GROUPS">
-                <collection />
-              </option>
-              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
-                <collection />
-              </option>
-            </State>
+            <State />
           </value>
         </entry>
       </map>
@@ -787,8 +824,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Minor conventions fixed" />
-    <MESSAGE value="Updated the add_camera function to check the position and not just the MAC address,&#10; Added a remove_camera function." />
     <MESSAGE value="Created the class for sounding the alarm." />
     <MESSAGE value="Added a function to get a camera's info based on its ID." />
     <MESSAGE value="Destroying the ListFrame instead of hiding and showing it, making it restart the list." />
@@ -812,7 +847,9 @@
     <MESSAGE value="Added a function to get all the managers names, and added the manager's name when sending an email.&#10;&#10;Removed some prints.&#10;&#10;Admins settings now works, the full name and email are changeable." />
     <MESSAGE value="Recording resets at midnight." />
     <MESSAGE value="Status and title added." />
-    <option name="LAST_COMMIT_MESSAGE" value="Status and title added." />
+    <MESSAGE value="Organized the files to server and client files, and added comments on graphics, added ffmpeg to directory." />
+    <MESSAGE value="Removed ffmpeg because it's too big." />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed ffmpeg because it's too big." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/NoamCam$ServerGraphics.coverage" NAME="ServerGraphics Coverage Results" MODIFIED="1649370927285" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -820,9 +857,11 @@
     <SUITE FILE_PATH="coverage/NoamCamCode$MainClient.coverage" NAME="MainClient Coverage Results" MODIFIED="1652061064854" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoamCam$DB_Class.coverage" NAME="DB_Class Coverage Results" MODIFIED="1649789654686" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoamCam$ServerGraphics__1_.coverage" NAME="ServerGraphics (1) Coverage Results" MODIFIED="1650873243291" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/NoamCamCode$MainServer__1_.coverage" NAME="MainServer (1) Coverage Results" MODIFIED="1652378416688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ServerFiles" />
     <SUITE FILE_PATH="coverage/NoamCam$MainServer.coverage" NAME="MainServer Coverage Results" MODIFIED="1651057399073" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoamCam$ClientProtocol.coverage" NAME="ClientProtocol Coverage Results" MODIFIED="1650020007598" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/NoamCamCode$MainServer.coverage" NAME="MainServer Coverage Results" MODIFIED="1652064193360" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/NoamCamCode$MainServer.coverage" NAME="MainServer Coverage Results" MODIFIED="1652375654826" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/NoamCamCode$MainClient__1_.coverage" NAME="MainClient (1) Coverage Results" MODIFIED="1652378338486" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ClientFiles" />
     <SUITE FILE_PATH="coverage/NoamCam$MainClient.coverage" NAME="MainClient Coverage Results" MODIFIED="1651057405431" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="debuggerHistoryManager">
