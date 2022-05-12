@@ -28,6 +28,8 @@ class LoginDialog(wx.Dialog):
         icon.CopyFromBitmap(wx.Bitmap("NoamCamLens.ico", wx.BITMAP_TYPE_ANY))
         self.SetIcon(icon)
 
+        self.SetSize(400, 400)
+
         # user info
         user_sizer = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -47,14 +49,23 @@ class LoginDialog(wx.Dialog):
         p_sizer.Add(self.password, 0, wx.ALL, 5)
 
         main_sizer = wx.BoxSizer(wx.VERTICAL)
+
+        png = wx.Image("NoamCamLogoRec.png", wx.BITMAP_TYPE_ANY).ConvertToBitmap()
+        bitmap = wx.Bitmap(png)
+        image = bitmap.ConvertToImage()
+        image = image.Scale(300, 67, wx.IMAGE_QUALITY_HIGH)
+        result = wx.Bitmap(image)
+        self.control = wx.StaticBitmap(self, -1, result)
+        self.control.SetPosition((0, 0))
+
+        main_sizer.Add(self.control, 0, wx.ALL | wx.CENTER, 5)
+
         main_sizer.Add(user_sizer, 0, wx.ALL, 5)
         main_sizer.Add(p_sizer, 0, wx.ALL, 5)
 
         btn = wx.Button(self, label="Login")
         btn.Bind(wx.EVT_BUTTON, self.on_login)
         main_sizer.Add(btn, 0, wx.ALL | wx.CENTER, 5)
-
-        main_sizer.AddSpacer(25)
 
         info_button = wx.Button(self, label="Info.")
         info_button.Bind(wx.EVT_BUTTON, self.onAbout)
@@ -162,10 +173,9 @@ class CameraPanel(wx.Panel):
         self.Show()
 
     def CallDrawBlank(self):
-        print("Printing black")
         png = wx.Image("BlackPic.png", wx.BITMAP_TYPE_ANY).ConvertToBitmap()
         bitmap = wx.Bitmap(png)
-        image = wx.ImageFromBitmap(bitmap)
+        image = bitmap.ConvertToImage()
         image = image.Scale(600, 300, wx.IMAGE_QUALITY_HIGH)
         result = wx.Bitmap(image)
         self.control = wx.StaticBitmap(self, -1, result)
@@ -458,7 +468,7 @@ class MainFrame(wx.Frame):
         self.main_panel.Hide()
 
     def create_main_settings_panel(self):
-        self.titlePanel.set_title("Setting Panel")
+        self.titlePanel.set_title("Main Settings Panel")
         self.SetLabel("Main Settings Screen")
         self.main_settings_panel = MainSettingsPanel(self)
 
@@ -473,14 +483,14 @@ class MainFrame(wx.Frame):
 
     def camera_settings_pressed(self, event):
         self.main_settings_panel.Hide()
-        self.titlePanel.set_title("Camera Setting Panel")
+        self.titlePanel.set_title("Camera Settings Panel")
         self.SetLabel("Camera Settings Panel")
         self.camera_settings_panel = CameraSettingsPanel(self)
         self.camera_settings_panel.Show()
 
     def admin_settings_pressed(self, event):
         self.main_settings_panel.Hide()
-        self.titlePanel.set_title("Admin Setting Panel")
+        self.titlePanel.set_title("Admin Settings Panel")
         self.SetLabel("Admin Settings Panel")
         self.admin_settings_panel = AdminSettingsPanel(self)
         self.admin_settings_panel.Show()
@@ -489,17 +499,18 @@ class MainFrame(wx.Frame):
 class TitlePanel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, size=(1900, 200), pos=(0, 0))
-        self.SetBackgroundColour("DARK SLATE GRAY")
+        self.SetBackgroundColour("sea green")
         font = wx.Font(40, wx.MODERN, wx.NORMAL, wx.BOLD)
         self.lbl = wx.StaticText(self, style=wx.ALIGN_CENTER_HORIZONTAL) #, pos=(2, 306))
         self.lbl.SetFont(font)
-        png = wx.Image("Dog.png", wx.BITMAP_TYPE_ANY).ConvertToBitmap()
+        png = wx.Image("NoamCamLogoRec.png", wx.BITMAP_TYPE_ANY).ConvertToBitmap()
         bitmap = wx.Bitmap(png)
-        image = wx.ImageFromBitmap(bitmap)
-        image = image.Scale(50, 50, wx.IMAGE_QUALITY_HIGH)
+        image = bitmap.ConvertToImage()
+        image = image.Scale(300, 67, wx.IMAGE_QUALITY_HIGH)
         result = wx.Bitmap(image)
-        control = wx.StaticBitmap(self, -1, result)
-        control.SetPosition((10, 10))
+        self.control = wx.StaticBitmap(self, -1, result)
+        self.control.SetPosition((10, 10))
+
 
     def set_title(self, title):
         self.lbl.SetLabel(title)
@@ -554,6 +565,7 @@ class MainSettingsPanel(wx.Panel):
         myDB.close()
         self.parent.create_main_panel()
         self.parent.statusBar.Hide()
+        self.parent.titlePanel.Hide()
         self.parent.main_panel.Show()
         self.Destroy()
 
@@ -568,6 +580,14 @@ class CameraSettingsPanel(wx.Panel):
         myDB = DB_Class.DB("myDB")
         self.camera_details = myDB.get_cameras()
         myDB.close()
+
+        png = wx.Image("CameraClipart.png", wx.BITMAP_TYPE_ANY).ConvertToBitmap()
+        bitmap = wx.Bitmap(png)
+        image = bitmap.ConvertToImage()
+        image = image.Scale(280, 280, wx.IMAGE_QUALITY_HIGH)
+        result = wx.Bitmap(image)
+        self.control = wx.StaticBitmap(self, -1, result)
+        self.control.SetPosition((800, 15))
 
         # Create a wxGrid object
         self.camera_grid = wx.grid.Grid(self, -1, size=(583, 393), pos=(658, 303))
@@ -610,6 +630,7 @@ class CameraSettingsPanel(wx.Panel):
     def back_button_pressed(self, event=None):
         self.Hide()
         self.parent.SetLabel("Main Settings Screen")
+        self.parent.titlePanel.set_title("Main Settings Panel")
         self.parent.main_settings_panel.Show()
 
     def submit_button_pressed(self, event):
@@ -727,6 +748,14 @@ class AdminSettingsPanel(wx.Panel):
         self.admin_details = myDB.get_admins()
         myDB.close()
 
+        png = wx.Image("UserClipart.png", wx.BITMAP_TYPE_ANY).ConvertToBitmap()
+        bitmap = wx.Bitmap(png)
+        image = bitmap.ConvertToImage()
+        image = image.Scale(380, 300, wx.IMAGE_QUALITY_HIGH)
+        result = wx.Bitmap(image)
+        self.control = wx.StaticBitmap(self, -1, result)
+        self.control.SetPosition((750, 10))
+
         self.username_list = []
 
         for admin in range(len(self.admin_details)):
@@ -777,6 +806,7 @@ class AdminSettingsPanel(wx.Panel):
     def back_button_pressed(self, event=None):
         self.Hide()
         self.parent.SetLabel("Main Settings Screen")
+        self.parent.titlePanel.set_title("Main Settings Panel")
         self.parent.main_settings_panel.Show()
 
     def submit_button_pressed(self, event):
