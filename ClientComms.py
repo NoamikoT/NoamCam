@@ -24,7 +24,9 @@ class ClientComms:
         self.recv_q = recv_q
 
         # Whether the system is running or not
-        self.running = False
+        self.running = True
+
+        self.server_running = False
 
         # Getting the client (self) MAC Address
         self.mac = self.get_mac_address()
@@ -50,13 +52,15 @@ class ClientComms:
                 message = ClientProtocol.ClientProtocol.build_mac_send(self.mac)
                 self.send_msg(message)
             print("CONNECTED")
+            self.server_running = True
         except Exception as e:
             self.my_socket.close()
             self.recv_q.put(("QU", "QU"))
             sys.exit("Can't connect")
+
         # If its the commands comms, only receiving commands
         if self.port == Setting.GENERAL_PORT:
-            while True:
+            while self.running:
                 # Receiving the length and data
                 try:
                     length = self.my_socket.recv(8).decode()
