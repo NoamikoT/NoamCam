@@ -1,6 +1,7 @@
 import os
 import re
 import cv2
+import win32gui
 import wx
 import DB_Class
 import sys
@@ -53,13 +54,28 @@ class LoginDialog(wx.Dialog):
         btn.Bind(wx.EVT_BUTTON, self.on_login)
         main_sizer.Add(btn, 0, wx.ALL | wx.CENTER, 5)
 
+        main_sizer.AddSpacer(25)
+
+        info_button = wx.Button(self, label="Info.")
+        info_button.Bind(wx.EVT_BUTTON, self.onAbout)
+        main_sizer.Add(info_button, 0, wx.ALL | wx.CENTER, 5)
 
         # self.Bind(wx.EVT_CLOSE, self.handle_exit)
 
         self.SetSizer(main_sizer)
 
-    def handle_exit(self, event):
-        os._exit(0)
+    def onAbout(self, event):
+        info = wx.adv.AboutDialogInfo()
+        info.SetName("Noam Cam")
+        info.SetVersion("1.0")
+        info.SetDescription("Camera Software")
+        info.SetCopyright("(C)")
+        info.AddDeveloper("Noam Tirosh")
+
+        wx.adv.AboutBox(info)
+
+    # def handle_exit(self, event):
+    #     os._exit(0)
 
     # ----------------------------------------------------------------------
     def on_login(self, event):
@@ -104,6 +120,8 @@ class CameraPanel(wx.Panel):
         self.mac = mac
         self.place = place
         self.siren = False
+        self.control = None
+        self.camera_is_on = False
 
         self.imgSizer = (600, 300)
         self.image = wx.Image(self.imgSizer[0], self.imgSizer[1])
@@ -129,6 +147,7 @@ class CameraPanel(wx.Panel):
         lbl = wx.StaticText(self, style=wx.ALIGN_CENTER, pos=(2, 306))
         lbl.SetFont(font)
         lbl.SetLabel(self.place)
+        lbl.SetForegroundColour("blue")
         lbl.SetBackgroundColour("gray")
 
         self.width = 600
@@ -137,26 +156,47 @@ class CameraPanel(wx.Panel):
         self.port = port
 
         pub.subscribe(self.update_frame, f"update frame-{self.port}")
+        pub.subscribe(self.CallDrawBlank, f'disconnected1-{self.port}')
 
         self.Layout()
         self.Show()
 
-    def redraw(self, e):
-        ret, self.data = self.capture.read()
-        if ret:
-            self.data = cv2.resize(self.data, (600, 300), interpolation=cv2.INTER_AREA)
-            self.data = cv2.cvtColor(self.data, cv2.COLOR_BGR2RGB)
-            self.bmp.CopyFromBuffer(self.data)
-            self.staticBit.SetBitmap(self.bmp)
+    def CallDrawBlank(self):
+        print("Printing black")
+        png = wx.Image("BlackPic.png", wx.BITMAP_TYPE_ANY).ConvertToBitmap()
+        bitmap = wx.Bitmap(png)
+        image = wx.ImageFromBitmap(bitmap)
+        image = image.Scale(600, 300, wx.IMAGE_QUALITY_HIGH)
+        result = wx.Bitmap(image)
+        self.control = wx.StaticBitmap(self, -1, result)
+        self.control.SetPosition((0, 0))
+        self.Refresh()
+        self.camera_is_on = False
+
+    # def redraw(self, e):
+    #     ret, self.data = self.capture.read()
+    #     if ret:
+    #         self.data = cv2.resize(self.data, (600, 300), interpolation=cv2.INTER_AREA)
+    #         self.data = cv2.cvtColor(self.data, cv2.COLOR_BGR2RGB)
+    #         self.bmp.CopyFromBuffer(self.data)
+    #         self.staticBit.SetBitmap(self.bmp)
         # self.Refresh()
 
     def update_frame(self, video_frame):
-        self.bmp = wx.Bitmap.FromBuffer(self.width, self.height, video_frame)
+        if not self.camera_is_on:
+            if self.control:
+                self.control.Hide()
+            self.camera_is_on = True
+        try:
+            self.bmp = wx.Bitmap.FromBuffer(self.width, self.height, video_frame)
+        except:
+            pass
+        else:
 
-        data = cv2.resize(video_frame, (600, 300), interpolation=cv2.INTER_AREA)
-        data = cv2.cvtColor(data, cv2.COLOR_BGR2RGB)
-        self.bmp.CopyFromBuffer(data)
-        self.staticBit.SetBitmap(self.bmp)
+            data = cv2.resize(video_frame, (600, 300), interpolation=cv2.INTER_AREA)
+            data = cv2.cvtColor(data, cv2.COLOR_BGR2RGB)
+            self.bmp.CopyFromBuffer(data)
+            self.staticBit.SetBitmap(self.bmp)
 
         self.Refresh()
 
@@ -241,28 +281,42 @@ class ZoomPanel(wx.Panel):
         self.zoom = wx.Button(self, label='unZoom', pos=(1770, 700))
         self.zoom.Bind(wx.EVT_BUTTON, self.call_unzoom_screen)
 
+        self.Layout()
+        self.Show()
+
+
     def set_details(self, mac, port, place):
         self.mac = mac
         self.parent.SetLabel(f'Zoom Screen - {mac} - {place}')
         self.port = port
         self.place = place
+        pub.subscribe(self.pub_unzoom, f"disconnected2-{self.port}")
         pub.subscribe(self.update_zoom_frame, f"update frame-{self.port}")
 
     def update_zoom_frame(self, video_frame):
-        self.bmp = wx.Bitmap.FromBuffer(self.width, self.height, video_frame)
+        try:
+            self.bmp = wx.Bitmap.FromBuffer(self.width, self.height, video_frame)
+        except:
+            pass
+        else:
 
-        data = cv2.resize(video_frame, (self.width, self.height), interpolation=cv2.INTER_AREA)
-        data = cv2.cvtColor(data, cv2.COLOR_BGR2RGB)
-        self.bmp.CopyFromBuffer(data)
-        self.staticBit.SetBitmap(self.bmp)
+            data = cv2.resize(video_frame, (self.width, self.height), interpolation=cv2.INTER_AREA)
+            data = cv2.cvtColor(data, cv2.COLOR_BGR2RGB)
+            self.bmp.CopyFromBuffer(data)
+            self.staticBit.SetBitmap(self.bmp)
 
         self.Refresh()
 
-    def call_unzoom_screen(self, e):
-        # try:
-        #     self.settings_frame.Destroy()
-        # except Exception:
-        #     pass
+    def pub_unzoom(self):
+        print("IN PUB UNZOOM")
+        if self.IsShown():
+            self.width = 600
+            self.height = 300
+
+            self.parent.current_zoom = None
+            self.parent.hide_zoom_panel()
+
+    def call_unzoom_screen(self, e=None):
 
         self.parent.graphics_comms.put(("Unzoom", self.mac))
         self.width = 600
@@ -350,7 +404,6 @@ class MainFrame(wx.Frame):
 
         self.statusBar.SetBackgroundColour('gray')
         self.statusBar.SetStatusText("NoamCam - Developed by Noam Tirosh V1.0 05.2022")
-
         self.server = server
 
         self.current_zoom = None
@@ -373,7 +426,7 @@ class MainFrame(wx.Frame):
 
         # If the user closed the login window without logging in
         if not dlg.logged_in:
-            sys.exit()
+            os._exit(0)
 
         # Saving the username
         self.username = dlg.username
@@ -500,6 +553,7 @@ class MainSettingsPanel(wx.Panel):
         self.parent.camera_details = myDB.get_cameras()
         myDB.close()
         self.parent.create_main_panel()
+        self.parent.statusBar.Hide()
         self.parent.main_panel.Show()
         self.Destroy()
 

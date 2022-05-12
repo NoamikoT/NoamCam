@@ -5,6 +5,7 @@ import Setting
 import struct
 import ClientProtocol
 from uuid import getnode
+import AESCipher
 
 
 class ClientComms:
@@ -28,6 +29,8 @@ class ClientComms:
         # Getting the client (self) MAC Address
         self.mac = self.get_mac_address()
 
+        self.myAES = None
+
         # Starting the thread that runs the main loop constantly
         threading.Thread(target=self._main_loop, ).start()
 
@@ -41,6 +44,7 @@ class ClientComms:
             self.my_socket.connect((self.server_ip, self.port))
             # If its the commands comms
             if self.port == Setting.GENERAL_PORT:
+                self.myAES = AESCipher.AESCipher("CATDOGMOUSE1029")
                 print(self.mac)
 
                 message = ClientProtocol.ClientProtocol.build_mac_send(self.mac)
@@ -66,6 +70,8 @@ class ClientComms:
                 else:
                     # Checking the data isn't empty
                     if len(data) > 0:
+                        if self.myAES:
+                            data = self.myAES.decrypt(data)
                         # Letting the protocol unpack the data, and putting it in the queue for the MainClient to handle it
                         code, data = ClientProtocol.ClientProtocol.unpack(data)
                         self.recv_q.put((code, data))
@@ -77,6 +83,10 @@ class ClientComms:
         :type message: String
         """
         # Getting the length of the message
+
+        if self.myAES:
+            message = self.myAES.encrypt(message)
+
         if type(message) == str:
             message = message.encode()
 

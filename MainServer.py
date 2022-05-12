@@ -65,30 +65,30 @@ def handle_graphics_q(graphics_comms, server):
             ip = mac_ip_dict[mac]
 
             if message == "start face detection":
-                print("DETECTION ON", ip)
+                # print("DETECTION ON", ip)
                 message = ServerProtocol.ServerProtocol.build_face_recognition("1")
                 server.send_message(ip, message)
             elif message == "stop face detection":
-                print("DETECTION OFF", ip)
+                # print("DETECTION OFF", ip)
                 message = ServerProtocol.ServerProtocol.build_face_recognition("0")
                 server.send_message(ip, message)
             elif message == "Zoom":
-                print("ZOOMING")
+                # print("ZOOMING")
                 message = ServerProtocol.ServerProtocol.build_zoom(mac)
                 server.send_message(ip, message)
 
             elif message == "Unzoom":
-                print("UNZOOMING")
+                # print("UNZOOMING")
                 message = ServerProtocol.ServerProtocol.build_unzoom(mac)
                 server.send_message(ip, message)
 
             elif message == "ALERT ON":
-                print("ALERTING")
+                # print("ALERTING")
                 message = ServerProtocol.ServerProtocol.build_siren_on(mac)
                 server.send_message(ip, message)
 
             elif message == "ALERT OFF":
-                print("STOP ALERTING")
+                # print("STOP ALERTING")
                 message = ServerProtocol.ServerProtocol.build_siren_off(mac)
                 server.send_message(ip, message)
 

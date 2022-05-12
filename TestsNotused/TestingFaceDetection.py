@@ -1,4 +1,6 @@
 import os
+import time
+
 import cv2
 
 # Loading the cascade
@@ -45,6 +47,9 @@ while True:
 
     print(img)
     # Saving the frame to the video
+    timestamp = time.time()
+    cv2.putText(img, timestamp, (10, 250), cv2.FONT_HERSHEY_SIMPLEX, 4, (255, 255, 255), 2, cv2.LINE_AA)
+
     VideoWriter.write(img)
 
     # If the ESC key is pressed, the program stops

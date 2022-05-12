@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="c2dcd42c-ff15-48d6-85bd-c1f1c5a77cea" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myDB" beforeDir="false" afterPath="$PROJECT_DIR$/myDB" afterDir="false" />
     </list>
     <list id="2dc151e2-ce3e-4500-bf9e-fdb0b6b7ebbb" name="A little bit of comments added" comment="" />
     <ignored path="$PROJECT_DIR$/venv/" />
@@ -18,11 +17,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ServerGraphics.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="430">
-              <caret line="432" selection-start-line="432" selection-end-line="432" />
+            <state relative-caret-position="400">
+              <caret line="359" column="85" selection-start-line="359" selection-start-column="85" selection-end-line="359" selection-end-column="85" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -30,11 +29,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DB_Class.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="9327">
-              <caret line="555" column="30" selection-start-line="555" selection-start-column="30" selection-end-line="555" selection-end-column="30" />
+            <state relative-caret-position="48">
+              <caret line="207" column="34" selection-start-line="207" selection-start-column="34" selection-end-line="207" selection-end-column="34" />
             </state>
           </provider>
         </entry>
@@ -50,14 +49,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>alarm</find>
-      <find>class Camer</find>
-      <find>handel</find>
-      <find>mainpane</find>
-      <find>get_cameras</find>
-      <find>class mainpane</find>
-      <find>class came</find>
-      <find>ZoomPanel</find>
       <find>set_deta</find>
       <find>STOPPED</find>
       <find>operation_dic</find>
@@ -80,6 +71,14 @@
       <find>handle_video_rec</find>
       <find>get_path</find>
       <find>myDB</find>
+      <find>logindia</find>
+      <find>change</find>
+      <find>SettingsP</find>
+      <find>create_main_settings_panel</find>
+      <find>titleP</find>
+      <find>MainSettingsPanel</find>
+      <find>titlePanel</find>
+      <find>mainframe</find>
     </findStrings>
     <replaceStrings>
       <replace>myDB</replace>
@@ -149,9 +148,9 @@
         <option value="$PROJECT_DIR$/Tests (Not used)/TestJoin.py" />
         <option value="$PROJECT_DIR$/TestsNotused/TestTime.py" />
         <option value="$PROJECT_DIR$/TestsNotused/TestJoin.py" />
-        <option value="$PROJECT_DIR$/ServerGraphics.py" />
         <option value="$PROJECT_DIR$/DB_Class.py" />
         <option value="$PROJECT_DIR$/ServerComms.py" />
+        <option value="$PROJECT_DIR$/ServerGraphics.py" />
       </list>
     </option>
   </component>
@@ -203,14 +202,14 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="T:\public\NoamCamCodeCurrent\ninthofmay" />
+      <recent name="E:\NoamCam\FaceCompare" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\NoamCamCode\Tests (Not used)" />
       <recent name="T:\public\NoamCamCode\Client" />
       <recent name="F:\NoamCam" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="T:\public\NoamCamCodeCurrent\ninthofmay" />
-      <recent name="E:\NoamCam\FaceCompare" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -395,18 +394,6 @@
       <workItem from="1652052525390" duration="1188000" />
       <workItem from="1652054511496" duration="519000" />
       <workItem from="1652055040890" duration="5942000" />
-    </task>
-    <task id="LOCAL‎00017" summary="Added a single comment.">
-      <created>1646830011058</created>
-      <option name="number" value="LOCAL‎00017" />
-      <option name="presentableId" value="LOCAL‎00017" />
-      <updated>1646830011058</updated>
-    </task>
-    <task id="LOCAL‎00018" summary="Created Server protocol">
-      <created>1648039103604</created>
-      <option name="number" value="LOCAL‎00018" />
-      <option name="presentableId" value="LOCAL‎00018" />
-      <updated>1648039103604</updated>
     </task>
     <task id="LOCAL‎00019" summary="Created Client Protocol and built important functions, need to finish the unpacked() function in both.">
       <created>1648040798741</created>
@@ -705,7 +692,19 @@
       <option name="presentableId" value="LOCAL‎00065" />
       <updated>1652097056314</updated>
     </task>
-    <option name="localTasksCounter" value="66" />
+    <task id="LOCAL‎00066" summary="Recording resets at midnight.">
+      <created>1652097169876</created>
+      <option name="number" value="LOCAL‎00066" />
+      <option name="presentableId" value="LOCAL‎00066" />
+      <updated>1652097169876</updated>
+    </task>
+    <task id="LOCAL‎00067" summary="Status and title added.">
+      <created>1652102565569</created>
+      <option name="number" value="LOCAL‎00067" />
+      <option name="presentableId" value="LOCAL‎00067" />
+      <updated>1652102565569</updated>
+    </task>
+    <option name="localTasksCounter" value="68" />
     <servers />
   </component>
   <component name="TodoView">
@@ -719,13 +718,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4962631" visible="true" weight="0.115911484" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4962631" visible="true" weight="0.115911484" />
       <window_info id="Favorites" order="1" side_tool="true" />
       <window_info id="Structure" order="2" sideWeight="0.5037369" weight="0.115911484" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32936078" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.7771338" visible="true" weight="0.2654388" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.7771338" visible="true" weight="0.2654388" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -787,7 +787,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Small grammar fix" />
     <MESSAGE value="Minor conventions fixed" />
     <MESSAGE value="Updated the add_camera function to check the position and not just the MAC address,&#10; Added a remove_camera function." />
     <MESSAGE value="Created the class for sounding the alarm." />
@@ -812,7 +811,8 @@
     <MESSAGE value="Added the option to clear the selection in the cameras table (Currently only works with drag selection).&#10;&#10;Moved the creation of the main panel only after the settings phase is done (So that the database will be updated)." />
     <MESSAGE value="Added a function to get all the managers names, and added the manager's name when sending an email.&#10;&#10;Removed some prints.&#10;&#10;Admins settings now works, the full name and email are changeable." />
     <MESSAGE value="Recording resets at midnight." />
-    <option name="LAST_COMMIT_MESSAGE" value="Recording resets at midnight." />
+    <MESSAGE value="Status and title added." />
+    <option name="LAST_COMMIT_MESSAGE" value="Status and title added." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/NoamCam$ServerGraphics.coverage" NAME="ServerGraphics Coverage Results" MODIFIED="1649370927285" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -965,9 +965,6 @@ TypeError: t...'</expression-string>
           </folding>
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/NoamCamLogo.png">
-      <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/NoamCamLens.ico">
       <provider selected="true" editor-type-id="images" />
@@ -1189,20 +1186,23 @@ TypeError: t...'</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ServerGraphics.py">
+    <entry file="file://$PROJECT_DIR$/DB_Class.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="430">
-          <caret line="432" selection-start-line="432" selection-end-line="432" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="48">
+          <caret line="207" column="34" selection-start-line="207" selection-start-column="34" selection-end-line="207" selection-end-column="34" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DB_Class.py">
+    <entry file="file://$PROJECT_DIR$/NoamCamLogo.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ServerGraphics.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9327">
-          <caret line="555" column="30" selection-start-line="555" selection-start-column="30" selection-end-line="555" selection-end-column="30" />
+        <state relative-caret-position="400">
+          <caret line="359" column="85" selection-start-line="359" selection-start-column="85" selection-end-line="359" selection-end-column="85" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

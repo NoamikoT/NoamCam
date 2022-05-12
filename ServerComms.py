@@ -5,6 +5,7 @@ import subprocess
 import threading
 import select
 import struct
+import time
 
 import pause
 import wx
@@ -15,6 +16,7 @@ import queue
 import ServerProtocol
 import datetime
 from pubsub import pub
+import AESCipher
 
 
 class ServerComms:
@@ -33,6 +35,8 @@ class ServerComms:
         # The object used to record the stream
         self.VideoWriter = None
 
+        self.running = True
+
         # The server's port
         self.port = port
         # The queue where messages get stored to and read
@@ -46,6 +50,8 @@ class ServerComms:
         self.payload_size = struct.calcsize(">L")
         self.path = None
 
+        self.myAES = None
+
         # Starting the thread that runs the main loop constantly
         threading.Thread(target=self._main_loop, ).start()
 
@@ -57,6 +63,9 @@ class ServerComms:
             # else:
             #     threading.Thread(target=self.handle_stills, ).start()
 
+        else:
+            self.myAES = AESCipher.AESCipher("CATDOGMOUSE1029")
+
     def _main_loop(self):
         """
         The function creates the server, connects new clients, every new message gets put into recv_q
@@ -66,7 +75,7 @@ class ServerComms:
         self.server_socket.bind(("0.0.0.0", self.port))
         self.server_socket.listen(5)
 
-        while True:
+        while self.running:
 
             rlist, wlist, xlist = select.select(list(self.open_clients.keys()) + [self.server_socket], [], [], 0.5)
             for current_socket in rlist:
@@ -82,7 +91,7 @@ class ServerComms:
                         self.path = self.get_path()
 
                 else:
-                    if self.port == Setting.GENERAL_PORT or self.port % 2 != 0:
+                    if self.port == Setting.GENERAL_PORT:
 
                         # Getting messages from a client
                         try:
@@ -91,13 +100,15 @@ class ServerComms:
                             data = current_socket.recv(length).decode()
 
                         except Exception as e:
-                            print(str(e))
+                            # print(str(e))
                             self.disconnect(current_socket)
 
                         else:
-                            print("IN SERVER DATA:", data)
+                            # print("IN SERVER DATA:", data)
                             # Checking the data isn't empty
                             if len(data) > 0:
+                                if self.myAES:
+                                    data = self.myAES.decrypt(data)
                                 code, message = ServerProtocol.ServerProtocol.unpack(data)
                                 # 01/02 means media file
                                 if code in ["02"]:  # Stills protocol
@@ -110,6 +121,31 @@ class ServerComms:
                             else:
                                 self.disconnect(current_socket)
 
+                    elif self.port % 2 != 0:
+
+                        # Getting messages from a client
+                        try:
+                            # Receiving the length of the message
+                            length = int(current_socket.recv(8).decode())
+                            data = current_socket.recv(length).decode()
+
+                        except Exception as e:
+                            # print(str(e))
+                            self.disconnect(current_socket)
+
+                        else:
+                            print("IN SERVER DATA:", data)
+                            # Checking the data isn't empty
+                            if len(data) > 0:
+                                code, message = ServerProtocol.ServerProtocol.unpack(data)
+                                # 01/02 means media file
+                                if code in ["02"]:  # Stills protocol
+                                    file_len = int(data[2:])
+                                    self._recv_file(current_socket, code, file_len)
+
+                            else:
+                                self.disconnect(current_socket)
+
                     else:    # Video port
 
                         data = b""
@@ -118,7 +154,7 @@ class ServerComms:
                                 data += current_socket.recv(4096)
 
                         except Exception as e:
-                            print("Line 81:", str(e))
+                            # print("Line 81:", str(e))
                             self.disconnect(current_socket)
 
                         else:
@@ -130,7 +166,7 @@ class ServerComms:
                                 while len(data) < msg_size:
                                     data += current_socket.recv(4096)
                             except Exception as e:
-                                print("Line 94:", str(e))
+                                # print("Line 94:", str(e))
                                 self.disconnect(current_socket)
                             else:
                                 frame_data = data[:msg_size]
@@ -194,8 +230,8 @@ class ServerComms:
 
         soc = self._find_socket_by_ip(ip)
 
-        print("send_message", ip, message, soc)
-
+        if self.myAES:
+            message = self.myAES.encrypt(message)
         if soc:
             if type(message) == str:
                 message = message.encode()
@@ -203,7 +239,7 @@ class ServerComms:
             try:
                 soc.send(length + message)
             except Exception as e:
-                print(str(e))
+                # print(str(e))
                 self.disconnect(soc)
 
     def _find_socket_by_ip(self, ip):
@@ -233,6 +269,15 @@ class ServerComms:
             print(f"Disconnected {self.open_clients[soc]}")
             soc.close()
             del self.open_clients[soc]
+
+            if self.port != 1000:
+                self.server_socket.close()
+                self.running = False
+                if self.port%2 == 0:
+                    print(f"Got in with port {self.port}")
+                    print(self.port)
+                    wx.CallAfter(pub.sendMessage, f"disconnected2-{self.port}")
+                    wx.CallAfter(pub.sendMessage, f"disconnected1-{self.port}")
 
     def get_path(self):
         """
@@ -271,16 +316,39 @@ class ServerComms:
 
         hour = datetime.datetime.today().strftime('%H_%M_%S')
 
+        # font
+        font = cv2.FONT_HERSHEY_PLAIN
+
+        # org
+        org = (10, 280)
+
+        # fontScale
+        fontScale = 1
+
+        # Blue color in BGR
+        color = (255, 0, 0)
+
+        # Line thickness of 2 px
+        thickness = 1
+
         while self.path is None:
             pass
 
         self.VideoWriter = cv2.VideoWriter(f"{self.path}\\{date_str}_{hour}.avi", fourcc, 5.0, (600, 300))
 
-        while True:
+
+
+        while self.running:
             frame = self.video_q.get()
             frame = cv2.resize(frame, dsize=(600, 300), interpolation=cv2.INTER_AREA)
             # Saving the frame to the video
             try:
+
+                # Using cv2.putText() method
+                frame = cv2.putText(frame, datetime.datetime.now().strftime("%H:%M:%S"), org, font, fontScale, color, thickness, cv2.LINE_AA)
+
+                # get frame
+
                 self.VideoWriter.write(frame)
             except:
                 pass
@@ -298,7 +366,7 @@ class ServerComms:
         command_path = r"T:\public\NoamCam\ffmpeg\ffmpeg\bin\\"
         # os.chdir(command_path)
 
-        while True:
+        while self.running:
             pause.until(datetime.datetime(date.year, date.month, date.day, 23, 59, 50))
 
             date += datetime.timedelta(days=1)
