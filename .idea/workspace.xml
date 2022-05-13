@@ -6,10 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="c2dcd42c-ff15-48d6-85bd-c1f1c5a77cea" name="Default Changelist" comment="Organized the files to server and client files, and added comments on graphics.">
       <change beforePath="$PROJECT_DIR$/.idea/NoamCam.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/NoamCam.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/487acec4-5ff8-4c20-922e-3acb85b35e97.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/ddcd5608-3fea-4e4d-a8a3-4935b028ad9a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/ddcd5608-3fea-4e4d-a8a3-4935b028ad9a.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ServerFiles/BlackPic.png" beforeDir="false" afterPath="$PROJECT_DIR$/ServerFiles/BlackPic.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ServerFiles/ServerGraphics.py" beforeDir="false" afterPath="$PROJECT_DIR$/ServerFiles/ServerGraphics.py" afterDir="false" />
     </list>
     <list id="2dc151e2-ce3e-4500-bf9e-fdb0b6b7ebbb" name="A little bit of comments added" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -179,6 +181,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Noam/PycharmProjects/pythonProject3.9&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -199,7 +202,7 @@
       <recent name="F:\NoamCam" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.Require">
+  <component name="RunManager" selected="Python.MainClient (1)">
     <configuration name="MainClient (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="NoamCam" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -295,7 +298,7 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="C:\Users\Noam\PycharmProjects\Trying\venv\Scripts\python.exe" />
+      <option name="SDK_HOME" value="E:\NoamCamCode\venv\Scripts\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -319,9 +322,9 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.Require" />
-        <item itemvalue="Python.MainServer (1)" />
         <item itemvalue="Python.MainClient (1)" />
+        <item itemvalue="Python.MainServer (1)" />
+        <item itemvalue="Python.Require" />
         <item itemvalue="Python.MainServer" />
         <item itemvalue="Python.MainClient" />
       </list>
@@ -380,12 +383,10 @@
       <workItem from="1652054511496" duration="519000" />
       <workItem from="1652055040890" duration="5942000" />
       <workItem from="1652380277772" duration="903000" />
-    </task>
-    <task id="LOCAL‎00022" summary="Expended Protocols and Comms both in Server and Client">
-      <created>1648554002821</created>
-      <option name="number" value="LOCAL‎00022" />
-      <option name="presentableId" value="LOCAL‎00022" />
-      <updated>1648554002821</updated>
+      <workItem from="1652438918176" duration="453000" />
+      <workItem from="1652439471349" duration="1807000" />
+      <workItem from="1652441495253" duration="1325000" />
+      <workItem from="1652444745713" duration="2569000" />
     </task>
     <task id="LOCAL‎00023" summary="Fixed some code">
       <created>1648555326695</created>
@@ -693,7 +694,14 @@
       <option name="project" value="LOCAL" />
       <updated>1652379760721</updated>
     </task>
-    <option name="localTasksCounter" value="71" />
+    <task id="LOCAL-00071" summary="Organized the files to server and client files, and added comments on graphics.">
+      <created>1652439130343</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1652439130343</updated>
+    </task>
+    <option name="localTasksCounter" value="72" />
     <servers />
   </component>
   <component name="TodoView">
@@ -802,12 +810,12 @@
     <SUITE FILE_PATH="coverage/NoamCamCode$MainClient.coverage" NAME="MainClient Coverage Results" MODIFIED="1652061064854" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoamCam$DB_Class.coverage" NAME="DB_Class Coverage Results" MODIFIED="1649789654686" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoamCam$ServerGraphics__1_.coverage" NAME="ServerGraphics (1) Coverage Results" MODIFIED="1650873243291" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/NoamCamCode$MainServer__1_.coverage" NAME="MainServer (1) Coverage Results" MODIFIED="1652378416688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ServerFiles" />
+    <SUITE FILE_PATH="coverage/NoamCamCode$MainServer__1_.coverage" NAME="MainServer (1) Coverage Results" MODIFIED="1652448221185" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ServerFiles" />
     <SUITE FILE_PATH="coverage/NoamCam$MainServer.coverage" NAME="MainServer Coverage Results" MODIFIED="1651057399073" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoamCam$ClientProtocol.coverage" NAME="ClientProtocol Coverage Results" MODIFIED="1650020007598" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoamCamCode$Require.coverage" NAME="Require Coverage Results" MODIFIED="1652380026806" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoamCamCode$MainServer.coverage" NAME="MainServer Coverage Results" MODIFIED="1652375654826" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/NoamCamCode$MainClient__1_.coverage" NAME="MainClient (1) Coverage Results" MODIFIED="1652378338486" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ClientFiles" />
+    <SUITE FILE_PATH="coverage/NoamCamCode$MainClient__1_.coverage" NAME="MainClient (1) Coverage Results" MODIFIED="1652447988443" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ClientFiles" />
     <SUITE FILE_PATH="coverage/NoamCam$MainClient.coverage" NAME="MainClient Coverage Results" MODIFIED="1651057405431" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="debuggerHistoryManager">

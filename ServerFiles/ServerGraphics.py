@@ -150,6 +150,7 @@ class CameraPanel(wx.Panel):
         # Setting the background color and printing boxes
         self.SetBackgroundColour("white")
         self.Bind(wx.EVT_PAINT, self.OnPaint)
+        self.CallDrawBlank()
 
         # Setting all the buttons that control the camera
         self.alert = wx.Button(self, label='Alert', pos=(133, 302))
