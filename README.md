@@ -6,7 +6,7 @@ The main purpose of the project is a system in which an individual/company/group
 Some more features of the project includes: Face detecting (turning it on and off), Secure log in (Using a username and password), sounding an alert when a face was detected (when Face detection feature is active on it) or manually, recording the live feeds, zooming on a certain live feed, Getting a mail when a face is found and more.
 
 # Installation
-Download ffmpeg from here: And place it under the Serverfiles folder with the name ffmpeg. 
+Download ffmpeg from here: https://drive.google.com/file/d/1800y9cELmv-W7VIugB7amxQTzp3Ixc6l/view?usp=sharing And place it under the Serverfiles folder with the name ffmpeg. 
 
 Install the requirements file.
 

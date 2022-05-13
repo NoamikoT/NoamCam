@@ -1,0 +1,12 @@
+
+spython:S1192’"UDefine a constant instead of duplicating this literal "Main Settings Screen" 3 times.(‰Á‰‘þÿÿÿÿ
+epython:S1192Ù"LDefine a constant instead of duplicating this literal "Main Screen" 3 times.(ÏÀ„Ã
+mpython:S117å"URename this local variable "myDB" to match the regular expression ^[_a-z][a-z0-9_]*$.(¼¼Žä
+Jpython:S1481ï"1Remove the unused local variable "authenticated".(íÏÍ¤
+rpython:S3776ü"TRefactor this function to reduce its Cognitive Complexity from 17 to the 15 allowed.(ºý¦æùÿÿÿÿ
+Apython:S108ƒ")Either remove or fill this block of code.(ã‘Û¾
+Apython:S108‰")Either remove or fill this block of code.(ã‘Û¾
+Mpython:S1135µ"4Complete the task associated to this "TODO" comment.(Ô·©É
+Epython:S1481Ú"'Remove the unused local variable "row".(ÌÇšºüÿÿÿÿ
+Hpython:S1481Û"*Remove the unused local variable "column".(íš§µýÿÿÿÿ
+Apython:S108Ü")Either remove or fill this block of code.(ã‘Û¾
