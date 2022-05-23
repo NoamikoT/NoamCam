@@ -266,8 +266,6 @@ class ServerComms:
                 self.server_socket.close()
                 self.running = False
                 if self.port%2 == 0:
-                    print(f"Got in with port {self.port}")
-                    print(self.port)
                     wx.CallAfter(pub.sendMessage, f"disconnected2-{self.port}")
                     wx.CallAfter(pub.sendMessage, f"disconnected1-{self.port}")
 

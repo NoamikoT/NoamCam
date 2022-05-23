@@ -15,7 +15,6 @@ mac_ip_dict = {}
 def handle_mac_address(ip, mac, server, mail_q):
     """Handling the mac address of a user"""
     myDB = DB_Class.DB("myDB")
-
     if myDB.mac_exist(mac):
         port = myDB.get_port_by_mac(mac)
         video_server_comms = ServerComms.ServerComms(port)
