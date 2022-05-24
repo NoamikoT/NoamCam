@@ -150,7 +150,6 @@ class CameraPanel(wx.Panel):
         # Setting the background color and printing boxes
         self.SetBackgroundColour("white")
         self.Bind(wx.EVT_PAINT, self.OnPaint)
-        self.CallDrawBlank()
 
         # Setting all the buttons that control the camera
         self.alert = wx.Button(self, label='Alert', pos=(133, 302))
@@ -164,6 +163,8 @@ class CameraPanel(wx.Panel):
 
         self.folder_button = wx.Button(self, label='Recordings', pos=(508, 302))
         self.folder_button.Bind(wx.EVT_BUTTON, self.folder_button_pressed)
+
+        self.CallDrawBlank(True)
 
         # Setting the font and printing the camera's place
         font = wx.Font(10, wx.MODERN, wx.NORMAL, wx.BOLD)
@@ -185,21 +186,28 @@ class CameraPanel(wx.Panel):
         self.Layout()
         self.Show()
 
-    def CallDrawBlank(self):
+    def CallDrawBlank(self, force=False):
         """
         Draws a blank frame when the camera is disconnected
         :return:
         """
 
-        png = wx.Image("BlackPic.png", wx.BITMAP_TYPE_ANY).ConvertToBitmap()
-        bitmap = wx.Bitmap(png)
-        image = bitmap.ConvertToImage()
-        image = image.Scale(600, 300, wx.IMAGE_QUALITY_HIGH)
-        result = wx.Bitmap(image)
-        self.control = wx.StaticBitmap(self, -1, result)
-        self.control.SetPosition((0, 0))
-        self.Refresh()
-        self.camera_is_on = False
+        if self.camera_is_on or force:
+            self.camera_is_on = False
+
+            self.alert.Disable()
+            self.face.SetValue(False)
+            self.face.Disable()
+            self.zoom.Disable()
+
+            png = wx.Image("BlackPic.png", wx.BITMAP_TYPE_ANY).ConvertToBitmap()
+            bitmap = wx.Bitmap(png)
+            image = bitmap.ConvertToImage()
+            image = image.Scale(600, 300, wx.IMAGE_QUALITY_HIGH)
+            result = wx.Bitmap(image)
+            self.control = wx.StaticBitmap(self, -1, result)
+            self.control.SetPosition((0, 0))
+            self.Refresh()
 
     def update_frame(self, video_frame):
         """
@@ -209,13 +217,18 @@ class CameraPanel(wx.Panel):
         """
 
         if not self.camera_is_on:
+            self.alert.Enable()
+            self.face.Enable()
+            self.zoom.Enable()
+
             if self.control:
                 self.control.Hide()
+
             self.camera_is_on = True
         try:
             self.bmp = wx.Bitmap.FromBuffer(self.width, self.height, video_frame)
-        except:
-            pass
+        except Exception as e:
+            print("Try to catch blinking ServerGraphics:230", str(e))
         else:
 
             data = cv2.resize(video_frame, (600, 300), interpolation=cv2.INTER_AREA)

@@ -41,7 +41,7 @@ class ServerComms:
         self.recv_q = recv_q
         # The queue used to put the pictures in to be ready to sent to the managers
         self.mail_q = mail_q
-        self.count = 1
+        self.count = 0
 
         self.video_q = queue.Queue()
 
@@ -87,6 +87,8 @@ class ServerComms:
 
                     if self.port != Setting.GENERAL_PORT:
                         self.path = self.get_path()
+                        if not self.port%2==0:
+                            self.count = self.find_last_pic()
 
                 else:
                     if self.port == Setting.GENERAL_PORT:
@@ -258,7 +260,7 @@ class ServerComms:
         """
 
         if soc in self.open_clients.keys():
-            print(f"Disconnected {self.open_clients[soc]}")
+            print(f"Disconnected {self.open_clients[soc]} {self.port}")
             soc.close()
             del self.open_clients[soc]
 
@@ -382,3 +384,15 @@ class ServerComms:
 
                 for file in files:
                     os.remove(file)
+
+    def find_last_pic(self):
+
+        pics = os.listdir(self.path)
+
+        if len(pics) > 0:
+
+            numbers = [int(x[4:-4]) for x in pics]
+
+            return sorted(numbers)[-1]
+
+        return 0

@@ -24,7 +24,7 @@ class ClientComms:
         self.recv_q = recv_q
 
         # Whether the system is running or not
-        self.running = True
+        self.running = False
 
         self.server_running = False
 
@@ -40,43 +40,58 @@ class ClientComms:
         """
         The function connects to the server and listens, every new message gets put into recv_q
         """
-
-        try:
-            # Connecting the client's socket to the server socket
-            self.my_socket.connect((self.server_ip, self.port))
-            # If its the commands comms
-            if self.port == Setting.GENERAL_PORT:
-                self.myAES = AESCipher.AESCipher("CATDOGMOUSE1029")
-
-                message = ClientProtocol.ClientProtocol.build_mac_send(self.mac)
-                self.send_msg(message)
-            self.server_running = True
-        except Exception as e:
-            self.my_socket.close()
-            self.recv_q.put(("QU", "QU"))
-            sys.exit("Can't connect")
-
-        # If its the commands comms, only receiving commands
-        if self.port == Setting.GENERAL_PORT:
-            while self.running:
-                # Receiving the length and data
+        while True:
+            print("In main loop ", self.port)
+            while not self.running:
+                print ("inside the loop", self.port, self.server_ip)
                 try:
-                    length = self.my_socket.recv(8).decode()
-                    data = self.my_socket.recv(int(length)).decode()
+                    # Connecting the client's socket to the server socket
+                    self.my_socket.connect((self.server_ip, self.port))
+                    print("after connect")
+                    # If its the commands comms
+                    if self.port == Setting.GENERAL_PORT:
+                        self.myAES = AESCipher.AESCipher("CATDOGMOUSE1029")
 
+                        message = ClientProtocol.ClientProtocol.build_mac_send(self.mac)
+                        self.send_msg(message)
+                    self.running = True
                 except Exception as e:
+                    print (str(e))
                     self.my_socket.close()
-                    self.recv_q.put(("QU", "QU"))
-                    sys.exit()
+                    self.my_socket = socket.socket()
 
-                else:
-                    # Checking the data isn't empty
-                    if len(data) > 0:
-                        if self.myAES:
-                            data = self.myAES.decrypt(data)
-                        # Letting the protocol unpack the data, and putting it in the queue for the MainClient to handle it
-                        code, data = ClientProtocol.ClientProtocol.unpack(data)
-                        self.recv_q.put((code, data))
+            # If its the commands comms, only receiving commands
+            if self.port == Setting.GENERAL_PORT:
+                while self.running:
+                    # Receiving the length and data
+                    try:
+                        length = self.my_socket.recv(8).decode()
+                        data = self.my_socket.recv(int(length)).decode()
+
+                    except Exception as e:
+                        self.running = False
+                        self.my_socket.close()
+                        break
+
+                    else:
+                        # Checking the data isn't empty
+                        if len(data) > 0:
+                            if self.myAES:
+                                data = self.myAES.decrypt(data)
+                            # Letting the protocol unpack the data, and putting it in the queue for the MainClient to handle it
+                            code, data = ClientProtocol.ClientProtocol.unpack(data)
+                            self.recv_q.put((code, data))
+
+                        else:
+                            self.running = False
+                            self.my_socket.close()
+                            break
+            else:
+                # stills or camera
+                break
+
+
+
 
     def send_msg(self, message):
         """
@@ -121,7 +136,9 @@ class ClientComms:
             self.my_socket.send(file)
 
         except Exception as e:
+            #print("Closing")
             self.my_socket.close()
+
 
     def start_client(self):
         """
@@ -141,12 +158,16 @@ class ClientComms:
         :param data: The frame to be sent
         :type data: Numpy Object
         """
+
         try:
             size = len(data)
 
             self.my_socket.sendall(struct.pack(">L", size) + data)
+
         except Exception as e:
-            pass
+            #print("Closing")
+            self.my_socket.close()
+
 
     def get_mac_address(self):
         """The function returns the MAC Address of the client"""

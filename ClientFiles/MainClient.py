@@ -9,16 +9,10 @@ import Wallpaper
 quit_q = queue.Queue()
 
 
-def open_video_stills_comms(port):
-    video_client_comms = ClientComms.ClientComms(port)
-    client_camera = ClientCamera.ClientCamera(video_client_comms, None)
-    client_camera.start_camera()
+operation_dic = {}
 
 
-operation_dic = {'06': open_video_stills_comms}
-
-
-def handle_msgs(rcv_q, quit_q):
+def handle_msgs(rcv_q, quit_q, main_client):
     client_camera = None
     while True:
         code, data = rcv_q.get()
@@ -54,5 +48,5 @@ if __name__ == '__main__':
     # Wallpaper.Wallpaper.set("Change_Wallpaper.jpg")
     rcv_q = queue.Queue()
     main_client = ClientComms.ClientComms(Setting.GENERAL_PORT, recv_q=rcv_q)
-    threading.Thread(target=handle_msgs, args=(rcv_q, quit_q,)).start()
+    threading.Thread(target=handle_msgs, args=(rcv_q, quit_q, main_client)).start()
     # Wallpaper.Wallpaper.set(save_wallpaper)
