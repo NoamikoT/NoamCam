@@ -255,7 +255,7 @@ class CameraPanel(wx.Panel):
         When the zoom was pressed
         """
 
-        if not self.frame.current_zoom:
+        if not self.frame.current_zoom and self.camera_is_on:
             self.frame.graphics_comms.put(("Zoom", self.mac))
             self.frame.current_zoom = self.mac
             self.parent.Hide()
