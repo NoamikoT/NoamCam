@@ -366,7 +366,7 @@ class ServerComms:
             if not self.VideoWriter is None:
                 self.VideoWriter.release()
 
-                self.VideoWriter = cv2.VideoWriter(f"{self.path}\\{date_str}_00_00_00.avi", fourcc, 5.0, (600, 300))
+                self.VideoWriter = cv2.VideoWriter(f"{self.path}\\{date_str}_00_00_00.avi", fourcc, 30.0, (600, 300))
 
                 # Handle connecting all of the days files
 
@@ -391,8 +391,12 @@ class ServerComms:
 
         if len(pics) > 0:
 
-            numbers = [int(x[4:-4]) for x in pics]
+            try:
+                numbers = [int(x[4:-4]) for x in pics]
 
-            return sorted(numbers)[-1]
+            except:
+                return 0
+            else:
+                return sorted(numbers)[-1]
 
         return 0

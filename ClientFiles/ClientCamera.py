@@ -105,7 +105,7 @@ class ClientCamera:
                     data = pickle.dumps(image, 0)
 
                     # Sending a frame only every 5 frames
-                    if count % 5 == 0:
+                    if count % 2 == 0:
                         # If face recognition is enabled running the frame through the face recognition
                         if self.running_recognition:
                             frame = self._face_detection(frame)
